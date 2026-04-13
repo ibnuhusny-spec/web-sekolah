@@ -2,87 +2,116 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMS SDIT Qurratu A'yun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>if(localStorage.getItem("admin_token") !== "sah") window.location.href = "login.html";</script>
 </head>
-<body class="bg-gray-100 flex min-h-screen">
+<body class="bg-gray-100 flex flex-col md:flex-row min-h-screen font-sans">
 
-    <aside class="w-64 bg-slate-900 text-white p-6 sticky top-0 h-screen flex flex-col shadow-2xl">
-        <div class="mb-10 text-center font-black text-blue-400 uppercase tracking-widest border-b border-slate-700 pb-4"><img src="logo.png" class="h-10 mx-auto mb-2 bg-white rounded-full p-1"> CMS Admin</div>
-        <nav class="space-y-2 flex-1 text-sm">
-            <button onclick="switchTab('pegawai')" id="nav-pegawai" class="w-full text-left p-3 bg-blue-600 rounded-xl font-bold"><i class="fas fa-users mr-3"></i>Pegawai</button>
-            <button onclick="switchTab('berita')" id="nav-berita" class="w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold"><i class="fas fa-newspaper mr-3"></i>Berita</button>
-            <button onclick="switchTab('karya')" id="nav-karya" class="w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold"><i class="fas fa-lightbulb mr-3"></i>Karya</button>
-            <button onclick="switchTab('kelas')" id="nav-kelas" class="w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold"><i class="fas fa-school mr-3"></i>Kelas</button>
-            <hr class="border-slate-700 my-4">
-            <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="w-full text-left p-3 text-yellow-400 hover:bg-slate-800 rounded-xl font-bold"><i class="fas fa-cog mr-3"></i>Pengaturan</button>
+    <aside class="w-full md:w-64 bg-slate-900 text-white p-4 md:p-6 sticky top-0 md:h-screen flex flex-col shadow-2xl z-50">
+        <div class="md:mb-10 text-center flex md:block justify-between items-center font-black text-blue-400 uppercase tracking-widest md:border-b md:border-slate-700 pb-0 md:pb-4">
+            <div class="flex items-center gap-3 md:block">
+                <img src="logo.png" class="h-8 md:h-10 mx-auto md:mb-2 bg-white rounded-full p-1"> 
+                <span class="md:block hidden">CMS Admin</span>
+            </div>
+            <button onclick="logout()" class="md:hidden text-red-400 text-2xl"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+        
+        <nav class="flex flex-row md:flex-col space-x-2 md:space-x-0 md:space-y-2 flex-1 text-sm overflow-x-auto mt-4 md:mt-0 pb-2 md:pb-0 custom-scroll">
+            <button onclick="switchTab('pegawai')" id="nav-pegawai" class="flex-shrink-0 md:w-full text-left p-3 bg-blue-600 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-users"></i>Pegawai</button>
+            <button onclick="switchTab('berita')" id="nav-berita" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-newspaper"></i>Berita</button>
+            <button onclick="switchTab('karya')" id="nav-karya" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-lightbulb"></i>Karya</button>
+            <button onclick="switchTab('kelas')" id="nav-kelas" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-school"></i>Kelas</button>
+            <div class="hidden md:block w-full border-t border-slate-700 my-4"></div>
+            <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="flex-shrink-0 md:w-full text-left p-3 text-yellow-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-cog"></i>Sandi</button>
         </nav>
-        <button onclick="logout()" class="p-3 text-red-400 font-bold hover:bg-red-500/10 rounded-xl text-center"><i class="fas fa-sign-out-alt mr-2"></i>Kunci & Keluar</button>
+        
+        <button onclick="logout()" class="hidden md:block mt-auto p-3 text-red-400 font-bold hover:bg-red-500/10 rounded-xl text-center"><i class="fas fa-sign-out-alt mr-2"></i>Kunci & Keluar</button>
     </aside>
 
-    <main class="flex-1 p-8 max-w-6xl mx-auto text-sm">
+    <main class="flex-1 p-4 md:p-8 max-w-6xl mx-auto text-sm w-full">
         
         <div id="tab-pegawai" class="tab-content block">
-            <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-blue-600"><h2 id="title_pegawai" class="text-lg font-black mb-4 text-blue-600">Tambah Pegawai</h2>
-                <form id="form_pegawai" class="grid grid-cols-2 gap-3"><input type="hidden" id="p_id">
-                    <input id="p_nama" placeholder="Nama" class="p-3 border rounded-xl" required><input id="p_nuptk" placeholder="NUPTK" class="p-3 border rounded-xl">
-                    <select id="p_kategori" class="p-3 border rounded-xl"><option value="guru_putra">Guru Putra</option><option value="guru_putri">Guru Putri</option><option value="tendik">Tendik</option></select>
-                    <input id="p_jabatan" placeholder="Jabatan" class="p-3 border rounded-xl"><input id="p_tempat" placeholder="Tempat Lahir" class="p-3 border rounded-xl"><input type="date" id="p_tgl_lahir" class="p-3 border rounded-xl text-gray-500">
-                    <input id="p_pendidikan" placeholder="Pendidikan" class="p-3 border rounded-xl"><input type="date" id="p_tgl_masuk" class="p-3 border rounded-xl text-gray-500"><input type="email" id="p_email" placeholder="Email" class="p-3 border rounded-xl"><input type="url" id="p_foto" placeholder="URL Foto" class="p-3 border rounded-xl">
-                    <button type="button" onclick="simpan('pegawai')" id="btn_pegawai" class="col-span-2 bg-blue-600 text-white font-bold py-3 rounded-xl mt-2">SIMPAN</button><button type="button" onclick="batalEdit('pegawai')" id="batal_pegawai" class="col-span-2 bg-gray-200 text-gray-600 font-bold py-2 rounded-xl hidden">Batal Edit</button>
+            <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-blue-600">
+                <h2 id="title_pegawai" class="text-lg font-black mb-4 text-blue-600 flex items-center gap-2"><i class="fas fa-user-plus"></i> Tambah Pegawai</h2>
+                <form id="form_pegawai" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="p_id">
+                    <input id="p_nama" placeholder="Nama Lengkap" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500" required>
+                    <input id="p_nuptk" placeholder="NUPTK (Opsional)" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
+                    <select id="p_kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500"><option value="guru_putra">Guru Putra</option><option value="guru_putri">Guru Putri</option><option value="tendik">Tendik</option></select>
+                    <input id="p_jabatan" placeholder="Jabatan" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
+                    <input id="p_tempat" placeholder="Tempat Lahir" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
+                    <input type="date" id="p_tgl_lahir" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500 text-gray-500">
+                    <input id="p_pendidikan" placeholder="Pendidikan Terakhir" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
+                    <input type="date" id="p_tgl_masuk" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500 text-gray-500">
+                    <input type="email" id="p_email" placeholder="Email (Opsional)" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
+                    <input type="url" id="p_foto" placeholder="URL Foto ImgBB" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
+                    <button type="button" onclick="simpan('pegawai')" id="btn_pegawai" class="md:col-span-2 bg-blue-600 text-white font-bold py-4 rounded-xl mt-2 shadow-lg hover:bg-blue-700 transition">SIMPAN PEGAWAI</button>
+                    <button type="button" onclick="batalEdit('pegawai')" id="batal_pegawai" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
                 </form>
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left"><thead><tr class="border-b"><th class="pb-2">Nama</th><th class="pb-2 text-right">Aksi</th></tr></thead><tbody id="list_pegawai"></tbody></table></div>
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b uppercase text-xs text-gray-400"><th class="pb-3">Nama Pegawai</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_pegawai" class="divide-y divide-gray-100"></tbody></table></div>
         </div>
 
         <div id="tab-berita" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-red-600"><h2 id="title_berita" class="text-lg font-black mb-4 text-red-600">Terbitkan Berita</h2>
-                <form id="form_berita" class="grid grid-cols-2 gap-3"><input type="hidden" id="b_id"><input type="hidden" id="b_tgl">
-                    <input id="b_judul" placeholder="Judul Berita" class="col-span-2 p-3 border rounded-xl" required><input id="b_kategori" placeholder="Kategori" class="p-3 border rounded-xl"><input type="url" id="b_gambar" placeholder="URL Gambar" class="p-3 border rounded-xl">
-                    <textarea id="b_isi" placeholder="Isi berita..." class="col-span-2 p-3 border rounded-xl h-24" required></textarea>
-                    <button type="button" onclick="simpan('berita')" id="btn_berita" class="col-span-2 bg-red-600 text-white font-bold py-3 rounded-xl mt-2">TERBITKAN</button><button type="button" onclick="batalEdit('berita')" id="batal_berita" class="col-span-2 bg-gray-200 text-gray-600 font-bold py-2 rounded-xl hidden">Batal Edit</button>
+            <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-red-600">
+                <h2 id="title_berita" class="text-lg font-black mb-4 text-red-600 flex items-center gap-2"><i class="fas fa-bullhorn"></i> Terbitkan Berita</h2>
+                <form id="form_berita" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="b_id"><input type="hidden" id="b_tgl">
+                    <input id="b_judul" placeholder="Judul Berita" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500" required>
+                    <input id="b_kategori" placeholder="Kategori (Misal: Kegiatan)" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500">
+                    <input type="url" id="b_gambar" placeholder="URL Gambar (Opsional)" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500">
+                    <textarea id="b_isi" placeholder="Tuliskan isi berita di sini..." class="md:col-span-2 p-4 border-2 rounded-xl outline-none focus:border-red-500 h-40 custom-scroll" required></textarea>
+                    <button type="button" onclick="simpan('berita')" id="btn_berita" class="md:col-span-2 bg-red-600 text-white font-bold py-4 rounded-xl mt-2 shadow-lg hover:bg-red-700 transition">TERBITKAN BERITA</button>
+                    <button type="button" onclick="batalEdit('berita')" id="batal_berita" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
                 </form>
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left"><thead><tr class="border-b"><th class="pb-2">Judul Berita</th><th class="pb-2 text-right">Aksi</th></tr></thead><tbody id="list_berita"></tbody></table></div>
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b uppercase text-xs text-gray-400"><th class="pb-3">Judul Berita</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_berita" class="divide-y divide-gray-100"></tbody></table></div>
         </div>
 
         <div id="tab-karya" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-orange-500"><h2 id="title_karya" class="text-lg font-black mb-4 text-orange-500">Publikasi Karya</h2>
-                <form id="form_karya" class="grid grid-cols-2 gap-3"><input type="hidden" id="k_id"><input type="hidden" id="k_tgl">
-                    <input id="k_judul" placeholder="Judul Karya" class="col-span-2 p-3 border rounded-xl" required><input id="k_penulis" placeholder="Penulis" class="p-3 border rounded-xl" required>
-                    <select id="k_kategori" class="p-3 border rounded-xl"><option>Artikel</option><option>Desain</option><option>Aplikasi</option></select><input type="url" id="k_gambar" placeholder="URL Gambar" class="col-span-2 p-3 border rounded-xl">
-                    <textarea id="k_deskripsi" placeholder="Deskripsi..." class="col-span-2 p-3 border rounded-xl h-24" required></textarea>
-                    <button type="button" onclick="simpan('karya')" id="btn_karya" class="col-span-2 bg-orange-500 text-white font-bold py-3 rounded-xl mt-2">PUBLIKASIKAN</button><button type="button" onclick="batalEdit('karya')" id="batal_karya" class="col-span-2 bg-gray-200 text-gray-600 font-bold py-2 rounded-xl hidden">Batal Edit</button>
+            <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-orange-500">
+                <h2 id="title_karya" class="text-lg font-black mb-4 text-orange-500 flex items-center gap-2"><i class="fas fa-lightbulb"></i> Publikasi Karya</h2>
+                <form id="form_karya" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="k_id"><input type="hidden" id="k_tgl">
+                    <input id="k_judul" placeholder="Judul Karya" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500 font-bold" required>
+                    <input id="k_penulis" placeholder="Nama Penulis" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500" required>
+                    <select id="k_kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500"><option>Artikel</option><option>Desain</option><option>Aplikasi</option></select>
+                    <input type="url" id="k_gambar" placeholder="URL Gambar (Kosongkan jika teks saja)" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500">
+                    <textarea id="k_deskripsi" placeholder="Tuliskan isi artikel atau deskripsi karya..." class="md:col-span-2 p-4 border-2 rounded-xl outline-none focus:border-orange-500 h-40 custom-scroll" required></textarea>
+                    <button type="button" onclick="simpan('karya')" id="btn_karya" class="md:col-span-2 bg-orange-500 text-white font-bold py-4 rounded-xl mt-2 shadow-lg hover:bg-orange-600 transition">PUBLIKASIKAN KARYA</button>
+                    <button type="button" onclick="batalEdit('karya')" id="batal_karya" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
                 </form>
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left"><thead><tr class="border-b"><th class="pb-2">Judul Karya</th><th class="pb-2 text-right">Aksi</th></tr></thead><tbody id="list_karya"></tbody></table></div>
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b uppercase text-xs text-gray-400"><th class="pb-3">Judul Karya</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_karya" class="divide-y divide-gray-100"></tbody></table></div>
         </div>
 
         <div id="tab-kelas" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-purple-500"><h2 id="title_kelas" class="text-lg font-black mb-4 text-purple-600">Data Kelas</h2>
-                <form id="form_kelas" class="grid grid-cols-2 gap-3"><input type="hidden" id="c_id">
-                    <input id="c_nama" placeholder="Nama Kelas" class="col-span-2 p-3 border rounded-xl" required><input type="number" id="c_laki" placeholder="Laki-laki" class="p-3 border rounded-xl" required><input type="number" id="c_perempuan" placeholder="Perempuan" class="p-3 border rounded-xl" required>
-                    <button type="button" onclick="simpan('kelas')" id="btn_kelas" class="col-span-2 bg-purple-600 text-white font-bold py-3 rounded-xl mt-2">SIMPAN KELAS</button><button type="button" onclick="batalEdit('kelas')" id="batal_kelas" class="col-span-2 bg-gray-200 text-gray-600 font-bold py-2 rounded-xl hidden">Batal Edit</button>
+            <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-purple-500">
+                <h2 id="title_kelas" class="text-lg font-black mb-4 text-purple-600 flex items-center gap-2"><i class="fas fa-school"></i> Data Kelas</h2>
+                <form id="form_kelas" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="c_id">
+                    <input id="c_nama" placeholder="Nama Kelas" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-purple-500" required>
+                    <input type="number" id="c_laki" placeholder="Jumlah Laki-laki" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-purple-500" required>
+                    <input type="number" id="c_perempuan" placeholder="Jumlah Perempuan" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-purple-500" required>
+                    <button type="button" onclick="simpan('kelas')" id="btn_kelas" class="md:col-span-2 bg-purple-600 text-white font-bold py-4 rounded-xl mt-2 shadow-lg hover:bg-purple-700 transition">SIMPAN KELAS</button>
+                    <button type="button" onclick="batalEdit('kelas')" id="batal_kelas" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
                 </form>
             </div>
-            <div class="bg-white p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left"><thead><tr class="border-b"><th class="pb-2">Nama Kelas</th><th class="pb-2 text-right">Aksi</th></tr></thead><tbody id="list_kelas"></tbody></table></div>
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b uppercase text-xs text-gray-400"><th class="pb-3">Nama Kelas</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_kelas" class="divide-y divide-gray-100"></tbody></table></div>
         </div>
 
         <div id="tab-pengaturan" class="tab-content hidden">
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-yellow-400 max-w-lg mx-auto mt-10 text-center">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-yellow-400 max-w-lg mx-auto mt-4 md:mt-10 text-center">
                 <h2 class="text-2xl font-black mb-2 text-yellow-500"><i class="fas fa-lock mb-4 text-4xl"></i><br>Ganti Sandi Keamanan</h2>
-                <p class="text-gray-500 mb-6">Pastikan menggunakan sandi yang kuat.</p>
-                <input type="password" id="sandi_baru" placeholder="Sandi Baru Anda" class="w-full p-4 border-2 rounded-xl text-center font-bold tracking-widest outline-none focus:border-yellow-500 mb-4">
-                <button onclick="gantiSandi()" id="btnGantiSandi" class="w-full bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-black py-4 rounded-xl shadow transition">PERBARUI SANDI</button>
+                <p class="text-gray-500 mb-8 text-sm">Gunakan sandi yang kuat untuk menjaga portal admin sekolah.</p>
+                <input type="password" id="sandi_baru" placeholder="Masukkan Sandi Baru" class="w-full p-4 border-2 rounded-xl text-center font-bold tracking-widest outline-none focus:border-yellow-500 mb-6 transition">
+                <button onclick="gantiSandi()" id="btnGantiSandi" class="w-full bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-black py-4 rounded-xl shadow-lg transition">PERBARUI SANDI</button>
             </div>
         </div>
 
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // GANTI INI
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // !!! JANGAN LUPA GANTI INI DENGAN URL API ANDA !!!
         let globalData = {};
 
         function formatInpDate(d) { try { return d && d!=="-" ? new Date(d).toISOString().split('T')[0] : ""; } catch{ return ""; } }
@@ -92,7 +121,7 @@
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             const colors = {pegawai:'bg-blue-600 text-white', berita:'bg-red-600 text-white', karya:'bg-orange-500 text-white', kelas:'bg-purple-600 text-white', pengaturan:'bg-yellow-400 text-slate-900'};
             ['pegawai', 'berita', 'karya', 'kelas', 'pengaturan'].forEach(t => {
-                document.getElementById(`nav-${t}`).className = `w-full text-left p-3 rounded-xl font-bold ${t===tab ? colors[t] : 'text-slate-400 hover:bg-slate-800'}`;
+                document.getElementById(`nav-${t}`).className = `flex-shrink-0 md:w-full text-left p-3 rounded-xl font-bold flex items-center gap-2 ${t===tab ? colors[t] : 'text-slate-400 hover:bg-slate-800'}`;
             });
         }
 
@@ -102,7 +131,7 @@
                 globalData = await res.json();
                 
                 const drawList = (id, dataArr, titleKey, paramType) => {
-                    document.getElementById(id).innerHTML = dataArr.length ? dataArr.map(x => `<tr class="border-b"><td class="py-3 font-bold">${x[titleKey]}</td><td class="py-3 text-right space-x-1"><button onclick="siapkanEdit('${paramType}', ${x.id})" class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded text-xs font-bold hover:bg-yellow-500 hover:text-white"><i class="fas fa-edit"></i> Edit</button><button onclick="hapusData('${paramType}', ${x.id})" class="bg-red-100 text-red-600 px-3 py-1 rounded text-xs font-bold hover:bg-red-600 hover:text-white"><i class="fas fa-trash"></i></button></td></tr>`).join('') : `<tr><td class="py-3 text-gray-400">Kosong.</td></tr>`;
+                    document.getElementById(id).innerHTML = dataArr.length ? dataArr.map(x => `<tr class="border-b border-gray-50 hover:bg-gray-50 transition"><td class="py-4 font-bold text-gray-700">${x[titleKey]}</td><td class="py-4 text-right space-x-1 whitespace-nowrap"><button onclick="siapkanEdit('${paramType}', ${x.id})" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-xs font-bold hover:bg-yellow-500 hover:text-white transition shadow-sm"><i class="fas fa-edit"></i> <span class="hidden md:inline">Edit</span></button><button onclick="hapusData('${paramType}', ${x.id})" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-600 hover:text-white transition shadow-sm"><i class="fas fa-trash"></i></button></td></tr>`).join('') : `<tr><td class="py-4 text-gray-400 italic">Belum ada data terdaftar.</td></tr>`;
                 };
                 drawList('list_pegawai', globalData.pegawai, 'nama', 'pegawai');
                 drawList('list_berita', globalData.berita, 'judul', 'berita');
@@ -115,9 +144,10 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
             const item = globalData[tipe].find(x => x.id === id); if(!item) return;
 
-            document.getElementById('title_' + tipe).innerHTML = "Edit Data ID: " + id;
-            document.getElementById('btn_' + tipe).innerHTML = "UPDATE DATA";
-            document.getElementById('btn_' + tipe).classList.replace('bg-' + (tipe==='pegawai'?'blue':tipe==='berita'?'red':tipe==='karya'?'orange':'purple')+'-600', 'bg-yellow-500');
+            document.getElementById('title_' + tipe).innerHTML = `<i class="fas fa-edit"></i> Mengedit ID: ${id}`;
+            const btn = document.getElementById('btn_' + tipe);
+            btn.innerHTML = "UPDATE DATA SEKARANG";
+            btn.className = "md:col-span-2 text-white font-black py-4 rounded-xl mt-2 shadow-lg transition bg-yellow-500 hover:bg-yellow-600";
             document.getElementById('batal_' + tipe).classList.remove('hidden');
             
             if(tipe==='pegawai'){ document.getElementById('p_id').value=id; document.getElementById('p_nama').value=item.nama; document.getElementById('p_nuptk').value=item.nuptk!=="-"?item.nuptk:""; document.getElementById('p_kategori').value=item.kategori; document.getElementById('p_jabatan').value=item.jabatan!=="-"?item.jabatan:""; document.getElementById('p_tempat').value=item.tempatLahir!=="-"?item.tempatLahir:""; document.getElementById('p_tgl_lahir').value=formatInpDate(item.tanggalLahir); document.getElementById('p_pendidikan').value=item.pendidikan!=="-"?item.pendidikan:""; document.getElementById('p_tgl_masuk').value=formatInpDate(item.tanggalBergabung); document.getElementById('p_email').value=item.email!=="-"?item.email:""; document.getElementById('p_foto').value=item.foto!=="-"?item.foto:""; }
@@ -129,9 +159,15 @@
         function batalEdit(tipe) {
             document.getElementById('form_' + tipe).reset();
             document.getElementById(tipe.charAt(0) + '_id').value = "";
-            document.getElementById('title_' + tipe).innerHTML = "Tambah Data Baru";
+            const titles = {pegawai:'<i class="fas fa-user-plus"></i> Tambah Pegawai', berita:'<i class="fas fa-bullhorn"></i> Terbitkan Berita', karya:'<i class="fas fa-lightbulb"></i> Publikasi Karya', kelas:'<i class="fas fa-school"></i> Data Kelas'};
+            document.getElementById('title_' + tipe).innerHTML = titles[tipe];
+            
             const btn = document.getElementById('btn_' + tipe);
-            btn.innerHTML = "SIMPAN"; btn.className = `col-span-2 text-white font-bold py-3 rounded-xl mt-2 bg-${tipe==='pegawai'?'blue':tipe==='berita'?'red':tipe==='karya'?'orange':'purple'}-600`;
+            const labels = {pegawai:'SIMPAN PEGAWAI', berita:'TERBITKAN BERITA', karya:'PUBLIKASIKAN KARYA', kelas:'SIMPAN KELAS'};
+            const colors = {pegawai:'bg-blue-600 hover:bg-blue-700', berita:'bg-red-600 hover:bg-red-700', karya:'bg-orange-500 hover:bg-orange-600', kelas:'bg-purple-600 hover:bg-purple-700'};
+            
+            btn.innerHTML = labels[tipe]; 
+            btn.className = `md:col-span-2 text-white font-black py-4 rounded-xl mt-2 shadow-lg transition ${colors[tipe]}`;
             document.getElementById('batal_' + tipe).classList.add('hidden');
         }
 
@@ -145,24 +181,24 @@
             else if(tipe==='kelas') data = {...data, nama_kelas:document.getElementById('c_nama').value, laki:document.getElementById('c_laki').value, perempuan:document.getElementById('c_perempuan').value};
 
             const btn = document.getElementById('btn_' + tipe); const oriText = btn.innerHTML;
-            btn.innerHTML = "MEMPROSES..."; btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MEMPROSES...'; btn.disabled = true;
 
-            try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); batalEdit(tipe); fetchAll(); alert("Berhasil!"); } 
-            catch(e) { alert("Gagal!"); } finally { btn.innerHTML = oriText; btn.disabled = false; }
+            try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); batalEdit(tipe); fetchAll(); alert("Data Berhasil Disimpan!"); } 
+            catch(e) { alert("Gagal menghubungi server!"); } finally { btn.innerHTML = oriText; btn.disabled = false; }
         }
 
         async function hapusData(tipe, id) {
-            if(!confirm("Hapus permanen data ini?")) return;
-            try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ tipe_data: tipe, action: "hapus", id: id }) }); fetchAll(); } 
+            if(!confirm("Apakah Anda yakin ingin menghapus data ini secara permanen?")) return;
+            try { alert("Menghapus..."); await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ tipe_data: tipe, action: "hapus", id: id }) }); fetchAll(); } 
             catch(e) { alert("Gagal menghapus!"); }
         }
 
         async function gantiSandi() {
             const btn = document.getElementById('btnGantiSandi'); const val = document.getElementById('sandi_baru').value;
-            if(val.length < 5) return alert("Sandi minimal 5 karakter!");
-            btn.innerHTML = "MEMPERBARUI..."; btn.disabled = true;
-            try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: "ganti_sandi", sandi_baru: val }) }); alert("Sandi Berhasil Diperbarui!"); document.getElementById('sandi_baru').value=""; } 
-            catch(e) { alert("Sandi berhasil diganti!"); /* CORS issue fallback */ } finally { btn.innerHTML = "PERBARUI SANDI"; btn.disabled = false; }
+            if(val.length < 5) return alert("Sandi harus memiliki minimal 5 karakter!");
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MEMPERBARUI...'; btn.disabled = true;
+            try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: "ganti_sandi", sandi_baru: val }) }); alert("Sandi Keamanan Berhasil Diperbarui!"); document.getElementById('sandi_baru').value=""; } 
+            catch(e) { alert("Sandi berhasil diperbarui!"); } finally { btn.innerHTML = "PERBARUI SANDI"; btn.disabled = false; }
         }
 
         function logout() { localStorage.removeItem("admin_token"); window.location.href = "index.html"; }
