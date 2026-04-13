@@ -19,7 +19,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <a href="#home" class="flex items-center gap-3">
                 <img src="logo.png" alt="Logo" class="h-10 w-auto bg-white rounded-full p-1">
-                <h1 class="text-lg md:text-xl font-bold uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
+                <h1 class="text-lg md:text-xl font-bold uppercase">SDIT Qurratu A'yun Al-Islami</h1>
             </a>
             <ul class="hidden md:flex space-x-6 font-medium">
                 <li><a href="#home" class="hover:text-yellow-300 transition">Beranda</a></li>
@@ -30,11 +30,12 @@
         </div>
     </nav>
 
-    <header id="home" class="bg-blue-600 py-28 text-center text-white bg-cover bg-center relative" style="background-image: linear-gradient(rgba(37, 99, 235, 0.8), rgba(37, 99, 235, 0.8)), url('https://images.unsplash.com/photo-1523050335392-9ae867749296?w=1200');">
-        <div class="container mx-auto px-4">
+    <header id="home" class="bg-blue-600 py-28 text-center text-white relative overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10">
             <h2 class="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg">Selamat Datang di Portal Pendidikan Kami</h2>
-            <p id="txtSlogan" class="text-xl md:text-3xl font-light tracking-wide opacity-90">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
+            <p id="txtSlogan" class="text-xl md:text-3xl font-light opacity-90">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
         </div>
+        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
     </header>
 
     <section id="profil" class="container mx-auto py-24 px-4">
@@ -43,18 +44,26 @@
             <div class="w-24 h-1 bg-yellow-500 mx-auto"></div>
         </div>
         <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-blue-600 hover:scale-105 transition duration-300">
-                <div class="text-blue-600 mb-4 text-4xl"><i class="fas fa-eye"></i></div>
-                <h3 class="text-2xl font-bold mb-4 text-gray-800">Visi</h3>
-                <p id="txtVisi" class="italic text-gray-600 leading-relaxed text-lg">Memuat data...</p>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-blue-600 hover:shadow-2xl transition duration-300">
+                <h3 class="text-2xl font-bold mb-4 text-blue-700 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    Visi
+                </h3>
+                <p id="txtVisi" class="text-gray-600 leading-relaxed italic whitespace-pre-line text-lg">Memuat visi...</p>
             </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-yellow-500 hover:scale-105 transition duration-300">
-                <h3 class="text-2xl font-bold mb-4 text-gray-800">Misi</h3>
-                <div id="txtMisi" class="text-gray-600 space-y-3 text-base">Memuat data...</div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-yellow-500 hover:shadow-2xl transition duration-300">
+                <h3 class="text-2xl font-bold mb-4 text-blue-700 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    Misi
+                </h3>
+                <div id="txtMisi" class="text-gray-600 leading-relaxed whitespace-pre-line">Memuat misi...</div>
             </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-green-500 hover:scale-105 transition duration-300">
-                <h3 class="text-2xl font-bold mb-4 text-gray-800">Tujuan</h3>
-                <div id="txtTujuan" class="text-gray-600 space-y-3 text-base">Memuat data...</div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-green-500 hover:shadow-2xl transition duration-300">
+                <h3 class="text-2xl font-bold mb-4 text-blue-700 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Tujuan
+                </h3>
+                <div id="txtTujuan" class="text-gray-600 leading-relaxed whitespace-pre-line">Memuat tujuan...</div>
             </div>
         </div>
     </section>
@@ -63,7 +72,7 @@
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="text-center text-white mb-16">
                 <h2 class="text-4xl font-black mb-4 uppercase tracking-widest">Guru dan Pegawai</h2>
-                <p class="text-lg opacity-80">Mengenal Lebih Dekat Tenaga Pendidik Kami</p>
+                <p class="text-lg opacity-80">Tenaga Pendidik & Kependidikan SDIT Qurratu A'yun Al-Islami</p>
             </div>
 
             <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-2xl mb-12">
@@ -78,35 +87,33 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="staffGrid">
-                <div class="text-white text-center col-span-full py-10">Sedang menyinkronkan data...</div>
-            </div>
+                </div>
         </div>
     </section>
 
     <footer class="bg-gray-900 text-white py-12 text-center relative">
-        <img src="logo.png" alt="Logo" class="h-16 mx-auto mb-4 grayscale opacity-50">
-        <p class="text-lg font-medium">&copy; 2026 SDIT Qurratu A'yun Al-Islami</p>
+        <img src="logo.png" alt="Logo" class="h-16 mx-auto mb-4 opacity-50 grayscale">
+        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
         <p class="text-sm text-gray-500 mt-2">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
         
-        <button onclick="openLoginModal()" class="mt-8 text-gray-600 hover:text-blue-400 text-xs transition flex items-center justify-center mx-auto gap-2">
-            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-            Panel Kontrol Admin
+        <button onclick="openLoginModal()" class="mt-8 text-gray-700 hover:text-blue-500 text-xs transition flex items-center justify-center mx-auto gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+            Panel Admin
         </button>
     </footer>
 
     <div id="loginModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center backdrop-blur-md">
         <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm">
-            <h3 class="text-2xl font-bold text-center mb-6">Akses Terbatas</h3>
-            <input type="password" id="adminPassword" placeholder="Sandi Keamanan" class="w-full p-4 border-2 rounded-xl text-center mb-4 outline-none focus:border-blue-500">
-            <p id="loginError" class="text-red-500 text-sm text-center mb-4 hidden font-bold italic">Sandi Salah!</p>
-            <button onclick="checkPassword()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition">MASUK</button>
+            <h3 class="text-2xl font-bold text-center mb-6">Login Keamanan</h3>
+            <input type="password" id="adminPassword" placeholder="Sandi Akses" class="w-full p-4 border-2 rounded-xl text-center mb-4 focus:border-blue-600 outline-none">
+            <p id="loginError" class="text-red-500 text-sm text-center mb-4 hidden font-bold">Sandi Salah!</p>
+            <button onclick="checkPassword()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg">MASUK</button>
             <button onclick="closeLoginModal()" class="w-full mt-2 text-gray-400 py-2">Batal</button>
         </div>
     </div>
 
     <script>
-        // MASUKKAN URL WEB APP ANDA DI SINI
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // Ganti dengan URL Google Apps Script Anda
 
         let staffData = [];
         let currentKategori = 'semua';
@@ -116,17 +123,16 @@
                 const response = await fetch(API_URL);
                 const data = await response.json();
                 
-                // Update Profil
+                // Update Profil (Visi, Misi, Tujuan, Slogan)
                 document.getElementById('txtVisi').innerText = data.profil.visi || "-";
-                document.getElementById('txtMisi').innerHTML = data.profil.misi || "-";
-                document.getElementById('txtTujuan').innerHTML = data.profil.tujuan || "-";
+                document.getElementById('txtMisi').innerText = data.profil.misi || "-";
+                document.getElementById('txtTujuan').innerText = data.profil.tujuan || "-";
                 document.getElementById('txtSlogan').innerText = data.profil.slogan || "Cerdas, Bertauhid, dan Berakhlak Mulia";
                 
-                // Update Staff
                 staffData = data.pegawai;
                 renderCards();
             } catch (err) {
-                console.error("Gagal memuat data:", err);
+                console.error("Gagal sinkronisasi data:", err);
             }
         }
 
@@ -142,23 +148,24 @@
             });
 
             filtered.forEach((s, i) => {
-                const badges = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik: 'bg-green-500' };
-                const badgeNames = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik: 'TENDIK' };
+                const colors = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik: 'bg-green-500' };
+                const labels = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik: 'TENDIK' };
 
                 grid.innerHTML += `
-                    <div class="bg-white rounded-3xl overflow-hidden shadow-2xl animate-fade" style="animation-delay: ${i*0.05}s">
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-xl animate-fade transition hover:shadow-2xl" style="animation-delay: ${i*0.05}s">
                         <div class="relative h-72">
                             <img src="${s.foto}" class="w-full h-full object-cover">
-                            <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white ${badges[s.kategori]}">${badgeNames[s.kategori]}</span>
+                            <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white ${colors[s.kategori]}">${labels[s.kategori]}</span>
                         </div>
                         <div class="p-8">
                             <h3 class="text-xl font-bold text-gray-800 mb-1">${s.nama}</h3>
-                            <p class="text-blue-600 font-bold text-sm mb-4 uppercase tracking-tighter">${s.jabatan}</p>
+                            <p class="text-indigo-600 font-bold text-sm mb-4 uppercase">${s.jabatan}</p>
                             <div class="bg-gray-50 p-4 rounded-2xl text-xs space-y-2 border border-gray-100">
                                 <div class="flex justify-between"><b>Pendidikan:</b> <span>${s.pendidikan}</span></div>
-                                <div class="flex justify-between"><b>Bergabung:</b> <span>${s.tanggalBergabung}</span></div>
+                                <div class="flex justify-between"><b>TTL:</b> <span>${s.tempatLahir}, ${s.tanggalLahir}</span></div>
+                                <div class="flex justify-between"><b>Masuk:</b> <span>${s.tanggalBergabung}</span></div>
                             </div>
-                            <a href="mailto:${s.email}" class="block mt-6 text-center py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg hover:bg-blue-700 transition">Email</a>
+                            <a href="mailto:${s.email}" class="block mt-6 text-center py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition">Hubungi</a>
                         </div>
                     </div>
                 `;
@@ -172,7 +179,6 @@
             renderCards();
         }
 
-        // Login Logic
         function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
         function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
         function checkPassword() {
@@ -180,7 +186,10 @@
             else document.getElementById('loginError').classList.remove('hidden');
         }
 
-        document.addEventListener('DOMContentLoaded', fetchData);
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+            document.getElementById('btnSemua').classList.add('bg-yellow-400', 'text-blue-900');
+        });
     </script>
 </body>
 </html>
