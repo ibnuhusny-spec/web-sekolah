@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita - SDIT Qurratu A'yun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <nav class="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-3">
+        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-home text-blue-600 text-xl"></i></a>
+        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-users text-green-500 text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i></a>
+        <a href="karya.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-lightbulb text-orange-500 text-xl"></i></a>
+        <a href="berita.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-red-600 rounded-2xl shadow-lg border border-red-500"><i class="fas fa-newspaper text-white text-xl"></i></a>
+    </nav>
+
+    <header class="bg-white shadow-sm p-4 pl-24 relative z-40"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
+
+    <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic">Memuat kabar terbaru...</span></div>
+    </div>
+
+    <main class="flex-1 ml-16 p-10 bg-gradient-to-br from-red-50 to-orange-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-black mb-4 text-gray-800 border-l-8 border-red-600 pl-4">Kabar Sekolah</h2>
+            <p class="text-gray-500 mb-10 ml-6">Informasi, pengumuman, dan berita terbaru seputar kegiatan sekolah.</p>
+
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-8 ml-6 space-y-8" id="beritaGrid">
+                <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data berita...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-10 text-center relative z-40">
+        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
+        <button onclick="masukCMS()" class="mt-4 text-gray-500 text-xs hover:text-blue-400 transition flex items-center justify-center mx-auto gap-2"><i class="fas fa-cog"></i> Panel Admin</button>
+    </footer>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // JANGAN LUPA GANTI INI
+
+        function formatTanggal(isoString) {
+            try { return new Date(isoString).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); } 
+            catch { return isoString; }
+        }
+
+        async function fetchBerita() {
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                
+                // Render Ticker
+                const ticker = document.getElementById('tickerContent');
+                let content = "";
+                let items = [];
+                if(data.berita) items = items.concat(data.berita.slice(0, 3));
+                if(data.karya) items = items.concat(data.karya.slice(0, 3));
+                if(items.length > 0) {
+                    items.forEach(item => {
+                        const link = item.penulis ? 'karya.html' : 'berita.html';
+                        const icon = item.penulis ? '<i class="fas fa-lightbulb text-orange-600"></i>' : '<i class="fas fa-fire text-red-600"></i>';
+                        content += `<a href="${link}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition">${icon} ${item.judul} </a>`;
+                    });
+                    ticker.innerHTML = content + content;
+                } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan terbaru...</span>'; }
+
+                // Render Berita Grid
+                const grid = document.getElementById('beritaGrid');
+                grid.innerHTML = "";
+                if(!data.berita || data.berita.length === 0) {
+                    grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada berita.</div>`; return;
+                }
+
+                data.berita.forEach((b, i) => {
+                    const isNoImage = !b.gambar || b.gambar === "-" || b.gambar.trim() === "";
+                    let cardHTML = `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s">`;
+
+                    if (!isNoImage) {
+                        cardHTML += `
+                            <div class="relative max-h-56 overflow-hidden">
+                                <img src="${b.gambar}" class="w-full object-cover">
+                                <span class="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${b.kategori}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    cardHTML += `
+                            <div class="p-8 flex-1 flex flex-col ${isNoImage ? 'border-t-8 border-red-600' : ''}">
+                                ${isNoImage ? `<span class="bg-red-100 text-red-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block w-max">${b.kategori}</span>` : ''}
+                                <h3 class="text-2xl font-black text-gray-800 mb-4 leading-tight">${b.judul}</h3>
+                                <p class="text-gray-600 mb-6 whitespace-pre-line leading-relaxed">${b.isi}</p>
+                                <div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
+                                    <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500"><i class="fas fa-calendar-alt"></i></div>
+                                    <div><p class="font-bold text-sm text-gray-800">Diterbitkan</p><p class="text-xs text-gray-500">${formatTanggal(b.tanggal)}</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.innerHTML += cardHTML;
+                });
+            } catch (err) { console.error(err); }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchBerita);
+        function masukCMS() { if(prompt("Sandi Admin:") === "rahasia123") window.location.href = 'admin.html'; }
+    </script>
+</body>
+</html>
