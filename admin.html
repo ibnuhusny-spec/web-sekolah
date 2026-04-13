@@ -6,247 +6,166 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 p-8">
-    <div class="max-w-6xl mx-auto">
-        
-        <div class="flex justify-between items-center mb-8 bg-white p-6 rounded-3xl shadow-sm">
-            <div class="flex items-center gap-4">
-                <img src="logo.png" alt="Logo" class="h-12 w-auto bg-blue-50 rounded-full p-1 border-2 border-blue-200">
-                <div>
-                    <h1 class="text-2xl font-black text-slate-800 uppercase tracking-widest">Panel Admin</h1>
-                    <p class="text-sm text-gray-500">SDIT Qurratu A'yun Al-Islami</p>
-                </div>
-            </div>
-            <a href="index.html" class="flex items-center gap-2 bg-red-100 text-red-600 px-6 py-3 rounded-2xl font-bold hover:bg-red-600 hover:text-white transition shadow-sm hover:shadow-md">
-                <i class="fas fa-sign-out-alt"></i> Keluar
-            </a>
+<body class="bg-gray-100 flex min-h-screen font-sans">
+
+    <aside class="w-64 bg-slate-900 text-white p-6 sticky top-0 h-screen shadow-2xl flex flex-col">
+        <div class="flex items-center gap-3 mb-10 border-b border-slate-700 pb-6">
+            <img src="logo.png" alt="Logo" class="h-8 bg-white rounded-full p-1">
+            <span class="font-black text-xs uppercase tracking-widest text-blue-400">Admin Panel</span>
         </div>
+        <nav class="space-y-3 flex-1">
+            <button onclick="switchTab('pegawai')" id="nav-pegawai" class="w-full flex items-center gap-3 p-4 bg-blue-600 rounded-xl font-bold transition shadow-lg">
+                <i class="fas fa-users w-5"></i> Data Pegawai
+            </button>
+            <button onclick="switchTab('karya')" id="nav-karya" class="w-full flex items-center gap-3 p-4 text-slate-400 hover:bg-slate-800 rounded-xl font-bold transition">
+                <i class="fas fa-lightbulb w-5"></i> Karya Guru
+            </button>
+            <button onclick="switchTab('kelas')" id="nav-kelas" class="w-full flex items-center gap-3 p-4 text-slate-400 hover:bg-slate-800 rounded-xl font-bold transition">
+                <i class="fas fa-chalkboard-teacher w-5"></i> Data Kelas
+            </button>
+        </nav>
+        <div class="border-t border-slate-700 pt-6">
+            <a href="index.html" class="flex items-center gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-xl font-bold transition"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+        </div>
+    </aside>
 
-        <div class="bg-white p-10 rounded-3xl shadow-xl mb-12 border-t-8 border-blue-600" id="formContainer">
-            <div class="flex justify-between items-center mb-8">
-                <h2 id="formTitle" class="text-xl font-bold text-blue-700 flex items-center gap-2"><i class="fas fa-user-plus"></i> Input Data Pegawai Baru</h2>
-                <button type="button" onclick="batalEdit()" id="btnBatal" class="hidden text-gray-500 hover:text-red-500 font-bold text-sm bg-gray-100 px-4 py-2 rounded-lg transition"><i class="fas fa-times"></i> Batal Edit</button>
-            </div>
-            
-            <form id="formPegawai" class="grid md:grid-cols-2 gap-6">
-                <input type="hidden" id="editId">
-
-                <div class="col-span-1">
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Nama Lengkap & Gelar</label>
-                    <input type="text" id="nama" placeholder="Contoh: Ibnu Husny, S.Pd." class="w-full p-4 border-2 rounded-xl outline-none focus:border-blue-500" required>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">NUPTK (Jika Ada)</label>
-                    <input type="text" id="nuptk" placeholder="Contoh: 1234567890" class="w-full p-4 border-2 rounded-xl outline-none focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Kategori</label>
-                    <select id="kategori" class="w-full p-4 border-2 rounded-xl outline-none">
+    <main class="flex-1 p-10 max-w-5xl">
+        
+        <div id="tab-pegawai" class="block">
+            <div class="bg-white p-8 rounded-3xl shadow-xl mb-10 border-t-8 border-blue-600">
+                <h2 class="text-xl font-black text-blue-800 mb-6"><i class="fas fa-user-plus mr-2"></i> Input Pegawai Baru</h2>
+                <form id="formPegawai" class="grid grid-cols-2 gap-4">
+                    <input type="text" id="p_nama" placeholder="Nama Lengkap" class="p-3 border-2 rounded-xl outline-none focus:border-blue-500" required>
+                    <input type="text" id="p_nuptk" placeholder="NUPTK (Opsional)" class="p-3 border-2 rounded-xl outline-none">
+                    <select id="p_kategori" class="p-3 border-2 rounded-xl outline-none">
                         <option value="guru_putra">Guru Putra</option>
                         <option value="guru_putri">Guru Putri</option>
-                        <option value="tendik">Tendik (Staf/Karyawan)</option>
+                        <option value="tendik">Tendik</option>
                     </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Jabatan</label>
-                    <input type="text" id="jabatan" placeholder="Contoh: Guru Kelas 1" class="w-full p-4 border-2 rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Tempat Lahir</label>
-                    <input type="text" id="tempat_lahir" placeholder="Contoh: Makassar" class="w-full p-4 border-2 rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Tanggal Lahir</label>
-                    <input type="date" id="tanggal_lahir" class="w-full p-4 border-2 rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Pendidikan Terakhir</label>
-                    <input type="text" id="pendidikan" placeholder="Contoh: S1 Pendidikan" class="w-full p-4 border-2 rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Tanggal Bergabung</label>
-                    <input type="date" id="tanggal_bergabung" class="w-full p-4 border-2 rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Email Aktif</label>
-                    <input type="email" id="email" placeholder="nama@gmail.com" class="w-full p-4 border-2 rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">URL Foto (ImgBB Direct Link)</label>
-                    <input type="url" id="foto" placeholder="https://i.ibb.co/..." class="w-full p-4 border-2 rounded-xl outline-none">
-                </div>
-                
-                <button type="button" onclick="simpanData()" id="btnSimpan" class="md:col-span-2 bg-blue-600 text-white py-5 rounded-2xl font-black shadow-lg hover:bg-blue-700 transition active:scale-95">
-                    <i class="fas fa-save mr-2"></i> SIMPAN PEGAWAI BARU
-                </button>
-            </form>
-        </div>
-
-        <div class="bg-white p-10 rounded-3xl shadow-xl border-t-8 border-gray-800">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-list text-gray-800"></i> Monitoring Pegawai Terdaftar</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="border-b-2 border-gray-200 text-gray-500 text-xs uppercase tracking-widest bg-gray-50">
-                            <th class="p-4 rounded-tl-xl">Nama & NUPTK</th>
-                            <th class="p-4">Jabatan</th>
-                            <th class="p-4 text-center">Status</th>
-                            <th class="p-4 text-right rounded-tr-xl">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listPegawai" class="text-gray-700 text-sm divide-y divide-gray-100">
-                        <tr><td colspan="4" class="py-6 text-center italic text-gray-400">Sinkronisasi data dengan Google Sheets...</td></tr>
-                    </tbody>
-                </table>
+                    <input type="text" id="p_jabatan" placeholder="Jabatan" class="p-3 border-2 rounded-xl outline-none">
+                    <input type="text" id="p_tempat" placeholder="Tempat Lahir" class="p-3 border-2 rounded-xl outline-none">
+                    <input type="date" id="p_tgl_lahir" class="p-3 border-2 rounded-xl outline-none text-gray-500">
+                    <input type="text" id="p_pendidikan" placeholder="Pendidikan" class="p-3 border-2 rounded-xl outline-none">
+                    <input type="date" id="p_tgl_masuk" class="p-3 border-2 rounded-xl outline-none text-gray-500">
+                    <input type="email" id="p_email" placeholder="Email (Opsional)" class="p-3 border-2 rounded-xl outline-none">
+                    <input type="url" id="p_foto" placeholder="URL Foto ImgBB" class="p-3 border-2 rounded-xl outline-none">
+                    <button type="button" onclick="simpanData('pegawai')" id="btnSimpanP" class="col-span-2 bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-blue-700 transition mt-2">SIMPAN DATA PEGAWAI</button>
+                </form>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl">
+                <h2 class="text-lg font-bold mb-4 text-gray-700">Daftar Pegawai</h2>
+                <div class="overflow-x-auto"><table class="w-full text-left text-sm"><tbody id="listPegawai" class="divide-y"><tr><td class="py-4">Loading...</td></tr></tbody></table></div>
             </div>
         </div>
-    </div>
+
+        <div id="tab-karya" class="hidden">
+            <div class="bg-white p-8 rounded-3xl shadow-xl mb-10 border-t-8 border-orange-500">
+                <h2 class="text-xl font-black text-orange-600 mb-6"><i class="fas fa-lightbulb mr-2"></i> Publikasi Karya Baru</h2>
+                <form id="formKarya" class="grid grid-cols-2 gap-4">
+                    <input type="text" id="k_judul" placeholder="Judul Karya / Artikel" class="col-span-2 p-3 border-2 rounded-xl outline-none focus:border-orange-500 font-bold" required>
+                    <input type="text" id="k_penulis" placeholder="Nama Penulis" class="p-3 border-2 rounded-xl outline-none focus:border-orange-500" required>
+                    <select id="k_kategori" class="p-3 border-2 rounded-xl outline-none focus:border-orange-500">
+                        <option value="Artikel">Artikel Tulisan</option>
+                        <option value="Desain">Karya Desain / Poster</option>
+                        <option value="Aplikasi">Aplikasi / Inovasi</option>
+                    </select>
+                    <input type="url" id="k_gambar" placeholder="URL Gambar (Kosongkan jika teks saja)" class="col-span-2 p-3 border-2 rounded-xl outline-none focus:border-orange-500">
+                    <textarea id="k_deskripsi" placeholder="Tuliskan isi artikel atau deskripsi karya..." class="col-span-2 p-4 border-2 rounded-xl outline-none focus:border-orange-500 h-32" required></textarea>
+                    <button type="button" onclick="simpanData('karya')" id="btnSimpanK" class="col-span-2 bg-orange-500 text-white font-black py-4 rounded-xl shadow-lg hover:bg-orange-600 transition mt-2">PUBLIKASIKAN KARYA</button>
+                </form>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl">
+                <h2 class="text-lg font-bold mb-4 text-gray-700">Riwayat Publikasi</h2>
+                <div class="overflow-x-auto"><table class="w-full text-left text-sm"><tbody id="listKarya" class="divide-y"><tr><td class="py-4">Loading...</td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <div id="tab-kelas" class="hidden">
+            <div class="bg-white p-8 rounded-3xl shadow-xl mb-10 border-t-8 border-purple-500">
+                <h2 class="text-xl font-black text-purple-600 mb-6"><i class="fas fa-chalkboard-teacher mr-2"></i> Tambah / Update Kelas</h2>
+                <form id="formKelas" class="grid grid-cols-2 gap-4">
+                    <input type="text" id="c_nama" placeholder="Nama Kelas (Contoh: Kelas 1 - Abu Bakar)" class="col-span-2 p-3 border-2 rounded-xl outline-none focus:border-purple-500 font-bold" required>
+                    <input type="number" id="c_laki" placeholder="Jumlah Laki-laki" class="p-3 border-2 rounded-xl outline-none focus:border-purple-500" required>
+                    <input type="number" id="c_perempuan" placeholder="Jumlah Perempuan" class="p-3 border-2 rounded-xl outline-none focus:border-purple-500" required>
+                    <button type="button" onclick="simpanData('kelas')" id="btnSimpanC" class="col-span-2 bg-purple-600 text-white font-black py-4 rounded-xl shadow-lg hover:bg-purple-700 transition mt-2">SIMPAN DATA KELAS</button>
+                </form>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl">
+                <h2 class="text-lg font-bold mb-4 text-gray-700">Monitoring Kelas</h2>
+                <div class="overflow-x-auto"><table class="w-full text-left text-sm"><tbody id="listKelas" class="divide-y"><tr><td class="py-4">Loading...</td></tr></tbody></table></div>
+            </div>
+        </div>
+
+    </main>
 
     <script>
-        // MASUKKAN URL API ANDA DI SINI
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
-        
-        let currentStaffList = []; // Menyimpan data sementara untuk dipanggil saat tombol Edit diklik
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // JANGAN LUPA DIISI
 
-        // Helper untuk memformat tanggal ke input type="date" (YYYY-MM-DD)
-        function formatUntukInput(dateStr) {
-            if (!dateStr || dateStr === "-") return "";
-            try { return new Date(dateStr).toISOString().split('T')[0]; } 
-            catch { return ""; }
+        function switchTab(tab) {
+            ['pegawai', 'karya', 'kelas'].forEach(t => {
+                document.getElementById(`tab-${t}`).style.display = t === tab ? 'block' : 'none';
+                const btn = document.getElementById(`nav-${t}`);
+                if(t === tab) {
+                    const colors = {pegawai: 'bg-blue-600', karya: 'bg-orange-500', kelas: 'bg-purple-600'};
+                    btn.className = `w-full flex items-center gap-3 p-4 ${colors[t]} text-white rounded-xl font-bold transition shadow-lg`;
+                } else {
+                    btn.className = "w-full flex items-center gap-3 p-4 text-slate-400 hover:bg-slate-800 rounded-xl font-bold transition";
+                }
+            });
         }
 
-        async function fetchStaffList() {
+        async function fetchAllData() {
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
-                currentStaffList = data.pegawai; // Simpan ke variabel global
                 
-                const list = document.getElementById('listPegawai');
-                list.innerHTML = "";
-                
-                currentStaffList.forEach(p => {
-                    list.innerHTML += `
-                        <tr class="hover:bg-blue-50 transition duration-150">
-                            <td class="p-4">
-                                <div class="font-bold text-slate-800">${p.nama}</div>
-                                <div class="text-xs text-gray-500">NUPTK: ${p.nuptk || "-"}</div>
-                            </td>
-                            <td class="p-4">${p.jabatan}</td>
-                            <td class="p-4 text-center"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">TERSIMPAN</span></td>
-                            <td class="p-4 text-right">
-                                <button onclick="siapkanEdit(${p.id})" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-yellow-500 hover:text-white transition shadow-sm mr-2">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button onclick="hapusData(${p.id}, '${p.nama}')" class="bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-600 hover:text-white transition shadow-sm">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                // Render Pegawai
+                document.getElementById('listPegawai').innerHTML = data.pegawai.length ? data.pegawai.map(p => `<tr><td class="py-3 font-bold text-gray-800">${p.nama}</td><td class="py-3 text-gray-500">${p.jabatan}</td><td class="py-3 text-green-500 font-bold text-xs">✓ TERSIMPAN</td><td class="py-3 text-right"><button onclick="hapusData('pegawai', ${p.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button></td></tr>`).join('') : `<tr><td class="py-3 text-gray-400 italic">Belum ada pegawai.</td></tr>`;
+
+                // Render Karya
+                document.getElementById('listKarya').innerHTML = data.karya.length ? data.karya.map(k => `<tr><td class="py-3 font-bold text-gray-800">${k.judul}</td><td class="py-3 text-orange-500 font-bold text-xs uppercase">${k.kategori}</td><td class="py-3 text-gray-500">${k.penulis}</td><td class="py-3 text-right"><button onclick="hapusData('karya', ${k.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button></td></tr>`).join('') : `<tr><td class="py-3 text-gray-400 italic">Belum ada karya.</td></tr>`;
+
+                // Render Kelas
+                document.getElementById('listKelas').innerHTML = data.kelas.length ? data.kelas.map(c => `<tr><td class="py-3 font-bold text-gray-800">${c.nama_kelas}</td><td class="py-3 text-blue-500">L: ${c.laki}</td><td class="py-3 text-pink-500">P: ${c.perempuan}</td><td class="py-3 font-black text-purple-600">Total: ${c.laki + c.perempuan}</td><td class="py-3 text-right"><button onclick="hapusData('kelas', ${c.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button></td></tr>`).join('') : `<tr><td class="py-3 text-gray-400 italic">Belum ada kelas.</td></tr>`;
             } catch (err) { console.error(err); }
         }
 
-        // Fungsi saat tombol Edit ditekan
-        function siapkanEdit(id) {
-            const p = currentStaffList.find(staff => staff.id === id);
-            if(!p) return;
+        async function simpanData(tipe) {
+            let data = { tipe_data: tipe };
+            let btn, formId;
 
-            // Mengisi formulir dengan data lama
-            document.getElementById('editId').value = p.id;
-            document.getElementById('nama').value = p.nama;
-            document.getElementById('nuptk').value = p.nuptk !== "-" ? p.nuptk : "";
-            document.getElementById('kategori').value = p.kategori;
-            document.getElementById('jabatan').value = p.jabatan !== "-" ? p.jabatan : "";
-            document.getElementById('tempat_lahir').value = p.tempatLahir !== "-" ? p.tempatLahir : "";
-            document.getElementById('tanggal_lahir').value = formatUntukInput(p.tanggalLahir);
-            document.getElementById('pendidikan').value = p.pendidikan !== "-" ? p.pendidikan : "";
-            document.getElementById('tanggal_bergabung').value = formatUntukInput(p.tanggalBergabung);
-            document.getElementById('email').value = p.email !== "-" ? p.email : "";
-            document.getElementById('foto').value = p.foto !== "-" ? p.foto : "";
+            if (tipe === 'pegawai') {
+                btn = document.getElementById('btnSimpanP'); formId = 'formPegawai';
+                data = { ...data, nama: document.getElementById('p_nama').value, kategori: document.getElementById('p_kategori').value, nuptk: document.getElementById('p_nuptk').value || "-", jabatan: document.getElementById('p_jabatan').value || "-", tempatLahir: document.getElementById('p_tempat').value || "-", tanggalLahir: document.getElementById('p_tgl_lahir').value || "-", pendidikan: document.getElementById('p_pendidikan').value || "-", tanggalBergabung: document.getElementById('p_tgl_masuk').value || "-", email: document.getElementById('p_email').value || "admin@sekolah.com", foto: document.getElementById('p_foto').value || "https://i.ibb.co/Xz9Gf4z/default.png" };
+                if(!data.nama) return alert("Nama wajib diisi!");
+            } else if (tipe === 'karya') {
+                btn = document.getElementById('btnSimpanK'); formId = 'formKarya';
+                data = { ...data, tanggal: new Date().toISOString().split('T')[0], penulis: document.getElementById('k_penulis').value, kategori: document.getElementById('k_kategori').value, judul: document.getElementById('k_judul').value, gambar: document.getElementById('k_gambar').value || "-", deskripsi: document.getElementById('k_deskripsi').value };
+                if(!data.judul) return alert("Judul wajib diisi!");
+            } else if (tipe === 'kelas') {
+                btn = document.getElementById('btnSimpanC'); formId = 'formKelas';
+                data = { ...data, nama_kelas: document.getElementById('c_nama').value, laki: document.getElementById('c_laki').value, perempuan: document.getElementById('c_perempuan').value };
+                if(!data.nama_kelas) return alert("Nama kelas wajib diisi!");
+            }
 
-            // Mengubah tampilan tombol menjadi mode Update
-            document.getElementById('formTitle').innerHTML = `<i class="fas fa-user-edit"></i> Edit Data: ${p.nama}`;
-            document.getElementById('formContainer').classList.replace('border-blue-600', 'border-yellow-500');
-            document.getElementById('btnBatal').classList.remove('hidden');
-            
-            const btnSimpan = document.getElementById('btnSimpan');
-            btnSimpan.innerHTML = '<i class="fas fa-sync-alt mr-2"></i> UPDATE DATA PEGAWAI';
-            btnSimpan.classList.replace('bg-blue-600', 'bg-yellow-500');
-            btnSimpan.classList.replace('hover:bg-blue-700', 'hover:bg-yellow-600');
-
-            // Scroll otomatis ke atas
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Fungsi untuk mengembalikan mode Edit menjadi mode Tambah Baru
-        function batalEdit() {
-            document.getElementById('formPegawai').reset();
-            document.getElementById('editId').value = "";
-            document.getElementById('formTitle').innerHTML = `<i class="fas fa-user-plus"></i> Input Data Pegawai Baru`;
-            document.getElementById('formContainer').classList.replace('border-yellow-500', 'border-blue-600');
-            document.getElementById('btnBatal').classList.add('hidden');
-            
-            const btnSimpan = document.getElementById('btnSimpan');
-            btnSimpan.innerHTML = '<i class="fas fa-save mr-2"></i> SIMPAN PEGAWAI BARU';
-            btnSimpan.classList.replace('bg-yellow-500', 'bg-blue-600');
-            btnSimpan.classList.replace('hover:bg-yellow-600', 'hover:bg-blue-700');
-        }
-
-        async function simpanData() {
-            const editId = document.getElementById('editId').value;
-            const btn = document.getElementById('btnSimpan');
-            
-            const data = {
-                action: editId ? "edit" : "add", // Deteksi apakah ini Edit atau Tambah Baru
-                id: editId,
-                kategori: document.getElementById('kategori').value,
-                nama: document.getElementById('nama').value,
-                jabatan: document.getElementById('jabatan').value || "-",
-                tempatLahir: document.getElementById('tempat_lahir').value || "-",
-                tanggalLahir: document.getElementById('tanggal_lahir').value || "-",
-                tanggalBergabung: document.getElementById('tanggal_bergabung').value || "-",
-                pendidikan: document.getElementById('pendidikan').value || "-",
-                email: document.getElementById('email').value || "admin@sekolah.com",
-                foto: document.getElementById('foto').value || "https://i.ibb.co/Xz9Gf4z/default.png",
-                nuptk: document.getElementById('nuptk').value || "-"
-            };
-
-            if(!data.nama) { alert("Nama wajib diisi!"); return; }
-            
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MEMPROSES...'; 
-            btn.disabled = true;
+            const oriText = btn.innerHTML;
+            btn.innerHTML = "MEMPROSES..."; btn.disabled = true;
 
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert(editId ? "Data berhasil diperbarui!" : "Data Pegawai Baru Berhasil Tersimpan!");
-                batalEdit(); // Reset form ke kondisi awal
-                fetchStaffList(); // Segarkan tabel
-            } catch (err) { 
-                alert("Terjadi kesalahan sistem saat menghubungi Google Sheets."); 
-            } finally { 
-                btn.innerHTML = originalText; 
-                btn.disabled = false; 
-            }
+                alert("Data berhasil disimpan!"); document.getElementById(formId).reset(); fetchAllData();
+            } catch(e) { alert("Gagal menyimpan data."); } finally { btn.innerHTML = oriText; btn.disabled = false; }
         }
 
-        async function hapusData(id, nama) {
-            const konfirmasi = confirm(`Tindakan ini tidak bisa dibatalkan.\nApakah Anda yakin ingin menghapus data ${nama} dari sistem?`);
-            if(!konfirmasi) return;
-
+        async function hapusData(tipe, id) {
+            if(!confirm("Yakin ingin menghapus data ini?")) return;
             try {
-                // Tampilkan indikator loading di nama (Opsional tapi bagus untuk UX)
-                alert("Sedang menghapus, mohon tunggu sebentar...");
-                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "hapus", id: id }) });
-                alert("Data berhasil dihapus dari sistem.");
-                fetchStaffList(); // Segarkan tabel
-            } catch(err) {
-                alert("Gagal menghapus data.");
-            }
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "hapus", tipe_data: tipe, id: id }) });
+                alert("Data dihapus!"); fetchAllData();
+            } catch(e) { alert("Gagal menghapus."); }
         }
 
-        document.addEventListener('DOMContentLoaded', fetchStaffList);
+        document.addEventListener('DOMContentLoaded', fetchAllData);
     </script>
 </body>
 </html>
