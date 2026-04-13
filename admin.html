@@ -4,44 +4,78 @@
     <meta charset="UTF-8">
     <title>Admin CMS - SDIT Qurratu A'yun</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-8">
     <div class="max-w-6xl mx-auto">
         <div class="bg-white p-10 rounded-3xl shadow-xl mb-12">
-            <h2 class="text-2xl font-black mb-8 text-blue-700 uppercase">Input Data Pegawai</h2>
+            <h2 class="text-2xl font-black mb-8 text-blue-700 uppercase">Input Data Pegawai Lengkap</h2>
             <form id="formPegawai" class="grid md:grid-cols-2 gap-6">
-                <input type="text" id="nama" placeholder="Nama Lengkap & Gelar" class="p-4 border-2 rounded-xl outline-none focus:border-blue-500 transition" required>
-                <input type="text" id="nuptk" placeholder="NUPTK (Jika ada)" class="p-4 border-2 rounded-xl outline-none focus:border-blue-500 transition">
-                <select id="kategori" class="p-4 border-2 rounded-xl outline-none">
-                    <option value="guru_putra">Guru Putra</option>
-                    <option value="guru_putri">Guru Putri</option>
-                    <option value="tendik">Tendik</option>
-                </select>
-                <input type="text" id="jabatan" placeholder="Jabatan (Guru Kelas/Mapel)" class="p-4 border-2 rounded-xl outline-none">
-                <input type="text" id="pendidikan" placeholder="Pendidikan Terakhir" class="p-4 border-2 rounded-xl outline-none">
-                <input type="date" id="tanggal_bergabung" class="p-4 border-2 rounded-xl outline-none">
-                <input type="url" id="foto" placeholder="URL Foto (Direct Link ImgBB)" class="md:col-span-2 p-4 border-2 rounded-xl outline-none">
+                <div class="col-span-1">
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Nama Lengkap & Gelar</label>
+                    <input type="text" id="nama" placeholder="Contoh: Ibnu Husny, S.Pd." class="w-full p-4 border-2 rounded-xl outline-none focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">NUPTK (Jika Ada)</label>
+                    <input type="text" id="nuptk" placeholder="Contoh: 1234567890" class="w-full p-4 border-2 rounded-xl outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Kategori</label>
+                    <select id="kategori" class="w-full p-4 border-2 rounded-xl outline-none">
+                        <option value="guru_putra">Guru Putra</option>
+                        <option value="guru_putri">Guru Putri</option>
+                        <option value="tendik">Tendik (Staf/Karyawan)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Jabatan</label>
+                    <input type="text" id="jabatan" placeholder="Contoh: Guru Kelas 1" class="w-full p-4 border-2 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Tempat Lahir</label>
+                    <input type="text" id="tempat_lahir" placeholder="Contoh: Makassar" class="w-full p-4 border-2 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Tanggal Lahir</label>
+                    <input type="date" id="tanggal_lahir" class="w-full p-4 border-2 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Pendidikan Terakhir</label>
+                    <input type="text" id="pendidikan" placeholder="Contoh: S1 Pendidikan" class="w-full p-4 border-2 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Tanggal Bergabung</label>
+                    <input type="date" id="tanggal_bergabung" class="w-full p-4 border-2 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Email Aktif</label>
+                    <input type="email" id="email" placeholder="nama@gmail.com" class="w-full p-4 border-2 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">URL Foto (ImgBB Direct Link)</label>
+                    <input type="url" id="foto" placeholder="https://i.ibb.co/..." class="w-full p-4 border-2 rounded-xl outline-none">
+                </div>
                 
-                <button type="button" onclick="simpanData()" id="btnSimpan" class="md:col-span-2 bg-blue-600 text-white py-5 rounded-2xl font-black shadow-lg hover:bg-blue-700 active:scale-95 transition">
-                    SIMPAN KE DATABASE
+                <button type="button" onclick="simpanData()" id="btnSimpan" class="md:col-span-2 bg-blue-600 text-white py-5 rounded-2xl font-black shadow-lg hover:bg-blue-700 transition active:scale-95">
+                    SIMPAN KE GOOGLE SHEETS
                 </button>
             </form>
         </div>
 
         <div class="bg-white p-10 rounded-3xl shadow-xl">
-            <h2 class="text-xl font-bold mb-6">Monitoring Data Pegawai</h2>
+            <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-list text-blue-600"></i> Monitoring Pegawai Terdaftar</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
                         <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
                             <th class="pb-4">Nama</th>
-                            <th class="pb-4">NUPTK</th>
                             <th class="pb-4">Jabatan</th>
-                            <th class="pb-4">Status</th>
+                            <th class="pb-4">Email</th>
+                            <th class="pb-4 text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody id="listPegawai" class="text-gray-700 text-sm">
-                        <tr><td colspan="4" class="py-4 italic">Menyinkronkan...</td></tr>
+                        <tr><td colspan="4" class="py-4 italic">Sinkronisasi data...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -49,7 +83,7 @@
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
 
         async function fetchStaffList() {
             try {
@@ -58,7 +92,7 @@
                 const list = document.getElementById('listPegawai');
                 list.innerHTML = "";
                 data.pegawai.forEach(p => {
-                    list.innerHTML += `<tr class="border-b"><td class="py-4 font-bold">${p.nama}</td><td class="py-4">${p.nuptk || "-"}</td><td class="py-4">${p.jabatan}</td><td class="py-4 text-green-600 font-bold">✓ Aktif</td></tr>`;
+                    list.innerHTML += `<tr class="border-b"><td class="py-4 font-bold text-slate-800">${p.nama}</td><td class="py-4">${p.jabatan}</td><td class="py-4 italic">${p.email || "-"}</td><td class="py-4 text-center"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">TERSIMPAN</span></td></tr>`;
                 });
             } catch (err) { console.error(err); }
         }
@@ -66,26 +100,28 @@
         async function simpanData() {
             const btn = document.getElementById('btnSimpan');
             const data = {
-                nama: document.getElementById('nama').value,
-                nuptk: document.getElementById('nuptk').value || "-",
                 kategori: document.getElementById('kategori').value,
+                nama: document.getElementById('nama').value,
                 jabatan: document.getElementById('jabatan').value || "-",
+                tempatLahir: document.getElementById('tempat_lahir').value || "-",
+                tanggalLahir: document.getElementById('tanggal_lahir').value || "-",
                 tanggalBergabung: document.getElementById('tanggal_bergabung').value || "-",
                 pendidikan: document.getElementById('pendidikan').value || "-",
+                email: document.getElementById('email').value || "admin@sekolah.com",
                 foto: document.getElementById('foto').value || "https://i.ibb.co/Xz9Gf4z/default.png",
-                email: "-", tempatLahir: "-", tanggalLahir: "-"
+                nuptk: document.getElementById('nuptk').value || "-"
             };
 
             if(!data.nama) { alert("Nama wajib diisi!"); return; }
-            btn.innerText = "MENGIRIM..."; btn.disabled = true;
+            btn.innerText = "SEDANG MENGIRIM..."; btn.disabled = true;
 
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("Berhasil!");
+                alert("Alhamdulillah, Data Berhasil Tersimpan!");
                 document.getElementById('formPegawai').reset();
                 fetchStaffList();
-            } catch (err) { alert("Gagal!"); }
-            finally { btn.innerText = "SIMPAN KE DATABASE"; btn.disabled = false; }
+            } catch (err) { alert("Gagal menyimpan!"); }
+            finally { btn.innerText = "SIMPAN KE GOOGLE SHEETS"; btn.disabled = false; }
         }
 
         document.addEventListener('DOMContentLoaded', fetchStaffList);
