@@ -3,114 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMS Admin - SDIT Qurratu A'yun</title>
+    <title>CMS Admin - SDIT Qurratu A'yun Al-Islami</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen font-sans">
 
     <div class="flex">
-        <aside class="w-64 bg-slate-900 h-screen sticky top-0 text-white p-6 shadow-2xl">
+        <aside class="w-64 bg-slate-900 h-screen sticky top-0 text-white p-6 shadow-2xl flex flex-col">
             <div class="flex items-center gap-3 mb-10 border-b border-slate-700 pb-6">
                 <img src="logo.png" class="h-8 bg-white rounded-full p-1">
-                <span class="font-bold text-sm tracking-widest uppercase">Admin Panel</span>
+                <span class="font-bold text-xs tracking-widest uppercase">Admin Panel</span>
             </div>
-            <nav class="space-y-4">
-                <button onclick="switchTab('pegawai')" class="w-full flex items-center gap-3 p-3 bg-blue-600 rounded-xl font-bold transition">
-                    <i class="fas fa-users"></i> Data Pegawai
+            <nav class="flex-1 space-y-4">
+                <button onclick="switchTab('pegawai')" id="nav-pegawai" class="w-full flex items-center gap-3 p-3 bg-blue-600 rounded-xl font-bold transition">
+                    <i class="fas fa-users w-5 text-center"></i> Data Pegawai
                 </button>
-                <button onclick="switchTab('profil')" class="w-full flex items-center gap-3 p-3 hover:bg-slate-800 rounded-xl transition text-slate-400">
-                    <i class="fas fa-edit"></i> Edit Profil
+                <button onclick="switchTab('profil')" id="nav-profil" class="w-full flex items-center gap-3 p-3 hover:bg-slate-800 rounded-xl transition text-slate-400">
+                    <i class="fas fa-edit w-5 text-center"></i> Edit Profil & Visi
                 </button>
-                <a href="index.html" class="block flex items-center gap-3 p-3 text-red-400 mt-20"><i class="fas fa-power-off"></i> Keluar</a>
             </nav>
+            <div class="border-t border-slate-700 pt-6">
+                <a href="index.html" class="flex items-center gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition font-bold">
+                    <i class="fas fa-power-off"></i> Keluar
+                </a>
+            </div>
         </aside>
 
         <main class="flex-1 p-10">
             <div id="tab-pegawai">
-                <h2 class="text-3xl font-black text-slate-800 mb-8">Kelola Guru & Pegawai</h2>
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-800">Input Data Guru & Pegawai</h2>
+                        <p class="text-gray-500">Data yang diisi akan otomatis tampil di halaman utama.</p>
+                    </div>
+                </div>
                 
                 <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 mb-10">
-                    <form id="formPegawai" class="grid grid-cols-2 gap-6">
+                    <form id="formPegawai" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="col-span-1">
-                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Nama Lengkap</label>
-                            <input type="text" id="nama" class="w-full p-3 bg-gray-50 border-2 rounded-xl focus:border-blue-500 outline-none" required>
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Nama Lengkap & Gelar</label>
+                            <input type="text" id="nama" placeholder="Contoh: RADIANT FADLI, S.Pd." class="w-full p-3 bg-gray-50 border-2 rounded-xl focus:border-blue-500 outline-none transition" required>
                         </div>
                         <div>
-                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Kategori</label>
-                            <select id="kategori" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none">
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Kategori Pegawai</label>
+                            <select id="kategori" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none focus:border-blue-500 transition">
                                 <option value="guru_putra">Guru Putra</option>
                                 <option value="guru_putri">Guru Putri</option>
-                                <option value="tendik">Tendik</option>
+                                <option value="tendik">Tendik (Staf/Karyawan)</option>
                             </select>
                         </div>
-                        <div class="col-span-1">
-                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Jabatan</label>
-                            <input type="text" id="jabatan" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none" required>
+
+                        <div>
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Jabatan / Mapel</label>
+                            <input type="text" id="jabatan" placeholder="Contoh: Guru Kelas 1" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none focus:border-blue-500 transition" required>
                         </div>
-                        <div class="col-span-1">
-                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Pendidikan</label>
-                            <input type="text" id="pendidikan" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none" required>
+                        <div>
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Pendidikan Terakhir</label>
+                            <input type="text" id="pendidikan" placeholder="Contoh: S1 Pendidikan Agama Islam" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none focus:border-blue-500 transition" required>
                         </div>
-                        <div class="col-span-2">
-                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">URL Foto (ImgBB Direct Link)</label>
-                            <input type="url" id="foto" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none" required>
+
+                        <div>
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Tempat Lahir</label>
+                            <input type="text" id="tempat_lahir" placeholder="Contoh: Makassar" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none focus:border-blue-500 transition">
                         </div>
-                        <button type="button" onclick="simpanData()" id="btnSimpan" class="col-span-2 bg-blue-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-blue-700 transition">
-                            SIMPAN DATA KE GOOGLE SHEETS
+                        <div>
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Tanggal Lahir</label>
+                            <input type="date" id="tanggal_lahir" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none focus:border-blue-500 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Email</label>
+                            <input type="email" id="email" placeholder="nama@gmail.com" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none focus:border-blue-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Tanggal Bergabung</label>
+                            <input type="date" id="tanggal_bergabung" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none focus:border-blue-500 transition">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">URL Foto (Gunakan Direct Link dari ImgBB)</label>
+                            <input type="url" id="foto" placeholder="https://i.ibb.co/..." class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none focus:border-blue-500 transition" required>
+                        </div>
+
+                        <button type="button" onclick="simpanData()" id="btnSimpan" class="md:col-span-2 bg-blue-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-blue-700 active:scale-95 transition-all duration-200">
+                            <i class="fas fa-save mr-2"></i> SIMPAN DATA KE GOOGLE SHEETS
                         </button>
                     </form>
                 </div>
             </div>
 
             <div id="tab-profil" class="hidden">
-                <h2 class="text-3xl font-black text-slate-800 mb-8">Edit Profil Sekolah</h2>
-                <p class="text-gray-500 italic">Fitur pengeditan profil via CMS sedang dikembangkan. Untuk sementara, ubahlah langsung di Google Sheets tab "Profil".</p>
+                <h2 class="text-3xl font-black text-slate-800 mb-4">Profil, Visi, Misi & Tujuan</h2>
+                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-8">
+                    <p class="text-amber-700 text-sm">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Untuk sementara, silakan ubah teks <b>Visi, Misi, dan Tujuan</b> langsung pada tab <b>"Profil"</b> di Google Sheets Anda agar lebih fleksibel dalam mengatur paragraf.
+                    </p>
+                </div>
             </div>
         </main>
     </div>
 
     <script>
+        // MASUKKAN URL WEB APP ANDA DI SINI
         const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
 
         async function simpanData() {
             const btn = document.getElementById('btnSimpan');
+            
+            // Mengambil semua data dari inputan
             const formData = {
                 kategori: document.getElementById('kategori').value,
                 nama: document.getElementById('nama').value,
                 jabatan: document.getElementById('jabatan').value,
+                tempatLahir: document.getElementById('tempat_lahir').value || "-",
+                tanggalLahir: document.getElementById('tanggal_lahir').value || "-",
+                tanggalBergabung: document.getElementById('tanggal_bergabung').value || "-",
                 pendidikan: document.getElementById('pendidikan').value,
-                foto: document.getElementById('foto').value,
-                email: "admin@sekolah.com", // Default
-                tempatLahir: "-", tanggalLahir: "-", tanggalBergabung: "-" 
+                email: document.getElementById('email').value || "admin@sekolah.com",
+                foto: document.getElementById('foto').value
             };
 
-            btn.innerText = "SEDANG MENGIRIM...";
+            // Validasi sederhana
+            if(!formData.nama || !formData.foto) {
+                alert("Mohon isi minimal Nama dan URL Foto!");
+                return;
+            }
+
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> MENGIRIM DATA...`;
             btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
 
             try {
+                // Mengirim data ke Google Apps Script (doPost)
                 await fetch(API_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Penting untuk Apps Script
+                    mode: 'no-cors',
                     body: JSON.stringify(formData)
                 });
-                alert("Data Berhasil Terkirim ke Spreadsheet!");
+                
+                alert("Alhamdulillah! Data Berhasil Terkirim ke Spreadsheet.");
                 document.getElementById('formPegawai').reset();
             } catch (err) {
-                alert("Gagal mengirim data. Coba lagi.");
+                console.error(err);
+                alert("Astagfirullah, terjadi kesalahan saat mengirim data. Silakan cek koneksi atau URL API Anda.");
             } finally {
-                btn.innerText = "SIMPAN DATA KE GOOGLE SHEETS";
+                btn.innerHTML = `<i class="fas fa-save mr-2"></i> SIMPAN DATA KE GOOGLE SHEETS`;
                 btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
 
         function switchTab(tab) {
+            const tabPegawai = document.getElementById('tab-pegawai');
+            const tabProfil = document.getElementById('tab-profil');
+            const navPegawai = document.getElementById('nav-pegawai');
+            const navProfil = document.getElementById('nav-profil');
+
             if(tab === 'profil') {
-                document.getElementById('tab-pegawai').classList.add('hidden');
-                document.getElementById('tab-profil').classList.remove('hidden');
+                tabPegawai.classList.add('hidden');
+                tabProfil.classList.remove('hidden');
+                navProfil.classList.add('bg-blue-600', 'text-white');
+                navProfil.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                navPegawai.classList.remove('bg-blue-600');
+                navPegawai.classList.add('text-slate-400', 'hover:bg-slate-800');
             } else {
-                document.getElementById('tab-pegawai').classList.remove('hidden');
-                document.getElementById('tab-profil').classList.add('hidden');
+                tabProfil.classList.add('hidden');
+                tabPegawai.classList.remove('hidden');
+                navPegawai.classList.add('bg-blue-600', 'text-white');
+                navPegawai.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                navProfil.classList.remove('bg-blue-600');
+                navProfil.classList.add('text-slate-400', 'hover:bg-slate-800');
             }
         }
     </script>
