@@ -22,9 +22,15 @@
             </a>
         </div>
 
-        <div class="bg-white p-10 rounded-3xl shadow-xl mb-12 border-t-8 border-blue-600">
-            <h2 class="text-xl font-bold mb-8 text-blue-700 flex items-center gap-2"><i class="fas fa-user-plus"></i> Input Data Pegawai Lengkap</h2>
+        <div class="bg-white p-10 rounded-3xl shadow-xl mb-12 border-t-8 border-blue-600" id="formContainer">
+            <div class="flex justify-between items-center mb-8">
+                <h2 id="formTitle" class="text-xl font-bold text-blue-700 flex items-center gap-2"><i class="fas fa-user-plus"></i> Input Data Pegawai Baru</h2>
+                <button type="button" onclick="batalEdit()" id="btnBatal" class="hidden text-gray-500 hover:text-red-500 font-bold text-sm bg-gray-100 px-4 py-2 rounded-lg transition"><i class="fas fa-times"></i> Batal Edit</button>
+            </div>
+            
             <form id="formPegawai" class="grid md:grid-cols-2 gap-6">
+                <input type="hidden" id="editId">
+
                 <div class="col-span-1">
                     <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Nama Lengkap & Gelar</label>
                     <input type="text" id="nama" placeholder="Contoh: Ibnu Husny, S.Pd." class="w-full p-4 border-2 rounded-xl outline-none focus:border-blue-500" required>
@@ -71,7 +77,7 @@
                 </div>
                 
                 <button type="button" onclick="simpanData()" id="btnSimpan" class="md:col-span-2 bg-blue-600 text-white py-5 rounded-2xl font-black shadow-lg hover:bg-blue-700 transition active:scale-95">
-                    SIMPAN KE GOOGLE SHEETS
+                    <i class="fas fa-save mr-2"></i> SIMPAN PEGAWAI BARU
                 </button>
             </form>
         </div>
@@ -82,10 +88,10 @@
                 <table class="w-full text-left">
                     <thead>
                         <tr class="border-b-2 border-gray-200 text-gray-500 text-xs uppercase tracking-widest bg-gray-50">
-                            <th class="p-4 rounded-tl-xl">Nama</th>
+                            <th class="p-4 rounded-tl-xl">Nama & NUPTK</th>
                             <th class="p-4">Jabatan</th>
-                            <th class="p-4">Email</th>
-                            <th class="p-4 text-center rounded-tr-xl">Status</th>
+                            <th class="p-4 text-center">Status</th>
+                            <th class="p-4 text-right rounded-tr-xl">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="listPegawai" class="text-gray-700 text-sm divide-y divide-gray-100">
@@ -97,31 +103,103 @@
     </div>
 
     <script>
-        // JANGAN LUPA GANTI INI DENGAN URL APPS SCRIPT ANDA
+        // MASUKKAN URL API ANDA DI SINI
         const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
+        
+        let currentStaffList = []; // Menyimpan data sementara untuk dipanggil saat tombol Edit diklik
+
+        // Helper untuk memformat tanggal ke input type="date" (YYYY-MM-DD)
+        function formatUntukInput(dateStr) {
+            if (!dateStr || dateStr === "-") return "";
+            try { return new Date(dateStr).toISOString().split('T')[0]; } 
+            catch { return ""; }
+        }
 
         async function fetchStaffList() {
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
+                currentStaffList = data.pegawai; // Simpan ke variabel global
+                
                 const list = document.getElementById('listPegawai');
                 list.innerHTML = "";
-                data.pegawai.forEach(p => {
+                
+                currentStaffList.forEach(p => {
                     list.innerHTML += `
                         <tr class="hover:bg-blue-50 transition duration-150">
-                            <td class="p-4 font-bold text-slate-800">${p.nama}</td>
+                            <td class="p-4">
+                                <div class="font-bold text-slate-800">${p.nama}</div>
+                                <div class="text-xs text-gray-500">NUPTK: ${p.nuptk || "-"}</div>
+                            </td>
                             <td class="p-4">${p.jabatan}</td>
-                            <td class="p-4 text-blue-600">${p.email || "-"}</td>
                             <td class="p-4 text-center"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">TERSIMPAN</span></td>
+                            <td class="p-4 text-right">
+                                <button onclick="siapkanEdit(${p.id})" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-yellow-500 hover:text-white transition shadow-sm mr-2">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button onclick="hapusData(${p.id}, '${p.nama}')" class="bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-600 hover:text-white transition shadow-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
                         </tr>
                     `;
                 });
             } catch (err) { console.error(err); }
         }
 
+        // Fungsi saat tombol Edit ditekan
+        function siapkanEdit(id) {
+            const p = currentStaffList.find(staff => staff.id === id);
+            if(!p) return;
+
+            // Mengisi formulir dengan data lama
+            document.getElementById('editId').value = p.id;
+            document.getElementById('nama').value = p.nama;
+            document.getElementById('nuptk').value = p.nuptk !== "-" ? p.nuptk : "";
+            document.getElementById('kategori').value = p.kategori;
+            document.getElementById('jabatan').value = p.jabatan !== "-" ? p.jabatan : "";
+            document.getElementById('tempat_lahir').value = p.tempatLahir !== "-" ? p.tempatLahir : "";
+            document.getElementById('tanggal_lahir').value = formatUntukInput(p.tanggalLahir);
+            document.getElementById('pendidikan').value = p.pendidikan !== "-" ? p.pendidikan : "";
+            document.getElementById('tanggal_bergabung').value = formatUntukInput(p.tanggalBergabung);
+            document.getElementById('email').value = p.email !== "-" ? p.email : "";
+            document.getElementById('foto').value = p.foto !== "-" ? p.foto : "";
+
+            // Mengubah tampilan tombol menjadi mode Update
+            document.getElementById('formTitle').innerHTML = `<i class="fas fa-user-edit"></i> Edit Data: ${p.nama}`;
+            document.getElementById('formContainer').classList.replace('border-blue-600', 'border-yellow-500');
+            document.getElementById('btnBatal').classList.remove('hidden');
+            
+            const btnSimpan = document.getElementById('btnSimpan');
+            btnSimpan.innerHTML = '<i class="fas fa-sync-alt mr-2"></i> UPDATE DATA PEGAWAI';
+            btnSimpan.classList.replace('bg-blue-600', 'bg-yellow-500');
+            btnSimpan.classList.replace('hover:bg-blue-700', 'hover:bg-yellow-600');
+
+            // Scroll otomatis ke atas
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Fungsi untuk mengembalikan mode Edit menjadi mode Tambah Baru
+        function batalEdit() {
+            document.getElementById('formPegawai').reset();
+            document.getElementById('editId').value = "";
+            document.getElementById('formTitle').innerHTML = `<i class="fas fa-user-plus"></i> Input Data Pegawai Baru`;
+            document.getElementById('formContainer').classList.replace('border-yellow-500', 'border-blue-600');
+            document.getElementById('btnBatal').classList.add('hidden');
+            
+            const btnSimpan = document.getElementById('btnSimpan');
+            btnSimpan.innerHTML = '<i class="fas fa-save mr-2"></i> SIMPAN PEGAWAI BARU';
+            btnSimpan.classList.replace('bg-yellow-500', 'bg-blue-600');
+            btnSimpan.classList.replace('hover:bg-yellow-600', 'hover:bg-blue-700');
+        }
+
         async function simpanData() {
+            const editId = document.getElementById('editId').value;
             const btn = document.getElementById('btnSimpan');
+            
             const data = {
+                action: editId ? "edit" : "add", // Deteksi apakah ini Edit atau Tambah Baru
+                id: editId,
                 kategori: document.getElementById('kategori').value,
                 nama: document.getElementById('nama').value,
                 jabatan: document.getElementById('jabatan').value || "-",
@@ -135,18 +213,36 @@
             };
 
             if(!data.nama) { alert("Nama wajib diisi!"); return; }
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> SEDANG MENGIRIM...'; 
+            
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MEMPROSES...'; 
             btn.disabled = true;
 
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("Alhamdulillah, Data Berhasil Tersimpan!");
-                document.getElementById('formPegawai').reset();
-                fetchStaffList();
-            } catch (err) { alert("Gagal menyimpan!"); }
-            finally { 
-                btn.innerHTML = 'SIMPAN KE GOOGLE SHEETS'; 
+                alert(editId ? "Data berhasil diperbarui!" : "Data Pegawai Baru Berhasil Tersimpan!");
+                batalEdit(); // Reset form ke kondisi awal
+                fetchStaffList(); // Segarkan tabel
+            } catch (err) { 
+                alert("Terjadi kesalahan sistem saat menghubungi Google Sheets."); 
+            } finally { 
+                btn.innerHTML = originalText; 
                 btn.disabled = false; 
+            }
+        }
+
+        async function hapusData(id, nama) {
+            const konfirmasi = confirm(`Tindakan ini tidak bisa dibatalkan.\nApakah Anda yakin ingin menghapus data ${nama} dari sistem?`);
+            if(!konfirmasi) return;
+
+            try {
+                // Tampilkan indikator loading di nama (Opsional tapi bagus untuk UX)
+                alert("Sedang menghapus, mohon tunggu sebentar...");
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "hapus", id: id }) });
+                alert("Data berhasil dihapus dari sistem.");
+                fetchStaffList(); // Segarkan tabel
+            } catch(err) {
+                alert("Gagal menghapus data.");
             }
         }
 
