@@ -1,167 +1,68 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDIT Qurratu A'yun Al-Islami</title>
+    <title>Beranda - SDIT Qurratu A'yun Al-Islami</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade { animation: fadeIn 0.5s ease forwards; }
-        .custom-scroll::-webkit-scrollbar { width: 5px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        .menu-3d { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <nav class="bg-blue-700 p-4 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#home" class="flex items-center gap-3">
-                <img src="logo.png" alt="Logo" class="h-10 w-auto bg-white rounded-full p-1">
-                <h1 class="text-lg md:text-xl font-bold uppercase">SDIT Qurratu A'yun Al-Islami</h1>
-            </a>
-            <ul class="hidden md:flex space-x-6 font-medium">
-                <li><a href="#home" class="hover:text-yellow-300 transition">Beranda</a></li>
-                <li><a href="#profil" class="hover:text-yellow-300 transition">Profil</a></li>
-                <li><a href="#pegawai" class="hover:text-yellow-300 transition">Guru & Pegawai</a></li>
-            </ul>
-        </div>
+    <nav class="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
+        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white">
+            <i class="fas fa-home text-blue-600 text-xl"></i>
+            <span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Beranda</span>
+        </a>
+        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white">
+            <i class="fas fa-flag text-yellow-500 text-xl"></i>
+            <span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Profil Sekolah</span>
+        </a>
+        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white">
+            <i class="fas fa-users text-green-500 text-xl"></i>
+            <span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Guru & Pegawai</span>
+        </a>
+        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white">
+            <i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i>
+            <span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Data Kelas</span>
+        </a>
     </nav>
 
-    <header id="home" class="bg-blue-600 py-28 text-center text-white relative">
-        <div class="container mx-auto px-4 relative z-10">
-            <h2 class="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg">Selamat Datang di Portal Pendidikan Kami</h2>
-            <p id="txtSlogan" class="text-xl md:text-3xl font-light opacity-90">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
+    <header class="bg-white shadow-sm p-4 pl-24 relative z-40">
+        <div class="flex items-center gap-4">
+            <img src="logo.png" alt="Logo" class="h-12 w-auto">
+            <h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
         </div>
     </header>
 
-    <section id="profil" class="container mx-auto py-24 px-4">
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-blue-600">
-                <h3 class="text-2xl font-bold mb-4 text-blue-700">Visi</h3>
-                <div id="txtVisi" class="text-gray-600 h-64 overflow-y-auto custom-scroll text-justify italic pr-2">Memuat...</div>
-            </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-yellow-500">
-                <h3 class="text-2xl font-bold mb-4 text-yellow-600">Misi</h3>
-                <div id="txtMisi" class="text-gray-600 h-64 overflow-y-auto custom-scroll pr-2">Memuat...</div>
-            </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-green-500">
-                <h3 class="text-2xl font-bold mb-4 text-green-700">Tujuan</h3>
-                <div id="txtTujuan" class="text-gray-600 h-64 overflow-y-auto custom-scroll pr-2">Memuat...</div>
+    <main class="min-h-[80vh] flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-900 text-white text-center p-10 relative overflow-hidden ml-16">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="relative z-10">
+            <h2 class="text-5xl md:text-7xl font-black mb-6 drop-shadow-2xl">Selamat Datang</h2>
+            <p class="text-xl md:text-2xl font-medium opacity-90 mb-8 tracking-widest uppercase">Di Portal Informasi Pendidikan Kami</p>
+            <div class="inline-block bg-white/20 backdrop-blur-md border border-white/30 px-8 py-4 rounded-full shadow-2xl">
+                <p id="txtSlogan" class="text-xl md:text-3xl font-bold text-yellow-300 italic">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
             </div>
         </div>
-    </section>
-
-    <section id="pegawai" class="bg-gradient-to-br from-indigo-600 to-purple-800 py-24 px-4">
-        <div class="container mx-auto max-w-6xl">
-            <div class="text-center text-white mb-16">
-                <h2 class="text-4xl font-black mb-4 uppercase tracking-widest">Guru dan Pegawai</h2>
-                <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl shadow-2xl inline-block w-full max-w-lg mx-auto">
-                    <input type="text" id="searchInput" placeholder="Cari nama atau jabatan..." onkeyup="renderCards()" class="w-full p-4 rounded-xl text-gray-800 focus:ring-4 outline-none">
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="staffGrid"></div>
-        </div>
-    </section>
-
-    <footer class="bg-gray-900 text-white py-12 text-center relative">
-        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="openLoginModal()" class="mt-8 text-gray-700 hover:text-blue-500 text-xs transition flex items-center justify-center mx-auto gap-2">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-            Panel Admin
-        </button>
-    </footer>
-
-    <div id="loginModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center backdrop-blur-md">
-        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm">
-            <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">Admin Area</h3>
-            <input type="password" id="adminPassword" placeholder="Sandi Akses" class="w-full p-4 border-2 rounded-xl text-center mb-4 focus:border-blue-600 outline-none">
-            <p id="loginError" class="text-red-500 text-sm text-center mb-4 hidden font-bold">Sandi Salah!</p>
-            <button onclick="checkPassword()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg">MASUK</button>
-            <button onclick="closeLoginModal()" class="w-full mt-2 text-gray-400 py-2">Batal</button>
-        </div>
-    </div>
+    </main>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
-        let staffData = [];
-
-        function formatIndoDate(dateStr) {
-            if (!dateStr || dateStr === "-" || dateStr === "null") return "-";
-            try {
-                const date = new Date(dateStr);
-                if (isNaN(date.getTime())) return dateStr; 
-                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-            } catch { return dateStr; }
-        }
-
         async function fetchData() {
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
                 
-                document.getElementById('txtVisi').innerText = (data.profil.visi || "-").replace(/[\r\n]+/g, ' ');
-                
-                function formatList(teks) {
-                    if (!teks || teks === "-") return "-";
-                    let poin = teks.split(/[\r\n]+/).map(p => p.trim()).filter(p => p.length > 0);
-                    return "<ul class='list-disc pl-5 space-y-2'>" + poin.map(p => `<li>${p}</li>`).join('') + "</ul>";
+                // Cek jika elemen slogan ada di halaman ini
+                if(document.getElementById('txtSlogan')) {
+                    document.getElementById('txtSlogan').innerText = data.profil.slogan || "Cerdas, Bertauhid, dan Berakhlak Mulia";
                 }
-
-                document.getElementById('txtMisi').innerHTML = formatList(data.profil.misi);
-                document.getElementById('txtTujuan').innerHTML = formatList(data.profil.tujuan);
-                document.getElementById('txtSlogan').innerText = data.profil.slogan || "Cerdas, Bertauhid, dan Berakhlak Mulia";
-                
-                staffData = data.pegawai;
-                renderCards();
             } catch (err) { console.error(err); }
         }
-
-        function renderCards() {
-            const keyword = document.getElementById('searchInput').value.toLowerCase();
-            const grid = document.getElementById('staffGrid');
-            grid.innerHTML = "";
-
-            const filtered = staffData.filter(s => 
-                s.nama.toLowerCase().includes(keyword) || s.jabatan.toLowerCase().includes(keyword)
-            );
-
-            filtered.forEach((s, i) => {
-                const badges = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik: 'bg-green-500' };
-                const badgeNames = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik: 'TENDIK' };
-
-                grid.innerHTML += `
-                    <div class="bg-white rounded-3xl overflow-hidden shadow-xl animate-fade" style="animation-delay: ${i*0.05}s">
-                        <div class="relative h-72">
-                            <img src="${s.foto}" class="w-full h-full object-cover">
-                            <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white ${badges[s.kategori]}">${badgeNames[s.kategori]}</span>
-                        </div>
-                       
-                        <div class="p-8">
-                            <h3 class="text-xl font-bold text-gray-800">${s.nama}</h3>
-                            <p class="text-blue-600 font-bold text-sm mb-4 uppercase">${s.jabatan}</p>
-                            
-                            <div class="bg-gray-50 p-4 rounded-2xl text-[11px] space-y-2 border border-gray-100">
-                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">NUPTK</b> <span class="text-gray-800 text-right font-medium">${s.nuptk || "-"}</span></div>
-                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">TTL</b> <span class="text-gray-800 text-right font-medium">${s.tempatLahir}, ${formatIndoDate(s.tanggalLahir)}</span></div>
-                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">Pendidikan</b> <span class="text-gray-800 text-right font-medium">${s.pendidikan}</span></div>
-                                <div class="flex justify-between"><b class="text-gray-500 uppercase">Mulai Tugas</b> <span class="text-gray-800 text-right font-medium">${formatIndoDate(s.tanggalBergabung)}</span></div>
-                            </div>
-                            <a href="mailto:${s.email}" class="block mt-6 text-center py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">Hubungi</a>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-// ... (kode bawah tetap sama)
-
-        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
-        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
-        function checkPassword() {
-            if(document.getElementById('adminPassword').value === "rahasia123") window.location.href = 'admin.html';
-            else document.getElementById('loginError').classList.remove('hidden');
-        }
-
         document.addEventListener('DOMContentLoaded', fetchData);
     </script>
 </body>
