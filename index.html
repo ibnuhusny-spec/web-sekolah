@@ -136,14 +136,17 @@
                             <img src="${s.foto}" class="w-full h-full object-cover">
                             <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white ${badges[s.kategori]}">${badgeNames[s.kategori]}</span>
                         </div>
+                        // ... (kode atas renderCards tetap sama)
+
                         <div class="p-8">
                             <h3 class="text-xl font-bold text-gray-800">${s.nama}</h3>
                             <p class="text-blue-600 font-bold text-sm mb-4 uppercase">${s.jabatan}</p>
+                            
                             <div class="bg-gray-50 p-4 rounded-2xl text-[11px] space-y-2 border border-gray-100">
-                                <div class="flex justify-between border-b pb-1"><b>NUPTK:</b> <span>${s.nuptk || "-"}</span></div>
-                                <div class="flex justify-between border-b pb-1"><b>TTL:</b> <span>${s.tempatLahir}, ${formatIndoDate(s.tanggalLahir)}</span></div>
-                                <div class="flex justify-between border-b pb-1"><b>Pendidikan:</b> <span>${s.pendidikan}</span></div>
-                                <div class="flex justify-between"><b>Mulai Tugas:</b> <span>${formatIndoDate(s.tanggalBergabung)}</span></div>
+                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">NUPTK</b> <span class="text-gray-800 text-right font-medium">${s.nuptk || "-"}</span></div>
+                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">TTL</b> <span class="text-gray-800 text-right font-medium">${s.tempatLahir}, ${formatIndoDate(s.tanggalLahir)}</span></div>
+                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">Pendidikan</b> <span class="text-gray-800 text-right font-medium">${s.pendidikan}</span></div>
+                                <div class="flex justify-between"><b class="text-gray-500 uppercase">Mulai Tugas</b> <span class="text-gray-800 text-right font-medium">${formatIndoDate(s.tanggalBergabung)}</span></div>
                             </div>
                             <a href="mailto:${s.email}" class="block mt-6 text-center py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">Hubungi</a>
                         </div>
@@ -151,6 +154,7 @@
                 `;
             });
         }
+// ... (kode bawah tetap sama)
 
         function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
         function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
