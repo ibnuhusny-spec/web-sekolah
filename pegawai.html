@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guru & Pegawai - SDIT Qurratu A'yun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <nav class="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
+        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white"><i class="fas fa-home text-blue-600 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Beranda</span></a>
+        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Profil Sekolah</span></a>
+        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white"><i class="fas fa-users text-green-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Guru & Pegawai</span></a>
+        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Data Kelas</span></a>
+    </nav>
+
+    <header class="bg-white shadow-sm p-4 pl-24"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
+
+    <main class="ml-16 p-10 min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
+        <h2 class="text-4xl font-black mb-8 text-gray-800 border-l-8 border-green-500 pl-4">Guru & Pegawai</h2>
+        
+        <div class="bg-white p-4 rounded-2xl shadow-lg inline-block w-full max-w-lg mb-8">
+            <input type="text" id="searchInput" placeholder="Cari nama atau jabatan..." onkeyup="renderCards()" class="w-full p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400">
+        </div>
+
+        <div class="flex flex-wrap gap-4 mb-10">
+            <button class="filter-btn px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition" onclick="setKategori('semua', this)" id="btnSemua">Semua</button>
+            <button class="filter-btn px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition" onclick="setKategori('guru_putra', this)">Guru Putra</button>
+            <button class="filter-btn px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition" onclick="setKategori('guru_putri', this)">Guru Putri</button>
+            <button class="filter-btn px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition" onclick="setKategori('tendik', this)">Tendik</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" id="staffGrid">
+            <div class="text-gray-500 italic">Sedang mengambil data...</div>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
+        let staffData = [];
+        let currentKategori = 'semua';
+
+        function formatIndoDate(dateStr) {
+            if (!dateStr || dateStr === "-" || dateStr === "null") return "-";
+            try {
+                const date = new Date(dateStr);
+                if (isNaN(date.getTime())) return dateStr; 
+                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            } catch { return dateStr; }
+        }
+
+        async function fetchData() {
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                staffData = data.pegawai;
+                renderCards();
+            } catch (err) { console.error(err); }
+        }
+
+        function renderCards() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('staffGrid');
+            grid.innerHTML = "";
+
+            const filtered = staffData.filter(s => {
+                const matchKat = (currentKategori === 'semua') || (s.kategori === currentKategori);
+                const matchSearch = s.nama.toLowerCase().includes(keyword) || s.jabatan.toLowerCase().includes(keyword);
+                return matchKat && matchSearch;
+            });
+
+            filtered.forEach((s, i) => {
+                const colors = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik: 'bg-green-500' };
+                const labels = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik: 'TENDIK' };
+
+                grid.innerHTML += `
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-xl animate-fade" style="animation-delay: ${i*0.05}s">
+                        <div class="relative h-72">
+                            <img src="${s.foto}" class="w-full h-full object-cover">
+                            <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white ${colors[s.kategori]}">${labels[s.kategori]}</span>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-xl font-bold text-gray-800">${s.nama}</h3>
+                            <p class="text-green-600 font-bold text-sm mb-4 uppercase">${s.jabatan}</p>
+                            <div class="bg-gray-50 p-4 rounded-2xl text-[11px] space-y-2 border border-gray-100">
+                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">NUPTK</b> <span class="text-gray-800 font-medium text-right">${s.nuptk || "-"}</span></div>
+                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">TTL</b> <span class="text-gray-800 font-medium text-right">${s.tempatLahir}, ${formatIndoDate(s.tanggalLahir)}</span></div>
+                                <div class="flex justify-between border-b pb-1"><b class="text-gray-500 uppercase">Pendidikan</b> <span class="text-gray-800 font-medium text-right">${s.pendidikan}</span></div>
+                                <div class="flex justify-between"><b class="text-gray-500 uppercase">Mulai Tugas</b> <span class="text-gray-800 font-medium text-right">${formatIndoDate(s.tanggalBergabung)}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function setKategori(kat, btn) {
+            currentKategori = kat;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-green-400', 'text-white');
+                b.classList.add('bg-white');
+            });
+            btn.classList.remove('bg-white');
+            btn.classList.add('bg-green-400', 'text-white');
+            renderCards();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+            document.getElementById('btnSemua').classList.add('bg-green-400', 'text-white');
+        });
+    </script>
+</body>
+</html>
