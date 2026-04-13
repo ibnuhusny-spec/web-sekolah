@@ -3,160 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - Website Sekolah</title>
+    <title>CMS Admin - SDIT Qurratu A'yun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans text-gray-800">
+<body class="bg-gray-100 min-h-screen">
 
-    <div class="flex h-screen overflow-hidden">
-        
-        <aside class="w-64 bg-indigo-800 text-white flex flex-col shadow-xl">
-            <div class="h-20 flex items-center justify-center border-b border-indigo-700">
-                <h1 class="text-2xl font-bold flex items-center gap-2">
-                    <i class="fas fa-school"></i> Admin Panel
-                </h1>
+    <div class="flex">
+        <aside class="w-64 bg-slate-900 h-screen sticky top-0 text-white p-6 shadow-2xl">
+            <div class="flex items-center gap-3 mb-10 border-b border-slate-700 pb-6">
+                <img src="logo.png" class="h-8 bg-white rounded-full p-1">
+                <span class="font-bold text-sm tracking-widest uppercase">Admin Panel</span>
             </div>
-            <nav class="flex-1 px-4 py-6 space-y-2">
-                <a href="#" class="flex items-center gap-3 px-4 py-3 bg-indigo-900 rounded-lg text-indigo-100 transition">
-                    <i class="fas fa-users w-5"></i> Data Pegawai
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-700 rounded-lg text-indigo-200 transition">
-                    <i class="fas fa-chalkboard-teacher w-5"></i> Keadaan Kelas
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-700 rounded-lg text-indigo-200 transition">
-                    <i class="fas fa-bullhorn w-5"></i> Pengumuman
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-700 rounded-lg text-indigo-200 transition">
-                    <i class="fas fa-cog w-5"></i> Pengaturan Web
-                </a>
+            <nav class="space-y-4">
+                <button onclick="switchTab('pegawai')" class="w-full flex items-center gap-3 p-3 bg-blue-600 rounded-xl font-bold transition">
+                    <i class="fas fa-users"></i> Data Pegawai
+                </button>
+                <button onclick="switchTab('profil')" class="w-full flex items-center gap-3 p-3 hover:bg-slate-800 rounded-xl transition text-slate-400">
+                    <i class="fas fa-edit"></i> Edit Profil
+                </button>
+                <a href="index.html" class="block flex items-center gap-3 p-3 text-red-400 mt-20"><i class="fas fa-power-off"></i> Keluar</a>
             </nav>
-            <div class="p-4 border-t border-indigo-700">
-                <a href="index.html" class="flex items-center gap-3 px-4 py-2 hover:bg-red-600 rounded-lg transition text-sm">
-                    <i class="fas fa-sign-out-alt w-5"></i> Kembali ke Web
-                </a>
-            </div>
         </aside>
 
-        <main class="flex-1 flex flex-col overflow-y-auto">
-            <header class="h-20 bg-white shadow-sm flex items-center justify-between px-8">
-                <h2 class="text-2xl font-semibold text-gray-700">Kelola Data Pegawai</h2>
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold">
-                        A
-                    </div>
-                    <span class="font-medium text-gray-600">Administrator</span>
-                </div>
-            </header>
-
-            <div class="p-8 space-y-8">
+        <main class="flex-1 p-10">
+            <div id="tab-pegawai">
+                <h2 class="text-3xl font-black text-slate-800 mb-8">Kelola Guru & Pegawai</h2>
                 
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2"><i class="fas fa-plus-circle text-indigo-600 mr-2"></i>Tambah Pegawai Baru</h3>
-                    <form id="formPegawai" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Nama Lengkap & Gelar</label>
-                            <input type="text" id="nama" placeholder="Contoh: RADIANT FADLI, S.Pd." class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 mb-10">
+                    <form id="formPegawai" class="grid grid-cols-2 gap-6">
+                        <div class="col-span-1">
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Nama Lengkap</label>
+                            <input type="text" id="nama" class="w-full p-3 bg-gray-50 border-2 rounded-xl focus:border-blue-500 outline-none" required>
                         </div>
-
                         <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Kategori</label>
-                            <select id="kategori" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none bg-white">
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Kategori</label>
+                            <select id="kategori" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none">
                                 <option value="guru_putra">Guru Putra</option>
                                 <option value="guru_putri">Guru Putri</option>
-                                <option value="tendik">Tenaga Kependidikan (Tendik)</option>
+                                <option value="tendik">Tendik</option>
                             </select>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Jabatan / Mapel</label>
-                            <input type="text" id="jabatan" placeholder="Contoh: Guru Matematika" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
+                        <div class="col-span-1">
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Jabatan</label>
+                            <input type="text" id="jabatan" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none" required>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Email</label>
-                            <input type="email" id="email" placeholder="email@sekolah.com" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none">
+                        <div class="col-span-1">
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">Pendidikan</label>
+                            <input type="text" id="pendidikan" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none" required>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Tempat & Tanggal Lahir</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="tempat_lahir" placeholder="Tempat" class="w-1/2 p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 outline-none">
-                                <input type="date" id="tanggal_lahir" class="w-1/2 p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 outline-none">
-                            </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-black uppercase text-gray-400 mb-2">URL Foto (ImgBB Direct Link)</label>
+                            <input type="url" id="foto" class="w-full p-3 bg-gray-50 border-2 rounded-xl outline-none" required>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Pendidikan Terakhir</label>
-                            <input type="text" id="pendidikan" placeholder="Contoh: S1 Pendidikan Matematika" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 outline-none">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Tanggal Bergabung</label>
-                            <input type="date" id="tgl_bergabung" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 outline-none">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Link URL Foto</label>
-                            <input type="url" id="foto" placeholder="https://..." class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-200 outline-none">
-                        </div>
-
-                        <div class="md:col-span-2 mt-2">
-                            <button type="button" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition w-full shadow-md">
-                                <i class="fas fa-save mr-2"></i> Simpan Data ke Database
-                            </button>
-                        </div>
+                        <button type="button" onclick="simpanData()" id="btnSimpan" class="col-span-2 bg-blue-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-blue-700 transition">
+                            SIMPAN DATA KE GOOGLE SHEETS
+                        </button>
                     </form>
                 </div>
+            </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                        <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-list text-indigo-600 mr-2"></i>Daftar Pegawai Tersimpan</h3>
-                        <input type="text" placeholder="Cari data..." class="p-2 border rounded-lg text-sm w-64 focus:ring-2 outline-none">
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-gray-50 text-gray-600">
-                                <tr>
-                                    <th class="p-4 font-semibold">Nama & Jabatan</th>
-                                    <th class="p-4 font-semibold">Kategori</th>
-                                    <th class="p-4 font-semibold">Kontak</th>
-                                    <th class="p-4 font-semibold">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50">
-                                    <td class="p-4">
-                                        <div class="font-bold text-gray-800">RADIANT FADLI, S.Pd.</div>
-                                        <div class="text-gray-500 text-xs mt-1">Guru Kelas</div>
-                                    </td>
-                                    <td class="p-4"><span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">Guru Putra</span></td>
-                                    <td class="p-4 text-gray-600">email@sekolah.com</td>
-                                    <td class="p-4">
-                                        <button class="text-yellow-500 hover:text-yellow-600 mr-3" title="Edit"><i class="fas fa-edit"></i></button>
-                                        <button class="text-red-500 hover:text-red-600" title="Hapus"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50">
-                                    <td class="p-4">
-                                        <div class="font-bold text-gray-800">Dra. MARDIA HABE</div>
-                                        <div class="text-gray-500 text-xs mt-1">Guru B. Indonesia</div>
-                                    </td>
-                                    <td class="p-4"><span class="px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-bold">Guru Putri</span></td>
-                                    <td class="p-4 text-gray-600">email@sekolah.com</td>
-                                    <td class="p-4">
-                                        <button class="text-yellow-500 hover:text-yellow-600 mr-3"><i class="fas fa-edit"></i></button>
-                                        <button class="text-red-500 hover:text-red-600"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
+            <div id="tab-profil" class="hidden">
+                <h2 class="text-3xl font-black text-slate-800 mb-8">Edit Profil Sekolah</h2>
+                <p class="text-gray-500 italic">Fitur pengeditan profil via CMS sedang dikembangkan. Untuk sementara, ubahlah langsung di Google Sheets tab "Profil".</p>
             </div>
         </main>
     </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
+
+        async function simpanData() {
+            const btn = document.getElementById('btnSimpan');
+            const formData = {
+                kategori: document.getElementById('kategori').value,
+                nama: document.getElementById('nama').value,
+                jabatan: document.getElementById('jabatan').value,
+                pendidikan: document.getElementById('pendidikan').value,
+                foto: document.getElementById('foto').value,
+                email: "admin@sekolah.com", // Default
+                tempatLahir: "-", tanggalLahir: "-", tanggalBergabung: "-" 
+            };
+
+            btn.innerText = "SEDANG MENGIRIM...";
+            btn.disabled = true;
+
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Penting untuk Apps Script
+                    body: JSON.stringify(formData)
+                });
+                alert("Data Berhasil Terkirim ke Spreadsheet!");
+                document.getElementById('formPegawai').reset();
+            } catch (err) {
+                alert("Gagal mengirim data. Coba lagi.");
+            } finally {
+                btn.innerText = "SIMPAN DATA KE GOOGLE SHEETS";
+                btn.disabled = false;
+            }
+        }
+
+        function switchTab(tab) {
+            if(tab === 'profil') {
+                document.getElementById('tab-pegawai').classList.add('hidden');
+                document.getElementById('tab-profil').classList.remove('hidden');
+            } else {
+                document.getElementById('tab-pegawai').classList.remove('hidden');
+                document.getElementById('tab-profil').classList.add('hidden');
+            }
+        }
+    </script>
 </body>
 </html>
