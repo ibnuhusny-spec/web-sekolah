@@ -18,7 +18,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <a href="#home" class="flex items-center gap-3">
                 <img src="logo.png" alt="Logo" class="h-10 w-auto bg-white rounded-full p-1">
-                <h1 class="text-lg md:text-xl font-bold uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
+                <h1 class="text-lg md:text-xl font-bold uppercase">SDIT Qurratu A'yun Al-Islami</h1>
             </a>
             <ul class="hidden md:flex space-x-6 font-medium">
                 <li><a href="#home" class="hover:text-yellow-300 transition">Beranda</a></li>
@@ -30,7 +30,7 @@
 
     <header id="home" class="bg-blue-600 py-28 text-center text-white relative">
         <div class="container mx-auto px-4 relative z-10">
-            <h2 class="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg text-white">Selamat Datang di Portal Pendidikan Kami</h2>
+            <h2 class="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg">Selamat Datang di Portal Pendidikan Kami</h2>
             <p id="txtSlogan" class="text-xl md:text-3xl font-light opacity-90">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
         </div>
     </header>
@@ -52,17 +52,35 @@
         </div>
     </section>
 
-    <section id="pegawai" class="bg-gradient-to-br from-indigo-600 to-purple-800 py-24 px-4 text-center">
+    <section id="pegawai" class="bg-gradient-to-br from-indigo-600 to-purple-800 py-24 px-4">
         <div class="container mx-auto max-w-6xl">
-            <h2 class="text-4xl font-black text-white mb-12 uppercase tracking-widest">Guru dan Pegawai</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-left" id="staffGrid"></div>
+            <div class="text-center text-white mb-16">
+                <h2 class="text-4xl font-black mb-4 uppercase tracking-widest">Guru dan Pegawai</h2>
+                <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl shadow-2xl inline-block w-full max-w-lg mx-auto">
+                    <input type="text" id="searchInput" placeholder="Cari nama atau jabatan..." onkeyup="renderCards()" class="w-full p-4 rounded-xl text-gray-800 focus:ring-4 outline-none">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="staffGrid"></div>
         </div>
     </section>
 
-    <footer class="bg-gray-900 text-white py-12 text-center mt-10">
+    <footer class="bg-gray-900 text-white py-12 text-center relative">
         <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="openLoginModal()" class="mt-4 text-gray-600 text-xs hover:text-blue-400 transition">Admin Panel</button>
+        <button onclick="openLoginModal()" class="mt-8 text-gray-700 hover:text-blue-500 text-xs transition flex items-center justify-center mx-auto gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+            Panel Admin
+        </button>
     </footer>
+
+    <div id="loginModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center backdrop-blur-md">
+        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm">
+            <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">Admin Area</h3>
+            <input type="password" id="adminPassword" placeholder="Sandi Akses" class="w-full p-4 border-2 rounded-xl text-center mb-4 focus:border-blue-600 outline-none">
+            <p id="loginError" class="text-red-500 text-sm text-center mb-4 hidden font-bold">Sandi Salah!</p>
+            <button onclick="checkPassword()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg">MASUK</button>
+            <button onclick="closeLoginModal()" class="w-full mt-2 text-gray-400 py-2">Batal</button>
+        </div>
+    </div>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
@@ -100,29 +118,45 @@
         }
 
         function renderCards() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
             const grid = document.getElementById('staffGrid');
             grid.innerHTML = "";
-            staffData.forEach((s, i) => {
+
+            const filtered = staffData.filter(s => 
+                s.nama.toLowerCase().includes(keyword) || s.jabatan.toLowerCase().includes(keyword)
+            );
+
+            filtered.forEach((s, i) => {
+                const badges = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik: 'bg-green-500' };
+                const badgeNames = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik: 'TENDIK' };
+
                 grid.innerHTML += `
                     <div class="bg-white rounded-3xl overflow-hidden shadow-xl animate-fade" style="animation-delay: ${i*0.05}s">
-                        <img src="${s.foto}" class="w-full h-72 object-cover">
+                        <div class="relative h-72">
+                            <img src="${s.foto}" class="w-full h-full object-cover">
+                            <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white ${badges[s.kategori]}">${badgeNames[s.kategori]}</span>
+                        </div>
                         <div class="p-8">
                             <h3 class="text-xl font-bold text-gray-800">${s.nama}</h3>
                             <p class="text-blue-600 font-bold text-sm mb-4 uppercase">${s.jabatan}</p>
-                            <div class="bg-gray-50 p-4 rounded-2xl text-xs space-y-2 border border-gray-100">
+                            <div class="bg-gray-50 p-4 rounded-2xl text-[11px] space-y-2 border border-gray-100">
                                 <div class="flex justify-between border-b pb-1"><b>NUPTK:</b> <span>${s.nuptk || "-"}</span></div>
+                                <div class="flex justify-between border-b pb-1"><b>TTL:</b> <span>${s.tempatLahir}, ${formatIndoDate(s.tanggalLahir)}</span></div>
                                 <div class="flex justify-between border-b pb-1"><b>Pendidikan:</b> <span>${s.pendidikan}</span></div>
-                                <div class="flex justify-between"><b>Masuk:</b> <span>${formatIndoDate(s.tanggalBergabung)}</span></div>
+                                <div class="flex justify-between"><b>Mulai Tugas:</b> <span>${formatIndoDate(s.tanggalBergabung)}</span></div>
                             </div>
+                            <a href="mailto:${s.email}" class="block mt-6 text-center py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">Hubungi</a>
                         </div>
                     </div>
                 `;
             });
         }
 
-        function openLoginModal() { 
-            const pw = prompt("Masukkan Sandi Keamanan:"); 
-            if(pw === "rahasia123") window.location.href = 'admin.html'; 
+        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+        function checkPassword() {
+            if(document.getElementById('adminPassword').value === "rahasia123") window.location.href = 'admin.html';
+            else document.getElementById('loginError').classList.remove('hidden');
         }
 
         document.addEventListener('DOMContentLoaded', fetchData);
