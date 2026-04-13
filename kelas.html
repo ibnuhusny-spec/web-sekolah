@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keadaan Kelas - SDIT Qurratu A'yun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <nav class="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
+        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white"><i class="fas fa-home text-blue-600 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Beranda</span></a>
+        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Profil Sekolah</span></a>
+        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white"><i class="fas fa-users text-green-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Guru & Pegawai</span></a>
+        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-[5px_5px_15px_rgba(0,0,0,0.15)] border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap shadow-xl">Data Kelas</span></a>
+    </nav>
+
+    <header class="bg-white shadow-sm p-4 pl-24"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
+
+    <main class="ml-16 p-10 min-h-screen">
+        <h2 class="text-4xl font-black mb-10 text-gray-800 border-l-8 border-purple-500 pl-4">Keadaan Peserta Didik</h2>
+        
+        <div class="bg-white p-8 rounded-3xl shadow-xl max-w-5xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm md:text-base">
+                    <thead>
+                        <tr class="bg-purple-100 text-purple-800">
+                            <th class="p-4 rounded-tl-xl font-bold">Nama Kelas</th>
+                            <th class="p-4 font-bold text-center">Laki-laki (L)</th>
+                            <th class="p-4 font-bold text-center">Perempuan (P)</th>
+                            <th class="p-4 font-bold text-center rounded-tr-xl">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr class="hover:bg-purple-50 transition">
+                            <td class="p-4 font-semibold text-gray-700">Kelas 1 - Abu Bakar</td>
+                            <td class="p-4 text-center">15</td>
+                            <td class="p-4 text-center">13</td>
+                            <td class="p-4 text-center font-bold text-purple-700">28</td>
+                        </tr>
+                        <tr class="hover:bg-purple-50 transition bg-gray-50">
+                            <td class="p-4 font-semibold text-gray-700">Kelas 2 - Umar</td>
+                            <td class="p-4 text-center">14</td>
+                            <td class="p-4 text-center">16</td>
+                            <td class="p-4 text-center font-bold text-purple-700">30</td>
+                        </tr>
+                        <tr class="hover:bg-purple-50 transition">
+                            <td class="p-4 font-semibold text-gray-700">Kelas 3 - Utsman</td>
+                            <td class="p-4 text-center">16</td>
+                            <td class="p-4 text-center">15</td>
+                            <td class="p-4 text-center font-bold text-purple-700">31</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
