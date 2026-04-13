@@ -123,10 +123,24 @@
                 const response = await fetch(API_URL);
                 const data = await response.json();
                 
-                // Update Profil (Visi, Misi, Tujuan, Slogan)
+                // 1. Obat untuk Visi: Hapus semua enter, gabung jadi 1 paragraf rapi
                 document.getElementById('txtVisi').innerText = (data.profil.visi || "-").replace(/[\r\n]+/g, ' ');
-                document.getElementById('txtMisi').innerText = data.profil.misi || "-";
-                document.getElementById('txtTujuan').innerText = data.profil.tujuan || "-";
+                
+                // 2. Fungsi Ajaib untuk Misi & Tujuan: Ubah enter menjadi Bullet Points rapi
+                function bersihkanList(teks) {
+                    if (!teks || teks === "-") return "-";
+                    // Pecah berdasarkan enter, bersihkan spasi kiri-kanan, buang baris kosong
+                    let poinPoin = teks.split(/[\r\n]+/).map(p => p.trim()).filter(p => p.length > 0);
+                    // Jika cuma 1 baris, tampilkan biasa. Jika banyak, buatkan List (ul li)
+                    if (poinPoin.length === 1) return poinPoin[0];
+                    return "<ul class='list-disc pl-5 space-y-2'>" + poinPoin.map(p => `<li>${p}</li>`).join('') + "</ul>";
+                }
+
+                // 3. Terapkan fungsi ajaib ke Misi dan Tujuan (pakai innerHTML)
+                document.getElementById('txtMisi').innerHTML = bersihkanList(data.profil.misi);
+                document.getElementById('txtTujuan').innerHTML = bersihkanList(data.profil.tujuan);
+                
+                // 4. Slogan
                 document.getElementById('txtSlogan').innerText = data.profil.slogan || "Cerdas, Bertauhid, dan Berakhlak Mulia";
                 
                 staffData = data.pegawai;
