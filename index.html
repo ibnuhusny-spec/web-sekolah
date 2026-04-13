@@ -6,11 +6,12 @@
     <title>SDIT Qurratu A'yun Al-Islami</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        /* Scrollbar kustom agar tetap cantik */
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -19,192 +20,106 @@
         <div class="container mx-auto flex justify-between items-center">
             <a href="#home" class="flex items-center gap-3">
                 <img src="logo.png" alt="Logo" class="h-10 w-auto bg-white rounded-full p-1">
-                <h1 class="text-lg md:text-xl font-bold uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
+                <h1 class="text-lg md:text-xl font-bold uppercase">SDIT Qurratu A'yun Al-Islami</h1>
             </a>
             <ul class="hidden md:flex space-x-6 font-medium">
                 <li><a href="#home" class="hover:text-yellow-300 transition">Beranda</a></li>
                 <li><a href="#profil" class="hover:text-yellow-300 transition">Profil</a></li>
                 <li><a href="#pegawai" class="hover:text-yellow-300 transition">Guru & Pegawai</a></li>
-                <li><a href="#kelas" class="hover:text-yellow-300 transition">Kelas</a></li>
             </ul>
         </div>
     </nav>
 
     <header id="home" class="bg-blue-600 py-28 text-center text-white relative overflow-hidden">
         <div class="container mx-auto px-4 relative z-10">
-            <h2 class="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg">Selamat Datang di Portal Pendidikan Kami</h2>
+            <h2 class="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg text-white">Selamat Datang di Portal Pendidikan Kami</h2>
             <p id="txtSlogan" class="text-xl md:text-3xl font-light opacity-90">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
         </div>
-        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
     </header>
 
     <section id="profil" class="container mx-auto py-24 px-4">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-blue-800 mb-2">Profil Sekolah</h2>
-            <div class="w-24 h-1 bg-yellow-500 mx-auto"></div>
-        </div>
         <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-blue-600 hover:shadow-2xl transition duration-300">
-                <h3 class="text-2xl font-bold mb-4 text-blue-700 flex items-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    Visi
-                </h3>
-                <p id="txtVisi" class="text-gray-600 leading-relaxed italic text-justify text-lg">Memuat visi...</p>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-blue-600">
+                <h3 class="text-2xl font-bold mb-4 text-blue-700">Visi</h3>
+                <div id="txtVisi" class="text-gray-600 h-64 overflow-y-auto custom-scroll text-justify italic pr-2">Memuat...</div>
             </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-yellow-500 hover:shadow-2xl transition duration-300">
-                <h3 class="text-2xl font-bold mb-4 text-blue-700 flex items-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                    Misi
-                </h3>
-                <div id="txtMisi" class="text-gray-600 leading-relaxed whitespace-pre-line">Memuat misi...</div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-yellow-500">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-600">Misi</h3>
+                <div id="txtMisi" class="text-gray-600 h-64 overflow-y-auto custom-scroll pr-2 whitespace-pre-line">Memuat...</div>
             </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-green-500 hover:shadow-2xl transition duration-300">
-                <h3 class="text-2xl font-bold mb-4 text-blue-700 flex items-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    Tujuan
-                </h3>
-                <div id="txtTujuan" class="text-gray-600 leading-relaxed whitespace-pre-line">Memuat tujuan...</div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-green-500">
+                <h3 class="text-2xl font-bold mb-4 text-green-700">Tujuan</h3>
+                <div id="txtTujuan" class="text-gray-600 h-64 overflow-y-auto custom-scroll pr-2 whitespace-pre-line">Memuat...</div>
             </div>
         </div>
     </section>
 
-    <section id="pegawai" class="bg-gradient-to-br from-indigo-600 to-purple-800 py-24">
-        <div class="container mx-auto px-4 max-w-6xl">
-            <div class="text-center text-white mb-16">
-                <h2 class="text-4xl font-black mb-4 uppercase tracking-widest">Guru dan Pegawai</h2>
-                <p class="text-lg opacity-80">Tenaga Pendidik & Kependidikan SDIT Qurratu A'yun Al-Islami</p>
+    <section id="pegawai" class="bg-gradient-to-br from-indigo-600 to-purple-800 py-24 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-wrap justify-center gap-4 mb-12" id="filterContainer">
+                <button class="filter-btn px-8 py-3 bg-white rounded-full font-bold shadow-lg" onclick="setKategori('semua', this)" id="btnSemua">Semua</button>
             </div>
-
-            <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-2xl mb-12">
-                <input type="text" id="searchInput" placeholder="Cari nama atau jabatan..." onkeyup="renderCards()" class="w-full p-4 rounded-xl text-lg focus:ring-4 focus:ring-blue-400 outline-none transition">
-            </div>
-
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <button class="filter-btn px-8 py-3 bg-white rounded-full font-bold shadow-lg hover:bg-yellow-400 transition" onclick="setKategori('semua', this)" id="btnSemua">Semua</button>
-                <button class="filter-btn px-8 py-3 bg-white rounded-full font-bold shadow-lg hover:bg-yellow-400 transition" onclick="setKategori('guru_putra', this)">Guru Putra</button>
-                <button class="filter-btn px-8 py-3 bg-white rounded-full font-bold shadow-lg hover:bg-yellow-400 transition" onclick="setKategori('guru_putri', this)">Guru Putri</button>
-                <button class="filter-btn px-8 py-3 bg-white rounded-full font-bold shadow-lg hover:bg-yellow-400 transition" onclick="setKategori('tendik', this)">Tendik</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="staffGrid">
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="staffGrid"></div>
         </div>
     </section>
-
-    <footer class="bg-gray-900 text-white py-12 text-center relative">
-        <img src="logo.png" alt="Logo" class="h-16 mx-auto mb-4 opacity-50 grayscale">
-        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <p class="text-sm text-gray-500 mt-2">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
-        
-        <button onclick="openLoginModal()" class="mt-8 text-gray-700 hover:text-blue-500 text-xs transition flex items-center justify-center mx-auto gap-2">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-            Panel Admin
-        </button>
-    </footer>
-
-    <div id="loginModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center backdrop-blur-md">
-        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm">
-            <h3 class="text-2xl font-bold text-center mb-6">Login Keamanan</h3>
-            <input type="password" id="adminPassword" placeholder="Sandi Akses" class="w-full p-4 border-2 rounded-xl text-center mb-4 focus:border-blue-600 outline-none">
-            <p id="loginError" class="text-red-500 text-sm text-center mb-4 hidden font-bold">Sandi Salah!</p>
-            <button onclick="checkPassword()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg">MASUK</button>
-            <button onclick="closeLoginModal()" class="w-full mt-2 text-gray-400 py-2">Batal</button>
-        </div>
-    </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // JANGAN LUPA GANTI INI DENGAN URL APPS SCRIPT ANDA
-
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
         let staffData = [];
-        let currentKategori = 'semua';
+
+        // Fungsi Penata Tanggal agar tidak berantakan
+        function formatIndoDate(dateStr) {
+            if (!dateStr || dateStr === "-" || dateStr === "null") return "-";
+            try {
+                const date = new Date(dateStr);
+                if (isNaN(date.getTime())) return dateStr; 
+                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            } catch { return dateStr; }
+        }
 
         async function fetchData() {
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
                 
-                // 1. Obat untuk Visi: Hapus semua enter, gabung jadi 1 paragraf rapi
                 document.getElementById('txtVisi').innerText = (data.profil.visi || "-").replace(/[\r\n]+/g, ' ');
                 
-                // 2. Fungsi Ajaib untuk Misi & Tujuan: Ubah enter menjadi Bullet Points rapi
-                function bersihkanList(teks) {
+                function formatList(teks) {
                     if (!teks || teks === "-") return "-";
-                    // Pecah berdasarkan enter, bersihkan spasi kiri-kanan, buang baris kosong
-                    let poinPoin = teks.split(/[\r\n]+/).map(p => p.trim()).filter(p => p.length > 0);
-                    // Jika cuma 1 baris, tampilkan biasa. Jika banyak, buatkan List (ul li)
-                    if (poinPoin.length === 1) return poinPoin[0];
-                    return "<ul class='list-disc pl-5 space-y-2'>" + poinPoin.map(p => `<li>${p}</li>`).join('') + "</ul>";
+                    let poin = teks.split(/[\r\n]+/).map(p => p.trim()).filter(p => p.length > 0);
+                    return "<ul class='list-disc pl-5 space-y-2'>" + poin.map(p => `<li>${p}</li>`).join('') + "</ul>";
                 }
 
-                // 3. Terapkan fungsi ajaib ke Misi dan Tujuan (pakai innerHTML)
-                document.getElementById('txtMisi').innerHTML = bersihkanList(data.profil.misi);
-                document.getElementById('txtTujuan').innerHTML = bersihkanList(data.profil.tujuan);
-                
-                // 4. Slogan
+                document.getElementById('txtMisi').innerHTML = formatList(data.profil.misi);
+                document.getElementById('txtTujuan').innerHTML = formatList(data.profil.tujuan);
                 document.getElementById('txtSlogan').innerText = data.profil.slogan || "Cerdas, Bertauhid, dan Berakhlak Mulia";
                 
                 staffData = data.pegawai;
                 renderCards();
-            } catch (err) {
-                console.error("Gagal sinkronisasi data:", err);
-            }
+            } catch (err) { console.error(err); }
         }
 
         function renderCards() {
-            const keyword = document.getElementById('searchInput').value.toLowerCase();
             const grid = document.getElementById('staffGrid');
             grid.innerHTML = "";
-
-            const filtered = staffData.filter(s => {
-                const matchKat = (currentKategori === 'semua') || (s.kategori === currentKategori);
-                const matchSearch = s.nama.toLowerCase().includes(keyword) || s.jabatan.toLowerCase().includes(keyword);
-                return matchKat && matchSearch;
-            });
-
-            filtered.forEach((s, i) => {
-                const colors = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik: 'bg-green-500' };
-                const labels = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik: 'TENDIK' };
-
+            staffData.forEach((s, i) => {
                 grid.innerHTML += `
-                    <div class="bg-white rounded-3xl overflow-hidden shadow-xl animate-fade transition hover:shadow-2xl" style="animation-delay: ${i*0.05}s">
-                        <div class="relative h-72">
-                            <img src="${s.foto}" class="w-full h-full object-cover">
-                            <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white ${colors[s.kategori]}">${labels[s.kategori]}</span>
-                        </div>
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-xl animate-fade" style="animation-delay: ${i*0.05}s">
+                        <img src="${s.foto}" class="w-full h-72 object-cover">
                         <div class="p-8">
-                            <h3 class="text-xl font-bold text-gray-800 mb-1">${s.nama}</h3>
-                            <p class="text-indigo-600 font-bold text-sm mb-4 uppercase">${s.jabatan}</p>
-                            <div class="bg-gray-50 p-4 rounded-2xl text-xs space-y-2 border border-gray-100">
-                                <div class="flex justify-between"><b>Pendidikan:</b> <span>${s.pendidikan}</span></div>
-                                <div class="flex justify-between"><b>TTL:</b> <span>${s.tempatLahir}, ${s.tanggalLahir}</span></div>
-                                <div class="flex justify-between"><b>Masuk:</b> <span>${s.tanggalBergabung}</span></div>
+                            <h3 class="text-xl font-bold text-gray-800">${s.nama}</h3>
+                            <p class="text-blue-600 font-bold text-sm mb-4 uppercase">${s.jabatan}</p>
+                            <div class="bg-gray-50 p-4 rounded-2xl text-xs space-y-2">
+                                <p><b>Pendidikan:</b> ${s.pendidikan}</p>
+                                <p><b>Masuk:</b> ${formatIndoDate(s.tanggalBergabung)}</p>
                             </div>
-                            <a href="mailto:${s.email}" class="block mt-6 text-center py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition">Hubungi</a>
                         </div>
                     </div>
                 `;
             });
         }
 
-        function setKategori(kat, btn) {
-            currentKategori = kat;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('bg-yellow-400', 'text-blue-900'));
-            btn.classList.add('bg-yellow-400', 'text-blue-900');
-            renderCards();
-        }
-
-        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
-        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
-        function checkPassword() {
-            // Password default: rahasia123
-            if(document.getElementById('adminPassword').value === "rahasia123") window.location.href = 'admin.html';
-            else document.getElementById('loginError').classList.remove('hidden');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchData();
-            document.getElementById('btnSemua').classList.add('bg-yellow-400', 'text-blue-900');
-        });
+        document.addEventListener('DOMContentLoaded', fetchData);
     </script>
 </body>
 </html>
