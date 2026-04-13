@@ -9,24 +9,51 @@
     <style>
         .menu-3d { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; }
         .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .animate-pop { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
     <nav class="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
-        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-home text-blue-600 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Beranda</span></a>
-        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Profil</span></a>
-        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-users text-green-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Pegawai</span></a>
-        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Kelas</span></a>
-        <a href="karya.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-lightbulb text-orange-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Karya Guru</span></a>
+        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-home text-blue-600 text-xl"></i></a>
+        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-users text-green-500 text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-purple-500 rounded-2xl shadow-lg border border-purple-400"><i class="fas fa-chalkboard-teacher text-white text-xl"></i></a>
+        <a href="karya.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-lightbulb text-orange-500 text-xl"></i></a>
     </nav>
 
-    <header class="bg-white shadow-sm p-4 pl-24"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
+    <header class="bg-white shadow-sm p-4 pl-24 relative z-40"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
 
-    <main class="ml-16 p-10 min-h-screen">
-        <h2 class="text-4xl font-black mb-10 text-gray-800 border-l-8 border-purple-500 pl-4">Keadaan Peserta Didik</h2>
+    <main class="ml-16 p-10 min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
+        <h2 class="text-4xl font-black mb-8 text-gray-800 border-l-8 border-purple-500 pl-4">Keadaan Peserta Didik</h2>
         
-        <div class="bg-white p-8 rounded-3xl shadow-xl max-w-5xl">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 max-w-5xl ml-6">
+            <div class="bg-white p-6 rounded-3xl shadow-xl border-b-8 border-purple-600 flex items-center gap-6 animate-pop" style="animation-delay: 0s;">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-2xl shadow-inner"><i class="fas fa-users"></i></div>
+                <div>
+                    <p class="text-gray-500 text-xs font-black uppercase tracking-widest mb-1">Total Seluruh Siswa</p>
+                    <h3 id="sumTotal" class="text-4xl font-black text-gray-800">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-xl border-b-8 border-blue-500 flex items-center gap-6 animate-pop" style="animation-delay: 0.1s;">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl shadow-inner"><i class="fas fa-male"></i></div>
+                <div>
+                    <p class="text-gray-500 text-xs font-black uppercase tracking-widest mb-1">Total Laki-Laki</p>
+                    <h3 id="sumLaki" class="text-4xl font-black text-gray-800">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-xl border-b-8 border-pink-500 flex items-center gap-6 animate-pop" style="animation-delay: 0.2s;">
+                <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center text-pink-500 text-2xl shadow-inner"><i class="fas fa-female"></i></div>
+                <div>
+                    <p class="text-gray-500 text-xs font-black uppercase tracking-widest mb-1">Total Perempuan</p>
+                    <h3 id="sumPerempuan" class="text-4xl font-black text-gray-800">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl shadow-xl max-w-5xl ml-6">
+            <h3 class="text-lg font-bold mb-6 text-gray-700 flex items-center gap-2"><i class="fas fa-list text-purple-500"></i> Rincian per Kelas</h3>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm md:text-base">
                     <thead>
@@ -34,44 +61,93 @@
                             <th class="p-4 rounded-tl-xl font-bold">Nama Kelas</th>
                             <th class="p-4 font-bold text-center">Laki-laki (L)</th>
                             <th class="p-4 font-bold text-center">Perempuan (P)</th>
-                            <th class="p-4 font-bold text-center rounded-tr-xl">Total</th>
+                            <th class="p-4 font-bold text-center rounded-tr-xl">Total per Kelas</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-purple-50 transition">
-                            <td class="p-4 font-semibold text-gray-700">Kelas 1 - Abu Bakar</td>
-                            <td class="p-4 text-center">15</td>
-                            <td class="p-4 text-center">13</td>
-                            <td class="p-4 text-center font-bold text-purple-700">28</td>
-                        </tr>
-                        <tr class="hover:bg-purple-50 transition bg-gray-50">
-                            <td class="p-4 font-semibold text-gray-700">Kelas 2 - Umar</td>
-                            <td class="p-4 text-center">14</td>
-                            <td class="p-4 text-center">16</td>
-                            <td class="p-4 text-center font-bold text-purple-700">30</td>
-                        </tr>
-                        <tr class="hover:bg-purple-50 transition">
-                            <td class="p-4 font-semibold text-gray-700">Kelas 3 - Utsman</td>
-                            <td class="p-4 text-center">16</td>
-                            <td class="p-4 text-center">15</td>
-                            <td class="p-4 text-center font-bold text-purple-700">31</td>
-                        </tr>
+                    <tbody class="divide-y divide-gray-100" id="tabelKelas">
+                        <tr><td colspan="4" class="p-4 text-center text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari server...</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
+
     <footer class="bg-gray-900 text-white py-10 text-center mt-12 relative z-40">
         <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="masukCMS()" class="mt-4 text-gray-500 text-xs hover:text-blue-400 transition flex items-center justify-center mx-auto gap-2">
-            <i class="fas fa-cog"></i> Panel Admin
-        </button>
+        <button onclick="masukCMS()" class="mt-4 text-gray-500 text-xs hover:text-blue-400 transition flex items-center justify-center mx-auto gap-2"><i class="fas fa-cog"></i> Panel Admin</button>
     </footer>
+
     <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // JANGAN LUPA MASUKKAN LINK API ANDA DI SINI
+        
+        async function fetchKelas() {
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                const tbody = document.getElementById('tabelKelas');
+                tbody.innerHTML = "";
+
+                if(!data.kelas || data.kelas.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-400">Belum ada data kelas yang diinput.</td></tr>`; 
+                    return;
+                }
+
+                let totalL = 0, totalP = 0, totalSemua = 0;
+
+                data.kelas.forEach((k, i) => {
+                    const l = parseInt(k.laki) || 0;
+                    const p = parseInt(k.perempuan) || 0;
+                    const total = l + p;
+                    totalL += l; totalP += p; totalSemua += total;
+                    
+                    const bgClass = i % 2 === 0 ? "bg-white" : "bg-gray-50";
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-purple-50 transition ${bgClass}">
+                            <td class="p-4 font-bold text-gray-700">${k.nama_kelas}</td>
+                            <td class="p-4 text-center text-blue-600 font-bold">${l}</td>
+                            <td class="p-4 text-center text-pink-500 font-bold">${p}</td>
+                            <td class="p-4 text-center font-black text-purple-700 text-lg">${total}</td>
+                        </tr>
+                    `;
+                });
+
+                // Menjalankan Animasi Angka pada Kartu Ringkasan (Dashboard)
+                animateValue("sumTotal", 0, totalSemua, 1000);
+                animateValue("sumLaki", 0, totalL, 1000);
+                animateValue("sumPerempuan", 0, totalP, 1000);
+
+                // Tambahkan Baris Total Keseluruhan di Tabel Bawah (Sebagai penutup)
+                tbody.innerHTML += `
+                    <tr class="bg-purple-800 text-white border-t-4 border-purple-900">
+                        <td class="p-4 font-black uppercase text-right">TOTAL KESELURUHAN</td>
+                        <td class="p-4 text-center font-black">${totalL}</td>
+                        <td class="p-4 text-center font-black">${totalP}</td>
+                        <td class="p-4 text-center font-black text-xl text-yellow-300">${totalSemua}</td>
+                    </tr>
+                `;
+            } catch (err) { console.error(err); }
+        }
+
+        // Fungsi Estetika: Membuat angka menghitung naik dari 0 (Counter Animation)
+        function animateValue(id, start, end, duration) {
+            if (start === end) { document.getElementById(id).innerHTML = end; return; }
+            let range = end - start;
+            let current = start;
+            let increment = end > start ? 1 : -1;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            let obj = document.getElementById(id);
+            let timer = setInterval(function() {
+                current += increment;
+                obj.innerHTML = current;
+                if (current == end) clearInterval(timer);
+            }, stepTime);
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchKelas);
+        
         function masukCMS() {
-            const pw = prompt("Masukkan Sandi Akses Admin:");
-            if(pw === "rahasia123") window.location.href = 'admin.html';
-            else if(pw) alert("Sandi Salah!");
+            if(prompt("Sandi Admin:") === "rahasia123") window.location.href = 'admin.html';
         }
     </script>
 </body>
