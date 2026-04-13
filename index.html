@@ -8,9 +8,7 @@
     <style>
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade { animation: fadeIn 0.5s ease forwards; }
-        /* Scrollbar kustom agar tetap cantik */
         .custom-scroll::-webkit-scrollbar { width: 5px; }
-        .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
     </style>
 </head>
@@ -20,7 +18,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <a href="#home" class="flex items-center gap-3">
                 <img src="logo.png" alt="Logo" class="h-10 w-auto bg-white rounded-full p-1">
-                <h1 class="text-lg md:text-xl font-bold uppercase">SDIT Qurratu A'yun Al-Islami</h1>
+                <h1 class="text-lg md:text-xl font-bold uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
             </a>
             <ul class="hidden md:flex space-x-6 font-medium">
                 <li><a href="#home" class="hover:text-yellow-300 transition">Beranda</a></li>
@@ -30,7 +28,7 @@
         </div>
     </nav>
 
-    <header id="home" class="bg-blue-600 py-28 text-center text-white relative overflow-hidden">
+    <header id="home" class="bg-blue-600 py-28 text-center text-white relative">
         <div class="container mx-auto px-4 relative z-10">
             <h2 class="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg text-white">Selamat Datang di Portal Pendidikan Kami</h2>
             <p id="txtSlogan" class="text-xl md:text-3xl font-light opacity-90">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
@@ -45,29 +43,31 @@
             </div>
             <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-yellow-500">
                 <h3 class="text-2xl font-bold mb-4 text-yellow-600">Misi</h3>
-                <div id="txtMisi" class="text-gray-600 h-64 overflow-y-auto custom-scroll pr-2 whitespace-pre-line">Memuat...</div>
+                <div id="txtMisi" class="text-gray-600 h-64 overflow-y-auto custom-scroll pr-2">Memuat...</div>
             </div>
             <div class="bg-white p-8 rounded-3xl shadow-xl border-b-8 border-green-500">
                 <h3 class="text-2xl font-bold mb-4 text-green-700">Tujuan</h3>
-                <div id="txtTujuan" class="text-gray-600 h-64 overflow-y-auto custom-scroll pr-2 whitespace-pre-line">Memuat...</div>
+                <div id="txtTujuan" class="text-gray-600 h-64 overflow-y-auto custom-scroll pr-2">Memuat...</div>
             </div>
         </div>
     </section>
 
-    <section id="pegawai" class="bg-gradient-to-br from-indigo-600 to-purple-800 py-24 px-4">
+    <section id="pegawai" class="bg-gradient-to-br from-indigo-600 to-purple-800 py-24 px-4 text-center">
         <div class="container mx-auto max-w-6xl">
-            <div class="flex flex-wrap justify-center gap-4 mb-12" id="filterContainer">
-                <button class="filter-btn px-8 py-3 bg-white rounded-full font-bold shadow-lg" onclick="setKategori('semua', this)" id="btnSemua">Semua</button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="staffGrid"></div>
+            <h2 class="text-4xl font-black text-white mb-12 uppercase tracking-widest">Guru dan Pegawai</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-left" id="staffGrid"></div>
         </div>
     </section>
+
+    <footer class="bg-gray-900 text-white py-12 text-center mt-10">
+        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
+        <button onclick="openLoginModal()" class="mt-4 text-gray-600 text-xs hover:text-blue-400 transition">Admin Panel</button>
+    </footer>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
         let staffData = [];
 
-        // Fungsi Penata Tanggal agar tidak berantakan
         function formatIndoDate(dateStr) {
             if (!dateStr || dateStr === "-" || dateStr === "null") return "-";
             try {
@@ -79,8 +79,8 @@
 
         async function fetchData() {
             try {
-                const response = await fetch(API_URL);
-                const data = await response.json();
+                const res = await fetch(API_URL);
+                const data = await res.json();
                 
                 document.getElementById('txtVisi').innerText = (data.profil.visi || "-").replace(/[\r\n]+/g, ' ');
                 
@@ -109,14 +109,20 @@
                         <div class="p-8">
                             <h3 class="text-xl font-bold text-gray-800">${s.nama}</h3>
                             <p class="text-blue-600 font-bold text-sm mb-4 uppercase">${s.jabatan}</p>
-                            <div class="bg-gray-50 p-4 rounded-2xl text-xs space-y-2">
-                                <p><b>Pendidikan:</b> ${s.pendidikan}</p>
-                                <p><b>Masuk:</b> ${formatIndoDate(s.tanggalBergabung)}</p>
+                            <div class="bg-gray-50 p-4 rounded-2xl text-xs space-y-2 border border-gray-100">
+                                <div class="flex justify-between border-b pb-1"><b>NUPTK:</b> <span>${s.nuptk || "-"}</span></div>
+                                <div class="flex justify-between border-b pb-1"><b>Pendidikan:</b> <span>${s.pendidikan}</span></div>
+                                <div class="flex justify-between"><b>Masuk:</b> <span>${formatIndoDate(s.tanggalBergabung)}</span></div>
                             </div>
                         </div>
                     </div>
                 `;
             });
+        }
+
+        function openLoginModal() { 
+            const pw = prompt("Masukkan Sandi Keamanan:"); 
+            if(pw === "rahasia123") window.location.href = 'admin.html'; 
         }
 
         document.addEventListener('DOMContentLoaded', fetchData);
