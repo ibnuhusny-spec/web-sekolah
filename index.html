@@ -124,7 +124,7 @@
                 const data = await response.json();
                 
                 // Update Profil (Visi, Misi, Tujuan, Slogan)
-                document.getElementById('txtVisi').innerText = data.profil.visi || "-";
+                document.getElementById('txtVisi').innerText = (data.profil.visi || "-").replace(/[\r\n]+/g, ' ');
                 document.getElementById('txtMisi').innerText = data.profil.misi || "-";
                 document.getElementById('txtTujuan').innerText = data.profil.tujuan || "-";
                 document.getElementById('txtSlogan').innerText = data.profil.slogan || "Cerdas, Bertauhid, dan Berakhlak Mulia";
