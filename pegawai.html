@@ -11,21 +11,29 @@
         .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
 
-    <nav class="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
-        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-home text-blue-600 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Beranda</span></a>
-        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Profil</span></a>
-        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-users text-green-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Pegawai</span></a>
-        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Kelas</span></a>
-        <a href="karya.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-lightbulb text-orange-500 text-xl"></i><span class="absolute left-16 bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap">Karya Guru</span></a>
+    <nav class="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-3">
+        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-home text-blue-600 text-xl"></i></a>
+        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-green-500 rounded-2xl shadow-lg border border-green-400"><i class="fas fa-users text-white text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i></a>
+        <a href="karya.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-lightbulb text-orange-500 text-xl"></i></a>
+        <a href="berita.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-newspaper text-red-500 text-xl"></i></a>
     </nav>
 
-    <header class="bg-white shadow-sm p-4 pl-24"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
+    <header class="bg-white shadow-sm p-4 pl-24 relative z-40"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
 
-    <main class="ml-16 p-10 min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
+    <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
+    </div>
+
+    <main class="flex-1 ml-16 p-10 min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
         <h2 class="text-4xl font-black mb-8 text-gray-800 border-l-8 border-green-500 pl-4">Guru & Pegawai</h2>
         
         <div class="bg-white p-4 rounded-2xl shadow-lg inline-block w-full max-w-lg mb-8">
@@ -40,19 +48,17 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" id="staffGrid">
-            <div class="text-gray-500 italic">Sedang mengambil data...</div>
+            <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang mengambil data...</div>
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white py-10 text-center mt-12 relative z-40">
+    <footer class="bg-gray-900 text-white py-10 text-center relative z-40">
         <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="masukCMS()" class="mt-4 text-gray-500 text-xs hover:text-blue-400 transition flex items-center justify-center mx-auto gap-2">
-            <i class="fas fa-cog"></i> Panel Admin
-        </button>
+        <button onclick="masukCMS()" class="mt-4 text-gray-500 text-xs hover:text-blue-400 transition flex items-center justify-center mx-auto gap-2"><i class="fas fa-cog"></i> Panel Admin</button>
     </footer>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // GANTI DENGAN URL API ANDA
         let staffData = [];
         let currentKategori = 'semua';
 
@@ -69,7 +75,23 @@
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
-                staffData = data.pegawai;
+                
+                // Ticker
+                const ticker = document.getElementById('tickerContent');
+                let content = "";
+                let items = [];
+                if(data.berita) items = items.concat(data.berita.slice(0, 3));
+                if(data.karya) items = items.concat(data.karya.slice(0, 3));
+                if(items.length > 0) {
+                    items.forEach(item => {
+                        const link = item.penulis ? 'karya.html' : 'berita.html';
+                        const icon = item.penulis ? '<i class="fas fa-lightbulb text-orange-600"></i>' : '<i class="fas fa-fire text-red-600"></i>';
+                        content += `<a href="${link}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition">${icon} ${item.judul} </a>`;
+                    });
+                    ticker.innerHTML = content + content;
+                } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan terbaru...</span>'; }
+
+                staffData = data.pegawai || [];
                 renderCards();
             } catch (err) { console.error(err); }
         }
@@ -84,6 +106,8 @@
                 const matchSearch = s.nama.toLowerCase().includes(keyword) || s.jabatan.toLowerCase().includes(keyword);
                 return matchKat && matchSearch;
             });
+
+            if(filtered.length === 0) { grid.innerHTML = `<div class="text-gray-500 italic">Data tidak ditemukan.</div>`; return; }
 
             filtered.forEach((s, i) => {
                 const colors = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik: 'bg-green-500' };
@@ -126,12 +150,7 @@
             document.getElementById('btnSemua').classList.add('bg-green-400', 'text-white');
         });
 
-        // Fungsi Admin
-        function masukCMS() {
-            const pw = prompt("Masukkan Sandi Akses Admin:");
-            if(pw === "rahasia123") window.location.href = 'admin.html';
-            else if(pw) alert("Sandi Salah!");
-        }
+        function masukCMS() { if(prompt("Sandi Admin:") === "rahasia123") window.location.href = 'admin.html'; }
     </script>
 </body>
 </html>
