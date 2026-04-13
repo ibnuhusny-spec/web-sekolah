@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karya Guru - SDIT Qurratu A'yun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <nav class="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4">
+        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-home text-blue-600 text-xl"></i></a>
+        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-users text-green-500 text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i></a>
+        <a href="karya.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-orange-500 rounded-2xl shadow-lg border border-orange-400"><i class="fas fa-lightbulb text-white text-xl"></i></a>
+    </nav>
+
+    <header class="bg-white shadow-sm p-4 pl-24 relative z-40"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
+
+    <main class="ml-16 p-10 min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-black mb-4 text-gray-800 border-l-8 border-orange-500 pl-4">Ruang Karya & Inovasi</h2>
+            <p class="text-gray-500 mb-10 ml-6">Wadah apresiasi untuk artikel, karya desain, dan inovasi pendidikan dewan guru.</p>
+
+            <div class="flex flex-wrap gap-4 mb-10 ml-6">
+                <button class="filter-btn px-6 py-2 rounded-full font-bold shadow bg-orange-500 text-white transition" onclick="filterKarya('semua', this)" id="btnSemua">Semua Karya</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition" onclick="filterKarya('Artikel', this)">📝 Artikel</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition" onclick="filterKarya('Desain', this)">🎨 Desain</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition" onclick="filterKarya('Aplikasi', this)">💻 Aplikasi</button>
+            </div>
+
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-8 ml-6 space-y-8" id="karyaGrid">
+                <div class="text-gray-500 italic">Mengambil data karya...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-10 text-center mt-12 relative z-40">
+        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
+        <button onclick="masukCMS()" class="mt-4 text-gray-500 text-xs hover:text-blue-400 transition flex items-center justify-center mx-auto gap-2">
+            <i class="fas fa-cog"></i> Panel Admin
+        </button>
+    </footer>
+
+    <script>
+        // MASUKKAN URL API ANDA DI SINI
+        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; 
+        
+        let dataKarya = [];
+        let currentKategori = 'semua';
+
+        async function fetchKarya() {
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                dataKarya = data.karya || [];
+                renderKarya();
+            } catch (err) { console.error(err); }
+        }
+
+        function formatTanggal(isoString) {
+            try { return new Date(isoString).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); } 
+            catch { return isoString; }
+        }
+
+        function renderKarya() {
+            const grid = document.getElementById('karyaGrid');
+            grid.innerHTML = "";
+            const filtered = dataKarya.filter(k => currentKategori === 'semua' || k.kategori === currentKategori);
+
+            if(filtered.length === 0) {
+                grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada karya.</div>`; return;
+            }
+
+            filtered.forEach((k, i) => {
+                // Deteksi apakah gambar kosong atau diisi "-"
+                const isNoImage = !k.gambar || k.gambar === "-" || k.gambar.trim() === "";
+                const badges = { "Artikel": "bg-blue-500", "Desain": "bg-pink-500", "Aplikasi": "bg-purple-500" };
+                const warnaBadge = badges[k.kategori] || "bg-gray-500";
+
+                // break-inside-avoid agar kartu tidak terpotong ke kolom sebelahnya
+                let cardHTML = `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden" style="animation-delay: ${i*0.1}s">`;
+
+                if (isNoImage) {
+                    // DESAIN 1: Kartu Teks Elegan (Gradien) jika tidak ada gambar
+                    cardHTML += `
+                        <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative overflow-hidden">
+                            <i class="fas fa-quote-right absolute -top-4 -right-4 text-7xl opacity-10"></i>
+                            <span class="${warnaBadge} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">${k.kategori}</span>
+                            <h3 class="text-2xl font-black mb-4 leading-tight text-orange-400">${k.judul}</h3>
+                            <p class="text-gray-300 mb-6 leading-relaxed italic whitespace-pre-line">${k.deskripsi}</p>
+                            <div class="flex items-center gap-3 pt-4 border-t border-slate-700">
+                                <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-orange-400"><i class="fas fa-user-edit"></i></div>
+                                <div><p class="font-bold text-sm text-gray-100">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggal(k.tanggal)}</p></div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // DESAIN 2: Kartu Gambar (Standard) jika ada URL gambar
+                    cardHTML += `
+                        <div class="bg-white flex flex-col h-full relative">
+                            <div class="relative max-h-64 overflow-hidden">
+                                <img src="${k.gambar}" class="w-full object-cover">
+                                <span class="absolute top-4 left-4 ${warnaBadge} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span>
+                            </div>
+                            <div class="p-6 flex-1 flex flex-col">
+                                <h3 class="text-xl font-bold text-gray-800 mb-3 leading-tight">${k.judul}</h3>
+                                <p class="text-sm text-gray-600 mb-6 whitespace-pre-line">${k.deskripsi}</p>
+                                <div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
+                                    <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-user"></i></div>
+                                    <div><p class="font-bold text-sm text-gray-800">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggal(k.tanggal)}</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                cardHTML += `</div>`;
+                grid.innerHTML += cardHTML;
+            });
+        }
+
+        function filterKarya(kat, btn) {
+            currentKategori = kat;
+            document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('bg-orange-500', 'text-white'); b.classList.add('bg-white', 'text-gray-600'); });
+            btn.classList.remove('bg-white', 'text-gray-600');
+            btn.classList.add('bg-orange-500', 'text-white');
+            renderKarya();
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchKarya);
+        function masukCMS() {
+            const pw = prompt("Sandi Admin:");
+            if(pw === "rahasia123") window.location.href = 'admin.html';
+        }
+    </script>
+</body>
+</html>
