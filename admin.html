@@ -2,45 +2,46 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - SDIT Qurratu A'yun</title>
+    <title>Admin CMS - SDIT Qurratu A'yun</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-8">
     <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-black mb-8 text-slate-800">Panel Kontrol Sekolah</h1>
-
-        <div class="bg-white p-8 rounded-3xl shadow-xl mb-12">
-            <h2 class="text-xl font-bold mb-6 text-blue-600">Input Pegawai Baru</h2>
+        <div class="bg-white p-10 rounded-3xl shadow-xl mb-12">
+            <h2 class="text-2xl font-black mb-8 text-blue-700 uppercase">Input Data Pegawai</h2>
             <form id="formPegawai" class="grid md:grid-cols-2 gap-6">
-                <input type="text" id="nama" placeholder="Nama Lengkap" class="p-3 border rounded-xl outline-none" required>
-                <select id="kategori" class="p-3 border rounded-xl outline-none">
+                <input type="text" id="nama" placeholder="Nama Lengkap & Gelar" class="p-4 border-2 rounded-xl outline-none focus:border-blue-500 transition" required>
+                <input type="text" id="nuptk" placeholder="NUPTK (Jika ada)" class="p-4 border-2 rounded-xl outline-none focus:border-blue-500 transition">
+                <select id="kategori" class="p-4 border-2 rounded-xl outline-none">
                     <option value="guru_putra">Guru Putra</option>
                     <option value="guru_putri">Guru Putri</option>
                     <option value="tendik">Tendik</option>
                 </select>
-                <input type="text" id="jabatan" placeholder="Jabatan" class="p-3 border rounded-xl outline-none">
-                <input type="date" id="tanggal_bergabung" class="p-3 border rounded-xl outline-none">
-                <input type="text" id="pendidikan" placeholder="Pendidikan" class="p-3 border rounded-xl outline-none">
-                <input type="url" id="foto" placeholder="URL Foto (ImgBB)" class="p-3 border rounded-xl outline-none">
-                <button type="button" onclick="simpanData()" id="btnSimpan" class="md:col-span-2 bg-blue-600 text-white py-4 rounded-2xl font-bold">SIMPAN KE GOOGLE SHEETS</button>
+                <input type="text" id="jabatan" placeholder="Jabatan (Guru Kelas/Mapel)" class="p-4 border-2 rounded-xl outline-none">
+                <input type="text" id="pendidikan" placeholder="Pendidikan Terakhir" class="p-4 border-2 rounded-xl outline-none">
+                <input type="date" id="tanggal_bergabung" class="p-4 border-2 rounded-xl outline-none">
+                <input type="url" id="foto" placeholder="URL Foto (Direct Link ImgBB)" class="md:col-span-2 p-4 border-2 rounded-xl outline-none">
+                
+                <button type="button" onclick="simpanData()" id="btnSimpan" class="md:col-span-2 bg-blue-600 text-white py-5 rounded-2xl font-black shadow-lg hover:bg-blue-700 active:scale-95 transition">
+                    SIMPAN KE DATABASE
+                </button>
             </form>
         </div>
 
-        <div class="bg-white p-8 rounded-3xl shadow-xl">
-            <h2 class="text-xl font-bold mb-6 text-gray-700">Pegawai Terdaftar</h2>
+        <div class="bg-white p-10 rounded-3xl shadow-xl">
+            <h2 class="text-xl font-bold mb-6">Monitoring Data Pegawai</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
-                        <tr class="border-b text-gray-400 text-sm uppercase">
+                        <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
                             <th class="pb-4">Nama</th>
+                            <th class="pb-4">NUPTK</th>
                             <th class="pb-4">Jabatan</th>
-                            <th class="pb-4">Kategori</th>
                             <th class="pb-4">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="listPegawai" class="text-gray-600">
-                        <tr><td colspan="4" class="py-4">Menarik data...</td></tr>
+                    <tbody id="listPegawai" class="text-gray-700 text-sm">
+                        <tr><td colspan="4" class="py-4 italic">Menyinkronkan...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -50,23 +51,14 @@
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec";
 
-        // Tampilkan daftar pegawai saat halaman dibuka
         async function fetchStaffList() {
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
                 const list = document.getElementById('listPegawai');
                 list.innerHTML = "";
-                
                 data.pegawai.forEach(p => {
-                    list.innerHTML += `
-                        <tr class="border-b">
-                            <td class="py-4 font-bold text-slate-800">${p.nama}</td>
-                            <td class="py-4">${p.jabatan}</td>
-                            <td class="py-4 uppercase text-xs">${p.kategori.replace('_',' ')}</td>
-                            <td class="py-4"><span class="text-green-500 font-bold">✓ Tersimpan</span></td>
-                        </tr>
-                    `;
+                    list.innerHTML += `<tr class="border-b"><td class="py-4 font-bold">${p.nama}</td><td class="py-4">${p.nuptk || "-"}</td><td class="py-4">${p.jabatan}</td><td class="py-4 text-green-600 font-bold">✓ Aktif</td></tr>`;
                 });
             } catch (err) { console.error(err); }
         }
@@ -75,25 +67,25 @@
             const btn = document.getElementById('btnSimpan');
             const data = {
                 nama: document.getElementById('nama').value,
+                nuptk: document.getElementById('nuptk').value || "-",
                 kategori: document.getElementById('kategori').value,
                 jabatan: document.getElementById('jabatan').value || "-",
                 tanggalBergabung: document.getElementById('tanggal_bergabung').value || "-",
                 pendidikan: document.getElementById('pendidikan').value || "-",
-                foto: document.getElementById('foto').value || "https://i.ibb.co/Xz9Gf4z/default.png"
+                foto: document.getElementById('foto').value || "https://i.ibb.co/Xz9Gf4z/default.png",
+                email: "-", tempatLahir: "-", tanggalLahir: "-"
             };
 
             if(!data.nama) { alert("Nama wajib diisi!"); return; }
-
-            btn.innerText = "MENGIRIM...";
-            btn.disabled = true;
+            btn.innerText = "MENGIRIM..."; btn.disabled = true;
 
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
                 alert("Berhasil!");
                 document.getElementById('formPegawai').reset();
-                fetchStaffList(); // Refresh tabel setelah simpan
-            } catch (err) { alert("Error!"); }
-            finally { btn.innerText = "SIMPAN KE GOOGLE SHEETS"; btn.disabled = false; }
+                fetchStaffList();
+            } catch (err) { alert("Gagal!"); }
+            finally { btn.innerText = "SIMPAN KE DATABASE"; btn.disabled = false; }
         }
 
         document.addEventListener('DOMContentLoaded', fetchStaffList);
