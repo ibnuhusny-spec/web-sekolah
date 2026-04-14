@@ -118,21 +118,55 @@
             if(filtered.length === 0) { grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada karya untuk kategori ini.</div>`; return; }
 
             grid.innerHTML = filtered.map((k, i) => {
-                const isNoImg = !k.gambar || k.gambar === "-";
-                // WARNA BADGE DITAMBAH SASTRA (Emerald / Hijau)
-                const w = {
-                    "Artikel": "bg-blue-500",
-                    "Sastra": "bg-emerald-500", 
-                    "Desain": "bg-pink-500",
-                    "Aplikasi": "bg-purple-500"
-                }[k.kategori] || "bg-gray-500";
-                
-                if(isNoImg) {
-                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative" style="animation-delay: ${i*0.1}s"><i class="fas fa-quote-right absolute -top-4 -right-4 text-7xl opacity-10"></i><span class="${w} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">${k.kategori}</span><h3 class="text-2xl font-black mb-4 leading-tight text-orange-400">${k.judul}</h3><p class="text-gray-300 mb-6 leading-relaxed italic whitespace-pre-line">${k.deskripsi}</p><div class="flex items-center gap-3 pt-4 border-t border-slate-700"><div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-orange-400"><i class="fas fa-user-edit"></i></div><div><p class="font-bold text-sm text-gray-100">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div></div></div>`;
-                } else {
-                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s"><div class="relative max-h-64 overflow-hidden"><img src="${k.gambar}" class="w-full object-cover"><span class="absolute top-4 left-4 ${w} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span></div><div class="p-6 flex-1 flex flex-col"><h3 class="text-xl font-bold text-gray-800 mb-3 leading-tight">${k.judul}</h3><p class="text-sm text-gray-600 mb-6 whitespace-pre-line">${k.deskripsi}</p><div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100"><div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-user"></i></div><div><p class="font-bold text-sm text-gray-800">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div></div></div></div>`;
-                }
-            }).join('');
+    const isNoImg = !k.gambar || k.gambar === "-";
+    // WARNA BADGE DITAMBAH SASTRA (Emerald / Hijau)
+    const w = {
+        "Artikel": "bg-blue-500",
+        "Sastra": "bg-emerald-500", 
+        "Desain": "bg-pink-500",
+        "Aplikasi": "bg-purple-500"
+    }[k.kategori] || "bg-gray-500";
+    
+    if(isNoImg) {
+        return `<div class="break-inside-avoid flex flex-col h-full animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative" style="animation-delay: ${i*0.1}s">
+                    <i class="fas fa-quote-right absolute -top-4 -right-4 text-7xl opacity-10"></i>
+                    <span class="${w} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block w-max">${k.kategori}</span>
+                    <h3 class="text-2xl font-black mb-3 leading-tight text-orange-400">${k.judul}</h3>
+                    
+                    <p class="text-gray-300 mb-5 leading-relaxed italic line-clamp-3">${k.deskripsi}</p>
+                    
+                    <a href="baca.html?id=${k.id}&type=karya" class="mt-auto mb-6 block text-center border border-orange-500/50 hover:bg-orange-500 text-orange-400 hover:text-white py-3 rounded-xl text-xs font-bold transition duration-300 flex items-center justify-center gap-2">
+                        BACA SELENGKAPNYA <i class="fas fa-arrow-right"></i>
+                    </a>
+
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-700">
+                        <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-orange-400"><i class="fas fa-user-edit"></i></div>
+                        <div><p class="font-bold text-sm text-gray-100">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div>
+                    </div>
+                </div>`;
+    } else {
+        return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s">
+                    <div class="relative max-h-64 overflow-hidden">
+                        <img src="${k.gambar}" class="w-full object-cover">
+                        <span class="absolute top-4 left-4 ${w} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 leading-tight">${k.judul}</h3>
+                        
+                        <p class="text-sm text-gray-600 mb-5 line-clamp-3">${k.deskripsi}</p>
+                        
+                        <a href="baca.html?id=${k.id}&type=karya" class="mt-auto mb-6 bg-orange-50 hover:bg-orange-500 text-orange-600 hover:text-white py-3 rounded-xl text-xs font-bold text-center transition duration-300 flex items-center justify-center gap-2 border border-orange-100">
+                            BACA SELENGKAPNYA <i class="fas fa-arrow-right"></i>
+                        </a>
+
+                        <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                            <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-user"></i></div>
+                            <div><p class="font-bold text-sm text-gray-800">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div>
+                        </div>
+                    </div>
+                </div>`;
+    }
+}).join('');
         };
 
         window.filterKarya = function(kat, btn) {
