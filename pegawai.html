@@ -108,10 +108,8 @@
             const grid = document.getElementById('staffGrid');
             
             const filtered = window.staffData.filter(s => {
-                // Konversi data "tendik" lama menjadi "tendik_putra" agar tetap terbaca filter
                 let kat = s.kategori;
                 if (kat === 'tendik') kat = 'tendik_putra'; 
-
                 return (window.currentKategori === 'semua' || kat === window.currentKategori) && 
                        s.nama.toLowerCase().includes(keyword);
             });
@@ -119,27 +117,32 @@
             if(filtered.length === 0) { grid.innerHTML = `<div class="text-gray-500 italic">Tidak ada data pegawai.</div>`; return; }
 
             grid.innerHTML = filtered.map((s, i) => {
-                // Konversi aman untuk data lama
                 let kat = s.kategori;
                 if (kat === 'tendik') kat = 'tendik_putra'; 
 
+                // TULISAN TENDIK DISERAGAMKAN MENJADI "TENDIK" SAJA
                 const colors = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik_putra: 'bg-green-500', tendik_putri: 'bg-teal-500' };
-                const labels = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik_putra: 'TENDIK PUTRA', tendik_putri: 'TENDIK PUTRI' };
+                const labels = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik_putra: 'TENDIK', tendik_putri: 'TENDIK' };
                 
-                // LOGIKA CERDAS FOTO SILUET
+                // GAMBAR SILUET WIKIMEDIA (SUPER STABIL)
+                const siluetHijab = 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Female_Muslim_Avatar.png';
+                const siluetPria = 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
+
                 let fotoTampil = s.foto;
+                
+                // Jika kategori putri, langsung timpa dengan siluet Hijab
                 if (kat === 'guru_putri' || kat === 'tendik_putri') {
-                    // Paksa pakai siluet hijab jika kategori putri
-                    fotoTampil = 'https://i.ibb.co/p0p669V/hijab-placeholder.png';
-                } else if (!s.foto || s.foto === "-" || s.foto === "") {
-                    // Pakai siluet umum jika foto kosong untuk putra
-                    fotoTampil = 'https://i.ibb.co/Xz9Gf4z/default.png';
+                    fotoTampil = siluetHijab;
+                } 
+                // Jika kategori putra dan foto kosong/default lama, timpa dengan siluet pria
+                else if (!s.foto || s.foto === "-" || s.foto === "" || s.foto.includes("default.png")) {
+                    fotoTampil = siluetPria;
                 }
                 
                 return `
                 <div class="bg-white rounded-3xl overflow-hidden shadow-xl animate-fade flex flex-col" style="animation-delay: ${i*0.05}s">
                     <div class="relative h-64 md:h-72 shrink-0 bg-gray-100">
-                        <img src="${fotoTampil}" class="w-full h-full object-cover object-top" onerror="this.src='https://i.ibb.co/Xz9Gf4z/default.png'">
+                        <img src="${fotoTampil}" class="w-full h-full object-cover object-top" onerror="this.src='${(kat === 'guru_putri' || kat === 'tendik_putri') ? siluetHijab : siluetPria}'">
                         <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white shadow-md ${colors[kat]}">${labels[kat]}</span>
                     </div>
                     <div class="p-6 md:p-8 flex-1 flex flex-col">
