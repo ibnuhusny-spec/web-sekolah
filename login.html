@@ -11,7 +11,7 @@
 
     <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm text-center relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
-        <img src="logo.png" alt="Logo" class="h-20 mx-auto mb-6 drop-shadow-md">
+        <img src="logo.png" alt="Logo" class="h-20 mx-auto mb-6 drop-shadow-md" onerror="this.style.display='none'">
         <h2 class="text-2xl font-black text-gray-800 mb-2 uppercase tracking-widest">Ruang Admin</h2>
         <p class="text-sm text-gray-500 mb-8">Masukkan sandi rahasia Anda</p>
         
@@ -20,35 +20,59 @@
             <input type="password" id="inputSandi" placeholder="Sandi Keamanan" class="w-full pl-12 p-4 border-2 rounded-xl bg-gray-50 outline-none focus:border-blue-500 font-bold tracking-widest transition" onkeypress="if(event.key === 'Enter') cekSandi()">
         </div>
         
-        <p id="pesanError" class="text-red-500 text-xs font-bold mb-4 hidden"><i class="fas fa-exclamation-triangle mr-1"></i> Sandi yang Anda masukkan salah!</p>
+        <p id="pesanError" class="text-red-500 text-xs font-bold mb-4 hidden"><i class="fas fa-exclamation-triangle mr-1"></i> Sandi salah!</p>
         
         <button onclick="cekSandi()" id="btnLogin" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg transition"><i class="fas fa-sign-in-alt mr-2"></i> MASUK KE CMS</button>
         <a href="index.html" class="block mt-6 text-sm text-gray-400 hover:text-gray-600 transition"><i class="fas fa-arrow-left mr-1"></i> Kembali ke Beranda</a>
     </div>
 
-    <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // GANTI DENGAN URL ANDA
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        async function cekSandi() {
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
+            authDomain: "websekolah-9bcde.firebaseapp.com",
+            projectId: "websekolah-9bcde",
+            storageBucket: "websekolah-9bcde.firebasestorage.app",
+            messagingSenderId: "113406929634",
+            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.cekSandi = async function() {
             const btn = document.getElementById('btnLogin');
-            const sandi = document.getElementById('inputSandi').value;
-            if(!sandi) return;
+            const inputSandi = document.getElementById('inputSandi').value;
+            if(!inputSandi) return;
 
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MEMERIKSA...';
             btn.disabled = true; document.getElementById('pesanError').classList.add('hidden');
 
             try {
-                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: "cek_sandi", sandi: sandi }) });
-                const data = await res.json();
+                // Ambil sandi dari Firebase (Default: rahasia123)
+                const docRef = doc(db, "profil", "admin_auth");
+                const docSnap = await getDoc(docRef);
+                let sandiAsli = "rahasia123";
                 
-                if(data.status === "success") {
-                    localStorage.setItem("admin_token", "sah"); // Menyimpan izin masuk
+                if (docSnap.exists() && docSnap.data().sandi) {
+                    sandiAsli = docSnap.data().sandi;
+                }
+
+                if(inputSandi === sandiAsli) {
+                    localStorage.setItem("admin_token", "sah");
                     window.location.href = "admin.html";
                 } else {
                     document.getElementById('pesanError').classList.remove('hidden');
                 }
-            } catch (err) { alert("Gagal menghubungi server."); } 
-            finally { btn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i> MASUK KE CMS'; btn.disabled = false; }
+            } catch (err) { 
+                alert("Gagal menghubungi Firebase."); 
+                console.error(err);
+            } finally { 
+                btn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i> MASUK KE CMS'; 
+                btn.disabled = false; 
+            }
         }
     </script>
 </body>
