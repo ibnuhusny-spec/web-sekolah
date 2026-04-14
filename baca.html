@@ -32,8 +32,8 @@
                 </p>
             </div>
 
-            <div class="rounded-3xl overflow-hidden shadow-2xl mb-8 bg-gray-200 aspect-video">
-                <img id="gambar_artikel" src="" class="w-full h-full object-cover" onerror="this.src='https://i.ibb.co/Xz9Gf4z/default.png'">
+            <div id="gambar_container" class="rounded-3xl overflow-hidden shadow-2xl mb-8 bg-gray-200 aspect-video hidden">
+                <img id="gambar_artikel" src="" class="w-full h-full object-cover">
             </div>
 
             <div id="isi_artikel" class="prose prose-blue max-w-none text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">
@@ -44,7 +44,7 @@
                 <div class="flex justify-center gap-4">
                     <button onclick="shareWA()" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-black flex items-center gap-2 shadow-lg transition transform hover:-translate-y-1">
                         <i class="fab fa-whatsapp text-xl"></i> SHARE KE WHATSAPP
-                    </a>
+                    </button>
                 </div>
             </div>
         </article>
@@ -66,10 +66,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // AMBIL PARAMETER DARI LINK (id & type)
         const params = new URLSearchParams(window.location.search);
         const docId = params.get('id');
-        const type = params.get('type'); // 'berita' atau 'karya'
+        const type = params.get('type'); 
 
         async function loadContent() {
             if(!docId || !type) {
@@ -84,26 +83,44 @@
                 if (snap.exists()) {
                     const data = snap.data();
                     
-                    // Isi Data ke Halaman
                     document.title = data.judul + " - SDIT Qurratu A'yun";
                     document.getElementById('nav_title').innerText = data.judul;
                     document.getElementById('judul_artikel').innerText = data.judul;
                     document.getElementById('tgl_artikel').innerText = formatTanggal(data.tanggal);
                     document.getElementById('isi_artikel').innerText = data.isi || data.deskripsi;
-                    document.getElementById('gambar_artikel').src = data.gambar || "";
-                    document.getElementById('label_kategori').innerText = data.kategori || "UMUM";
+                    
+                    // --- LOGIKA UNTUK MENYEMBUNYIKAN BINGKAI JIKA TIDAK ADA GAMBAR ---
+                    const isNoImg = !data.gambar || data.gambar === "-";
+                    if (!isNoImg) {
+                        document.getElementById('gambar_container').classList.remove('hidden');
+                        document.getElementById('gambar_artikel').src = data.gambar;
+                    }
+                    // -----------------------------------------------------------------
 
+                    // Penyesuaian label berdasarkan tipe (Berita vs Karya)
                     if(type === 'karya') {
                         document.getElementById('author_box').classList.remove('hidden');
                         document.getElementById('penulis_artikel').innerText = data.penulis;
-                        document.getElementById('label_kategori').classList.replace('bg-blue-600', 'bg-orange-500');
+                        
+                        // Menyesuaikan warna label berdasarkan kategori karya
+                        const w = {
+                            "Artikel": "bg-blue-500",
+                            "Sastra": "bg-emerald-500", 
+                            "Desain": "bg-pink-500",
+                            "Aplikasi": "bg-purple-500"
+                        }[data.kategori] || "bg-gray-500";
+                        
+                        document.getElementById('label_kategori').className = `px-3 py-1 rounded-full text-[10px] font-black text-white ${w} uppercase tracking-widest`;
+                        document.getElementById('label_kategori').innerText = data.kategori || "KARYA";
+                    } else {
+                        document.getElementById('label_kategori').className = "px-3 py-1 rounded-full text-[10px] font-black text-white bg-red-600 uppercase tracking-widest";
+                        document.getElementById('label_kategori').innerText = data.kategori || "BERITA";
                     }
 
-                    // Tampilkan Artikel
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('article_body').classList.remove('hidden');
                 } else {
-                    document.getElementById('loading').innerHTML = "Maaf, berita tidak ditemukan.";
+                    document.getElementById('loading').innerHTML = "Maaf, kiriman tidak ditemukan.";
                 }
             } catch (e) {
                 console.error(e);
@@ -111,10 +128,13 @@
             }
         }
 
-        function formatTanggal(tgl) {
-            if(!tgl) return "-";
-            const d = new Date(tgl);
-            return d.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+        function formatTanggal(iso) { 
+            try { 
+                const d = new Date(iso);
+                if (isNaN(d.getTime())) return iso;
+                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                return `${d.getDate()} ${bln[d.getMonth()]} ${d.getFullYear()}`;
+            } catch{ return iso; } 
         }
 
         window.shareWA = function() {
