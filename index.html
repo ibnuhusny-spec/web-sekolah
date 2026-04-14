@@ -4,62 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beranda - SDIT Qurratu A'yun Al-Islami</title>
+
+    <meta name="google-site-verification" content="BtWc-bs3qDZxiVEJQblcn6SKzxzG5NpzmYUBJb_QJ2w" />
+
+    <meta name="description" content="Website Resmi SDIT Qurratu A'yun Al-Islami Maros. Mewujudkan generasi yang cerdas, bertauhid, dan berakhlak mulia. Informasi pendaftaran, berita sekolah, dan profil guru.">
+    <meta name="keywords" content="SDIT Qurratu A'yun, SDIT Qurratu Ayun Al-Islami, SD Islam Terpadu Maros, Sekolah Dasar Maros, SDIT Maros, Pendidikan Islam Maros">
+    <meta name="author" content="Tim Redaksi SDIT Qurratu A'yun">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="SDIT Qurratu A'yun Al-Islami">
+    <meta property="og:description" content="Portal informasi pendidikan, berita sekolah, dan karya guru SDIT Qurratu A'yun Al-Islami.">
+    <meta property="og:image" content="https://i.ibb.co/Xz9Gf4z/default.png">
+    <meta property="og:url" content="https://sdit-qurratu-ayun.vercel.app">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
-        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        .menu-3d { transition: transform 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
-        .animate-marquee:hover { animation-play-state: paused; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen overflow-x-hidden">
 
-    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
-        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-600 rounded-2xl shadow-lg border border-blue-500"><i class="fas fa-home text-white text-lg md:text-xl"></i></a>
-        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
-        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
-        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
-        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
-        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
-        <a href="redaksi.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl"></i></a>
+    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl w-[95%] md:w-auto justify-between overflow-x-auto">
+        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-600 rounded-2xl shadow-lg border border-blue-500"><i class="fas fa-home text-white text-lg"></i></a>
+        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg"></i></a>
+        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg"></i></a>
+        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg"></i></a>
+        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg"></i></a>
+        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg"></i></a>
+        <a href="redaksi.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-id-badge text-indigo-600 text-lg"></i></a>
     </nav>
 
-    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center text-center md:text-left">
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center text-center">
         <div class="flex items-center gap-4">
-            <img src="logo.png" alt="Logo" class="h-12 w-auto" onerror="this.style.display='none'">
+            <img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'">
             <h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
         </div>
     </header>
 
     <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
-        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru dari sekolah...</span></div>
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent">
+            <span class="mx-4 font-bold text-blue-900 italic">Selamat datang di Portal Informasi SDIT Qurratu A'yun Al-Islami Maros... Memuat kabar terbaru...</span>
+        </div>
     </div>
 
-    <main class="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-900 text-white text-center px-4 py-10 pb-28 md:p-10 md:pb-10 relative overflow-hidden md:ml-16">
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-        <div class="relative z-10">
-            <h2 class="text-5xl md:text-7xl font-black mb-6 drop-shadow-2xl">Selamat Datang</h2>
-            <p class="text-xl md:text-2xl font-medium opacity-90 mb-8 tracking-widest uppercase">Di Portal Informasi Pendidikan Kami</p>
-            <div class="inline-block bg-white/20 backdrop-blur-md border border-white/30 px-8 py-4 rounded-full shadow-2xl">
-                <p id="txtSlogan" class="text-xl md:text-3xl font-bold text-yellow-300 italic">Cerdas, Bertauhid, dan Berakhlak Mulia</p>
+    <main class="flex-1 flex flex-col items-center justify-center p-6 md:p-10 md:ml-16 bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white min-h-[80vh] relative overflow-hidden text-center">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
+            <i class="fas fa-book-open absolute top-10 left-10 text-6xl md:text-9xl text-blue-300 transform -rotate-12 blur-sm"></i>
+            <i class="fas fa-graduation-cap absolute bottom-10 right-10 text-6xl md:text-9xl text-yellow-300 transform rotate-12 blur-sm"></i>
+        </div>
+
+        <div class="relative z-10 max-w-4xl animate-fade">
+            <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 drop-shadow-lg">
+                Cerdas, Bertauhid,<br>dan Berakhlak Mulia
+            </h2>
+            <p class="text-lg md:text-xl text-blue-100 mb-10 leading-relaxed font-medium">
+                Selamat datang di portal informasi resmi SDIT Qurratu A'yun Al-Islami. Wadah digital untuk memantau perkembangan sekolah, karya guru, dan informasi pendidikan terpadu.
+            </p>
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="profil.html" class="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-black py-4 px-8 rounded-full shadow-lg shadow-yellow-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i class="fas fa-flag"></i> PROFIL SEKOLAH
+                </a>
+                <a href="berita.html" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-full shadow-lg shadow-blue-600/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-blue-400">
+                    <i class="fas fa-newspaper"></i> KABAR TERBARU
+                </a>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white pt-10 pb-36 md:py-10 text-center relative z-40">
-        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="masukCMS()" class="mt-6 mb-4 md:mb-0 text-gray-400 border border-gray-700 px-5 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
-            <i class="fas fa-cog"></i> Panel Admin
-        </button>
+    <footer class="bg-gray-950 text-gray-400 pt-10 pb-28 md:pb-10 relative z-40 w-full">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="text-xl font-black text-white mb-2">SDIT Qurratu A'yun Al-Islami</p>
+            <p class="text-sm mb-6 max-w-md mx-auto">Mendidik generasi Islam yang tangguh, cerdas, dan berakhlak mulia di Kabupaten Maros.</p>
+            
+            <div class="border-t border-gray-800 pt-6">
+                <button onclick="window.location.href='login.html'" class="text-gray-500 border border-gray-800 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
+                    <i class="fas fa-cog"></i> Panel Admin Sekolah
+                </button>
+            </div>
+        </div>
+        <div class="h-10 md:hidden w-full bg-transparent pointer-events-none"></div>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // Konfigurasi Firebase Anda
         const firebaseConfig = {
             apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
             authDomain: "websekolah-9bcde.firebaseapp.com",
@@ -72,30 +108,20 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.masukCMS = function() { window.location.href = 'login.html'; }
-
-        async function loadData() {
+        async function loadTicker() {
             try {
-                // Ticker Berita & Karya
-                const [beritaSnap, karyaSnap] = await Promise.all([
-                    getDocs(collection(db, "berita")),
-                    getDocs(collection(db, "karya"))
-                ]);
-
+                const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
                 const ticker = document.getElementById('tickerContent');
-                let berita = beritaSnap.docs.map(d => ({...d.data()})).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
-                let karya = karyaSnap.docs.map(d => ({...d.data()})).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
-                let items = [...berita.slice(0,3), ...karya.slice(0,3)];
+                let items = [...beritaSnap.docs.map(d => ({...d.data()})).slice(0,3), ...karyaSnap.docs.map(d => ({...d.data()})).slice(0,3)];
                 
                 if(items.length > 0) {
                     let content = items.map(item => `<a href="${item.penulis ? 'karya.html' : 'berita.html'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
                     ticker.innerHTML = content + content;
-                } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan...</span>'; }
-
+                }
             } catch (err) { console.error(err); }
         }
 
-        document.addEventListener('DOMContentLoaded', loadData);
+        document.addEventListener('DOMContentLoaded', loadTicker);
     </script>
 </body>
 </html>
