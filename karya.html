@@ -33,14 +33,15 @@
         <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
     </div>
 
-    <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen">
+    <main class="flex-1 px-4 py-10 md:p-10 md:ml-16 bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl md:text-4xl font-black mb-4 text-gray-800 border-l-8 border-orange-500 pl-4">Ruang Karya & Inovasi</h2>
-            <p class="text-gray-500 mb-10 md:ml-6">Wadah apresiasi untuk artikel, karya desain, dan inovasi pendidikan dewan guru.</p>
+            <p class="text-gray-500 mb-10 md:ml-6">Wadah apresiasi untuk artikel, sastra, karya desain, dan inovasi pendidikan dewan guru.</p>
 
             <div class="flex flex-wrap gap-3 mb-10 md:ml-6">
                 <button class="filter-btn px-4 md:px-6 py-2 rounded-full font-bold shadow bg-orange-500 text-white transition text-sm md:text-base" onclick="filterKarya('semua', this)" id="btnSemua">Semua Karya</button>
                 <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Artikel', this)">📝 Artikel</button>
+                <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Sastra', this)">📚 Sastra</button>
                 <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Desain', this)">🎨 Desain</button>
                 <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Aplikasi', this)">💻 Aplikasi</button>
             </div>
@@ -51,11 +52,12 @@
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white pt-10 pb-36 md:py-10 text-center relative z-40">
-        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="masukCMS()" class="mt-6 mb-4 md:mb-0 text-gray-400 border border-gray-700 px-5 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
+    <footer class="bg-gray-900 text-white pt-10 pb-8 relative z-40 w-full mt-auto">
+        <p class="text-lg font-bold text-center">SDIT Qurratu A'yun Al-Islami</p>
+        <button onclick="window.location.href='login.html'" class="mt-6 text-gray-400 border border-gray-700 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
             <i class="fas fa-cog"></i> Panel Admin
         </button>
+        <div class="h-28 md:hidden w-full bg-transparent pointer-events-none"></div>
     </footer>
 
     <script type="module">
@@ -76,15 +78,21 @@
 
         window.dataKarya = [];
         window.currentKategori = 'semua';
-        window.masukCMS = function() { window.location.href = 'login.html'; }
 
-        function formatTanggal(iso) { try { return new Date(iso).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}); } catch{ return iso; } }
+        function formatTanggalIndo(iso) { 
+            try { 
+                const d = new Date(iso);
+                if (isNaN(d.getTime())) return iso;
+                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                return `${d.getDate()} ${bln[d.getMonth()]} ${d.getFullYear()}`;
+            } catch{ return iso; } 
+        }
 
         async function loadData() {
             try {
                 const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
 
-                // 1. Ticker Berita
+                // Ticker
                 const ticker = document.getElementById('tickerContent');
                 let berita = beritaSnap.docs.map(d => ({...d.data()})).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
                 let karya = karyaSnap.docs.map(d => ({...d.data()})).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
@@ -95,7 +103,7 @@
                     ticker.innerHTML = content + content;
                 } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan...</span>'; }
 
-                // 2. Data Karya
+                // Karya
                 window.dataKarya = karya;
                 window.renderKarya();
 
@@ -106,16 +114,22 @@
             const grid = document.getElementById('karyaGrid');
             const filtered = window.dataKarya.filter(k => window.currentKategori === 'semua' || k.kategori === window.currentKategori);
 
-            if(filtered.length === 0) { grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada karya yang diinput di CMS.</div>`; return; }
+            if(filtered.length === 0) { grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada karya untuk kategori ini.</div>`; return; }
 
             grid.innerHTML = filtered.map((k, i) => {
                 const isNoImg = !k.gambar || k.gambar === "-";
-                const w = {"Artikel":"bg-blue-500","Desain":"bg-pink-500","Aplikasi":"bg-purple-500"}[k.kategori] || "bg-gray-500";
+                // WARNA BADGE DITAMBAH SASTRA (Emerald / Hijau)
+                const w = {
+                    "Artikel": "bg-blue-500",
+                    "Sastra": "bg-emerald-500", 
+                    "Desain": "bg-pink-500",
+                    "Aplikasi": "bg-purple-500"
+                }[k.kategori] || "bg-gray-500";
                 
                 if(isNoImg) {
-                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative" style="animation-delay: ${i*0.1}s"><i class="fas fa-quote-right absolute -top-4 -right-4 text-7xl opacity-10"></i><span class="${w} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">${k.kategori}</span><h3 class="text-2xl font-black mb-4 leading-tight text-orange-400">${k.judul}</h3><p class="text-gray-300 mb-6 leading-relaxed italic whitespace-pre-line">${k.deskripsi}</p><div class="flex items-center gap-3 pt-4 border-t border-slate-700"><div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-orange-400"><i class="fas fa-user-edit"></i></div><div><p class="font-bold text-sm text-gray-100">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggal(k.tanggal)}</p></div></div></div>`;
+                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative" style="animation-delay: ${i*0.1}s"><i class="fas fa-quote-right absolute -top-4 -right-4 text-7xl opacity-10"></i><span class="${w} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">${k.kategori}</span><h3 class="text-2xl font-black mb-4 leading-tight text-orange-400">${k.judul}</h3><p class="text-gray-300 mb-6 leading-relaxed italic whitespace-pre-line">${k.deskripsi}</p><div class="flex items-center gap-3 pt-4 border-t border-slate-700"><div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-orange-400"><i class="fas fa-user-edit"></i></div><div><p class="font-bold text-sm text-gray-100">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div></div></div>`;
                 } else {
-                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s"><div class="relative max-h-64 overflow-hidden"><img src="${k.gambar}" class="w-full object-cover"><span class="absolute top-4 left-4 ${w} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span></div><div class="p-6 flex-1 flex flex-col"><h3 class="text-xl font-bold text-gray-800 mb-3 leading-tight">${k.judul}</h3><p class="text-sm text-gray-600 mb-6 whitespace-pre-line">${k.deskripsi}</p><div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100"><div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-user"></i></div><div><p class="font-bold text-sm text-gray-800">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggal(k.tanggal)}</p></div></div></div></div>`;
+                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s"><div class="relative max-h-64 overflow-hidden"><img src="${k.gambar}" class="w-full object-cover"><span class="absolute top-4 left-4 ${w} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span></div><div class="p-6 flex-1 flex flex-col"><h3 class="text-xl font-bold text-gray-800 mb-3 leading-tight">${k.judul}</h3><p class="text-sm text-gray-600 mb-6 whitespace-pre-line">${k.deskripsi}</p><div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100"><div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-user"></i></div><div><p class="font-bold text-sm text-gray-800">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div></div></div></div>`;
                 }
             }).join('');
         };
