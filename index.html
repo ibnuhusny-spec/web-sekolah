@@ -7,36 +7,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .menu-3d { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; }
-        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
-        /* Animasi Iklan Berjalan */
+        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
-<nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
-    
-        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-blue-600 rounded-2xl shadow-lg border border-blue-500"><i class="fas fa-home text-white text-xl"></i></a>
-        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i></a>
-        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-users text-green-500 text-xl"></i></a>
-        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i></a>
-        <a href="karya.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-lightbulb text-orange-500 text-xl"></i></a>
-        <a href="berita.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-newspaper text-red-500 text-xl"></i></a>
+
+    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
+        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-600 rounded-2xl shadow-lg border border-blue-500"><i class="fas fa-home text-white text-lg md:text-xl"></i></a>
+        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
+        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
+        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
     </nav>
 
     <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center text-center md:text-left">
         <div class="flex items-center gap-4">
-            <img src="logo.png" alt="Logo" class="h-12 w-auto">
+            <img src="logo.png" alt="Logo" class="h-12 w-auto" onerror="this.style.display='none'">
             <h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
         </div>
     </header>
 
     <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
-        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent">
-            <span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru dari sekolah...</span>
-        </div>
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru dari sekolah...</span></div>
     </div>
 
     <main class="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-900 text-white text-center px-4 py-10 pb-28 md:p-10 md:pb-10 relative overflow-hidden md:ml-16">
@@ -50,46 +47,52 @@
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white py-10 text-center relative z-40">
+    <footer class="bg-gray-900 text-white py-10 pb-28 md:pb-10 text-center relative z-40">
         <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
         <button onclick="masukCMS()" class="mt-4 text-gray-500 text-xs hover:text-blue-400 transition flex items-center justify-center mx-auto gap-2"><i class="fas fa-cog"></i> Panel Admin</button>
     </footer>
 
-    <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // JANGAN LUPA GANTI INI
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        async function fetchData() {
+        // Konfigurasi Firebase Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
+            authDomain: "websekolah-9bcde.firebaseapp.com",
+            projectId: "websekolah-9bcde",
+            storageBucket: "websekolah-9bcde.firebasestorage.app",
+            messagingSenderId: "113406929634",
+            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.masukCMS = function() { window.location.href = 'login.html'; }
+
+        async function loadData() {
             try {
-                const res = await fetch(API_URL);
-                const data = await res.json();
-                
-                if(document.getElementById('txtSlogan')) {
-                    document.getElementById('txtSlogan').innerText = data.profil.slogan || "Cerdas, Bertauhid, dan Berakhlak Mulia";
-                }
+                // Ticker Berita & Karya
+                const [beritaSnap, karyaSnap] = await Promise.all([
+                    getDocs(collection(db, "berita")),
+                    getDocs(collection(db, "karya"))
+                ]);
 
-                // Render Iklan Berjalan
                 const ticker = document.getElementById('tickerContent');
-                let content = "";
-                let items = [];
-                if(data.berita) items = items.concat(data.berita.slice(0, 3));
-                if(data.karya) items = items.concat(data.karya.slice(0, 3));
-
+                let berita = beritaSnap.docs.map(d => ({...d.data()})).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+                let karya = karyaSnap.docs.map(d => ({...d.data()})).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+                let items = [...berita.slice(0,3), ...karya.slice(0,3)];
+                
                 if(items.length > 0) {
-                    items.forEach(item => {
-                        const link = item.penulis ? 'karya.html' : 'berita.html';
-                        const icon = item.penulis ? '<i class="fas fa-lightbulb text-orange-600"></i>' : '<i class="fas fa-fire text-red-600"></i>';
-                        content += `<a href="${link}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition">${icon} ${item.judul} </a>`;
-                    });
-                    ticker.innerHTML = content + content; // Diduplikasi agar animasinya mulus tidak terputus
-                } else {
-                    ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan terbaru...</span>';
-                }
+                    let content = items.map(item => `<a href="${item.penulis ? 'karya.html' : 'berita.html'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
+                    ticker.innerHTML = content + content;
+                } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan...</span>'; }
 
             } catch (err) { console.error(err); }
         }
 
-        document.addEventListener('DOMContentLoaded', fetchData);
-        function masukCMS() { window.location.href = 'login.html'; }
+        document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
 </html>
