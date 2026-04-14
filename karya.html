@@ -7,8 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .menu-3d { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; }
-        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px) rotateX(5deg) rotateY(-5deg); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade { animation: fadeIn 0.5s ease forwards; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
@@ -19,141 +19,113 @@
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
 
     <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
-        <a href="index.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-home text-blue-600 text-xl"></i></a>
-        <a href="profil.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-flag text-yellow-500 text-xl"></i></a>
-        <a href="pegawai.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-users text-green-500 text-xl"></i></a>
-        <a href="kelas.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-chalkboard-teacher text-purple-500 text-xl"></i></a>
-        <a href="karya.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-orange-500 rounded-2xl shadow-lg border border-orange-400"><i class="fas fa-lightbulb text-white text-xl"></i></a>
-        <a href="berita.html" class="menu-3d group relative flex items-center justify-center w-14 h-14 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white"><i class="fas fa-newspaper text-red-500 text-xl"></i></a>
+        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-home text-blue-600 text-lg md:text-xl"></i></a>
+        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
+        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-orange-500 rounded-2xl shadow-lg border-orange-400"><i class="fas fa-lightbulb text-white text-lg md:text-xl"></i></a>
+        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
     </nav>
 
-    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center text-center md:text-left"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
 
     <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
-        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic">Memuat kabar terbaru...</span></div>
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
     </div>
 
-    <main class="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-900 text-white text-center px-4 py-10 pb-28 md:p-10 md:pb-10 relative overflow-hidden md:ml-16">
+    <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-black mb-4 text-gray-800 border-l-8 border-orange-500 pl-4">Ruang Karya & Inovasi</h2>
-            <p class="text-gray-500 mb-10 ml-6">Wadah apresiasi untuk artikel, karya desain, dan inovasi pendidikan dewan guru.</p>
+            <h2 class="text-3xl md:text-4xl font-black mb-4 text-gray-800 border-l-8 border-orange-500 pl-4">Ruang Karya & Inovasi</h2>
+            <p class="text-gray-500 mb-10 md:ml-6">Wadah apresiasi untuk artikel, karya desain, dan inovasi pendidikan dewan guru.</p>
 
-            <div class="flex flex-wrap gap-4 mb-10 ml-6">
-                <button class="filter-btn px-6 py-2 rounded-full font-bold shadow bg-orange-500 text-white transition" onclick="filterKarya('semua', this)" id="btnSemua">Semua Karya</button>
-                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition" onclick="filterKarya('Artikel', this)">📝 Artikel</button>
-                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition" onclick="filterKarya('Desain', this)">🎨 Desain</button>
-                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition" onclick="filterKarya('Aplikasi', this)">💻 Aplikasi</button>
+            <div class="flex flex-wrap gap-3 mb-10 md:ml-6">
+                <button class="filter-btn px-4 md:px-6 py-2 rounded-full font-bold shadow bg-orange-500 text-white transition text-sm md:text-base" onclick="filterKarya('semua', this)" id="btnSemua">Semua Karya</button>
+                <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Artikel', this)">📝 Artikel</button>
+                <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Desain', this)">🎨 Desain</button>
+                <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Aplikasi', this)">💻 Aplikasi</button>
             </div>
 
-            <div class="columns-1 md:columns-2 lg:columns-3 gap-8 ml-6 space-y-8" id="karyaGrid">
-                <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data karya...</div>
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-8 md:ml-6 space-y-8" id="karyaGrid">
+                <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari Firebase...</div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white py-10 text-center relative z-40">
+    <footer class="bg-gray-900 text-white py-10 pb-28 md:pb-10 text-center relative z-40">
         <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
         <button onclick="masukCMS()" class="mt-4 text-gray-500 text-xs hover:text-blue-400 transition flex items-center justify-center mx-auto gap-2"><i class="fas fa-cog"></i> Panel Admin</button>
     </footer>
 
-    <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // JANGAN LUPA GANTI INI
-        let dataKarya = [];
-        let currentKategori = 'semua';
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        function formatTanggal(isoString) {
-            try { return new Date(isoString).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); } 
-            catch { return isoString; }
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
+            authDomain: "websekolah-9bcde.firebaseapp.com",
+            projectId: "websekolah-9bcde",
+            storageBucket: "websekolah-9bcde.firebasestorage.app",
+            messagingSenderId: "113406929634",
+            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
+        };
 
-        async function fetchKarya() {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.dataKarya = [];
+        window.currentKategori = 'semua';
+        window.masukCMS = function() { window.location.href = 'login.html'; }
+
+        function formatTanggal(iso) { try { return new Date(iso).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}); } catch{ return iso; } }
+
+        async function loadData() {
             try {
-                const res = await fetch(API_URL);
-                const data = await res.json();
-                
-                // Render Ticker
-                const ticker = document.getElementById('tickerContent');
-                let content = "";
-                let items = [];
-                if(data.berita) items = items.concat(data.berita.slice(0, 3));
-                if(data.karya) items = items.concat(data.karya.slice(0, 3));
-                if(items.length > 0) {
-                    items.forEach(item => {
-                        const link = item.penulis ? 'karya.html' : 'berita.html';
-                        const icon = item.penulis ? '<i class="fas fa-lightbulb text-orange-600"></i>' : '<i class="fas fa-fire text-red-600"></i>';
-                        content += `<a href="${link}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition">${icon} ${item.judul} </a>`;
-                    });
-                    ticker.innerHTML = content + content;
-                } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan terbaru...</span>'; }
+                const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
 
-                // Render Karya
-                dataKarya = data.karya || [];
-                renderKarya();
+                // 1. Ticker Berita
+                const ticker = document.getElementById('tickerContent');
+                let berita = beritaSnap.docs.map(d => ({...d.data()})).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+                let karya = karyaSnap.docs.map(d => ({...d.data()})).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+                let items = [...berita.slice(0,3), ...karya.slice(0,3)];
+                
+                if(items.length > 0) {
+                    let content = items.map(item => `<a href="${item.penulis ? 'karya.html' : 'berita.html'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
+                    ticker.innerHTML = content + content;
+                } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan...</span>'; }
+
+                // 2. Data Karya
+                window.dataKarya = karya;
+                window.renderKarya();
+
             } catch (err) { console.error(err); }
         }
 
-        function renderKarya() {
+        window.renderKarya = function() {
             const grid = document.getElementById('karyaGrid');
-            grid.innerHTML = "";
-            const filtered = dataKarya.filter(k => currentKategori === 'semua' || k.kategori === currentKategori);
+            const filtered = window.dataKarya.filter(k => window.currentKategori === 'semua' || k.kategori === window.currentKategori);
 
-            if(filtered.length === 0) {
-                grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada karya.</div>`; return;
-            }
+            if(filtered.length === 0) { grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada karya yang diinput di CMS.</div>`; return; }
 
-            filtered.forEach((k, i) => {
-                const isNoImage = !k.gambar || k.gambar === "-" || k.gambar.trim() === "";
-                const badges = { "Artikel": "bg-blue-500", "Desain": "bg-pink-500", "Aplikasi": "bg-purple-500" };
-                const warnaBadge = badges[k.kategori] || "bg-gray-500";
-
-                let cardHTML = `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden" style="animation-delay: ${i*0.1}s">`;
-
-                if (isNoImage) {
-                    cardHTML += `
-                        <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative overflow-hidden">
-                            <i class="fas fa-quote-right absolute -top-4 -right-4 text-7xl opacity-10"></i>
-                            <span class="${warnaBadge} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">${k.kategori}</span>
-                            <h3 class="text-2xl font-black mb-4 leading-tight text-orange-400">${k.judul}</h3>
-                            <p class="text-gray-300 mb-6 leading-relaxed italic whitespace-pre-line">${k.deskripsi}</p>
-                            <div class="flex items-center gap-3 pt-4 border-t border-slate-700">
-                                <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-orange-400"><i class="fas fa-user-edit"></i></div>
-                                <div><p class="font-bold text-sm text-gray-100">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggal(k.tanggal)}</p></div>
-                            </div>
-                        </div>
-                    `;
+            grid.innerHTML = filtered.map((k, i) => {
+                const isNoImg = !k.gambar || k.gambar === "-";
+                const w = {"Artikel":"bg-blue-500","Desain":"bg-pink-500","Aplikasi":"bg-purple-500"}[k.kategori] || "bg-gray-500";
+                
+                if(isNoImg) {
+                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative" style="animation-delay: ${i*0.1}s"><i class="fas fa-quote-right absolute -top-4 -right-4 text-7xl opacity-10"></i><span class="${w} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">${k.kategori}</span><h3 class="text-2xl font-black mb-4 leading-tight text-orange-400">${k.judul}</h3><p class="text-gray-300 mb-6 leading-relaxed italic whitespace-pre-line">${k.deskripsi}</p><div class="flex items-center gap-3 pt-4 border-t border-slate-700"><div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-orange-400"><i class="fas fa-user-edit"></i></div><div><p class="font-bold text-sm text-gray-100">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggal(k.tanggal)}</p></div></div></div>`;
                 } else {
-                    cardHTML += `
-                        <div class="bg-white flex flex-col h-full relative">
-                            <div class="relative max-h-64 overflow-hidden">
-                                <img src="${k.gambar}" class="w-full object-cover">
-                                <span class="absolute top-4 left-4 ${warnaBadge} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span>
-                            </div>
-                            <div class="p-6 flex-1 flex flex-col">
-                                <h3 class="text-xl font-bold text-gray-800 mb-3 leading-tight">${k.judul}</h3>
-                                <p class="text-sm text-gray-600 mb-6 whitespace-pre-line">${k.deskripsi}</p>
-                                <div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
-                                    <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-user"></i></div>
-                                    <div><p class="font-bold text-sm text-gray-800">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggal(k.tanggal)}</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s"><div class="relative max-h-64 overflow-hidden"><img src="${k.gambar}" class="w-full object-cover"><span class="absolute top-4 left-4 ${w} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span></div><div class="p-6 flex-1 flex flex-col"><h3 class="text-xl font-bold text-gray-800 mb-3 leading-tight">${k.judul}</h3><p class="text-sm text-gray-600 mb-6 whitespace-pre-line">${k.deskripsi}</p><div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100"><div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-user"></i></div><div><p class="font-bold text-sm text-gray-800">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggal(k.tanggal)}</p></div></div></div></div>`;
                 }
-                cardHTML += `</div>`;
-                grid.innerHTML += cardHTML;
-            });
-        }
+            }).join('');
+        };
 
-        function filterKarya(kat, btn) {
-            currentKategori = kat;
+        window.filterKarya = function(kat, btn) {
+            window.currentKategori = kat;
             document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('bg-orange-500', 'text-white'); b.classList.add('bg-white', 'text-gray-600'); });
-            btn.classList.remove('bg-white', 'text-gray-600');
-            btn.classList.add('bg-orange-500', 'text-white');
-            renderKarya();
-        }
+            btn.classList.remove('bg-white', 'text-gray-600'); btn.classList.add('bg-orange-500', 'text-white');
+            window.renderKarya();
+        };
 
-        document.addEventListener('DOMContentLoaded', fetchKarya);
-        function masukCMS() { window.location.href = 'login.html'; }
+        document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
 </html>
