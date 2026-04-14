@@ -13,14 +13,14 @@
     <aside class="w-full md:w-64 bg-slate-900 text-white p-4 md:p-6 sticky top-0 md:h-screen flex flex-col shadow-2xl z-50">
         <div class="md:mb-10 text-center flex md:block justify-between items-center font-black text-blue-400 uppercase tracking-widest md:border-b md:border-slate-700 pb-0 md:pb-4">
             <div class="flex items-center gap-3 md:block">
-                <img src="logo.png" class="h-8 md:h-10 mx-auto md:mb-2 bg-white rounded-full p-1"> 
+                <img src="logo.png" class="h-8 md:h-10 mx-auto md:mb-2 bg-white rounded-full p-1" onerror="this.style.display='none'"> 
                 <span class="md:block hidden">CMS Admin</span>
             </div>
             <button onclick="logout()" class="md:hidden text-red-400 text-2xl"><i class="fas fa-sign-out-alt"></i></button>
         </div>
         
         <nav class="flex flex-row md:flex-col space-x-2 md:space-x-0 md:space-y-2 flex-1 text-sm overflow-x-auto mt-4 md:mt-0 pb-2 md:pb-0 custom-scroll">
-            <button onclick="switchTab('pegawai')" id="nav-pegawai" class="flex-shrink-0 md:w-full text-left p-3 bg-blue-600 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-users"></i>Pegawai</button>
+            <button onclick="switchTab('pegawai')" id="nav-pegawai" class="flex-shrink-0 md:w-full text-left p-3 bg-blue-600 rounded-xl font-bold flex items-center gap-2 text-white"><i class="fas fa-users"></i>Pegawai</button>
             <button onclick="switchTab('berita')" id="nav-berita" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-newspaper"></i>Berita</button>
             <button onclick="switchTab('karya')" id="nav-karya" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-lightbulb"></i>Karya</button>
             <button onclick="switchTab('kelas')" id="nav-kelas" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-school"></i>Kelas</button>
@@ -110,13 +110,56 @@
 
     </main>
 
-    <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwWPntN4_oJssDtiuUtC7ipHYDjCeqdrEeYHuCfUXQ03Vl5OmJQ3JdZJP9e_zyMx1dy/exec"; // !!! JANGAN LUPA GANTI INI DENGAN URL API ANDA !!!
-        let globalData = {};
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // Konfigurasi dari Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
+            authDomain: "websekolah-9bcde.firebaseapp.com",
+            projectId: "websekolah-9bcde",
+            storageBucket: "websekolah-9bcde.firebasestorage.app",
+            messagingSenderId: "113406929634",
+            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // State Data
+        window.globalData = { pegawai: [], berita: [], karya: [], kelas: [] };
+
+        // MAGIC FIREBASE: Listeners Real-time!
+        onSnapshot(collection(db, "pegawai"), (snapshot) => {
+            window.globalData.pegawai = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderTable('list_pegawai', window.globalData.pegawai, 'nama', 'pegawai');
+        });
+
+        onSnapshot(collection(db, "berita"), (snapshot) => {
+            window.globalData.berita = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+            renderTable('list_berita', window.globalData.berita, 'judul', 'berita');
+        });
+
+        onSnapshot(collection(db, "karya"), (snapshot) => {
+            window.globalData.karya = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+            renderTable('list_karya', window.globalData.karya, 'judul', 'karya');
+        });
+
+        onSnapshot(collection(db, "kelas"), (snapshot) => {
+            window.globalData.kelas = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderTable('list_kelas', window.globalData.kelas, 'nama_kelas', 'kelas');
+        });
+
+        function renderTable(id, dataArr, titleKey, paramType) {
+            const el = document.getElementById(id);
+            if(dataArr.length === 0) { el.innerHTML = `<tr><td class="py-4 text-gray-400 italic">Belum ada data.</td></tr>`; return; }
+            el.innerHTML = dataArr.map(x => `<tr class="border-b border-gray-50 hover:bg-gray-50 transition"><td class="py-4 font-bold text-gray-700">${x[titleKey]}</td><td class="py-4 text-right space-x-1 whitespace-nowrap"><button onclick="siapkanEdit('${paramType}', '${x.id}')" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-xs font-bold hover:bg-yellow-500 hover:text-white transition shadow-sm"><i class="fas fa-edit"></i> <span class="hidden md:inline">Edit</span></button><button onclick="hapusData('${paramType}', '${x.id}')" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-600 hover:text-white transition shadow-sm"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+        }
 
         function formatInpDate(d) { try { return d && d!=="-" ? new Date(d).toISOString().split('T')[0] : ""; } catch{ return ""; } }
 
-        function switchTab(tab) {
+        window.switchTab = function(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             const colors = {pegawai:'bg-blue-600 text-white', berita:'bg-red-600 text-white', karya:'bg-orange-500 text-white', kelas:'bg-purple-600 text-white', pengaturan:'bg-yellow-400 text-slate-900'};
@@ -125,26 +168,11 @@
             });
         }
 
-        async function fetchAll() {
-            try {
-                const res = await fetch(API_URL);
-                globalData = await res.json();
-                
-                const drawList = (id, dataArr, titleKey, paramType) => {
-                    document.getElementById(id).innerHTML = dataArr.length ? dataArr.map(x => `<tr class="border-b border-gray-50 hover:bg-gray-50 transition"><td class="py-4 font-bold text-gray-700">${x[titleKey]}</td><td class="py-4 text-right space-x-1 whitespace-nowrap"><button onclick="siapkanEdit('${paramType}', ${x.id})" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-xs font-bold hover:bg-yellow-500 hover:text-white transition shadow-sm"><i class="fas fa-edit"></i> <span class="hidden md:inline">Edit</span></button><button onclick="hapusData('${paramType}', ${x.id})" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-600 hover:text-white transition shadow-sm"><i class="fas fa-trash"></i></button></td></tr>`).join('') : `<tr><td class="py-4 text-gray-400 italic">Belum ada data terdaftar.</td></tr>`;
-                };
-                drawList('list_pegawai', globalData.pegawai, 'nama', 'pegawai');
-                drawList('list_berita', globalData.berita, 'judul', 'berita');
-                drawList('list_karya', globalData.karya, 'judul', 'karya');
-                drawList('list_kelas', globalData.kelas, 'nama_kelas', 'kelas');
-            } catch (e) { console.error(e); }
-        }
-
-        function siapkanEdit(tipe, id) {
+        window.siapkanEdit = function(tipe, id) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            const item = globalData[tipe].find(x => x.id === id); if(!item) return;
+            const item = window.globalData[tipe].find(x => x.id === id); if(!item) return;
 
-            document.getElementById('title_' + tipe).innerHTML = `<i class="fas fa-edit"></i> Mengedit ID: ${id}`;
+            document.getElementById('title_' + tipe).innerHTML = `<i class="fas fa-edit"></i> Edit Data`;
             const btn = document.getElementById('btn_' + tipe);
             btn.innerHTML = "UPDATE DATA SEKARANG";
             btn.className = "md:col-span-2 text-white font-black py-4 rounded-xl mt-2 shadow-lg transition bg-yellow-500 hover:bg-yellow-600";
@@ -156,7 +184,7 @@
             else if(tipe==='kelas'){ document.getElementById('c_id').value=id; document.getElementById('c_nama').value=item.nama_kelas; document.getElementById('c_laki').value=item.laki; document.getElementById('c_perempuan').value=item.perempuan; }
         }
 
-        function batalEdit(tipe) {
+        window.batalEdit = function(tipe) {
             document.getElementById('form_' + tipe).reset();
             document.getElementById(tipe.charAt(0) + '_id').value = "";
             const titles = {pegawai:'<i class="fas fa-user-plus"></i> Tambah Pegawai', berita:'<i class="fas fa-bullhorn"></i> Terbitkan Berita', karya:'<i class="fas fa-lightbulb"></i> Publikasi Karya', kelas:'<i class="fas fa-school"></i> Data Kelas'};
@@ -165,44 +193,65 @@
             const btn = document.getElementById('btn_' + tipe);
             const labels = {pegawai:'SIMPAN PEGAWAI', berita:'TERBITKAN BERITA', karya:'PUBLIKASIKAN KARYA', kelas:'SIMPAN KELAS'};
             const colors = {pegawai:'bg-blue-600 hover:bg-blue-700', berita:'bg-red-600 hover:bg-red-700', karya:'bg-orange-500 hover:bg-orange-600', kelas:'bg-purple-600 hover:bg-purple-700'};
-            
             btn.innerHTML = labels[tipe]; 
             btn.className = `md:col-span-2 text-white font-black py-4 rounded-xl mt-2 shadow-lg transition ${colors[tipe]}`;
             document.getElementById('batal_' + tipe).classList.add('hidden');
         }
 
-        async function simpan(tipe) {
+        window.simpan = async function(tipe) {
             const id = document.getElementById(tipe.charAt(0) + '_id').value;
-            let data = { tipe_data: tipe, action: id ? "edit" : "add", id: id };
+            let data = {};
 
-            if(tipe==='pegawai') data = {...data, nama:document.getElementById('p_nama').value, nuptk:document.getElementById('p_nuptk').value||"-", kategori:document.getElementById('p_kategori').value, jabatan:document.getElementById('p_jabatan').value||"-", tempatLahir:document.getElementById('p_tempat').value||"-", tanggalLahir:document.getElementById('p_tgl_lahir').value||"-", pendidikan:document.getElementById('p_pendidikan').value||"-", tanggalBergabung:document.getElementById('p_tgl_masuk').value||"-", email:document.getElementById('p_email').value||"-", foto:document.getElementById('p_foto').value||"https://i.ibb.co/Xz9Gf4z/default.png"};
-            else if(tipe==='berita') data = {...data, tanggal:id?document.getElementById('b_tgl').value:new Date().toISOString().split('T')[0], judul:document.getElementById('b_judul').value, kategori:document.getElementById('b_kategori').value||"-", gambar:document.getElementById('b_gambar').value||"-", isi:document.getElementById('b_isi').value};
-            else if(tipe==='karya') data = {...data, tanggal:id?document.getElementById('k_tgl').value:new Date().toISOString().split('T')[0], penulis:document.getElementById('k_penulis').value, kategori:document.getElementById('k_kategori').value, judul:document.getElementById('k_judul').value, gambar:document.getElementById('k_gambar').value||"-", deskripsi:document.getElementById('k_deskripsi').value};
-            else if(tipe==='kelas') data = {...data, nama_kelas:document.getElementById('c_nama').value, laki:document.getElementById('c_laki').value, perempuan:document.getElementById('c_perempuan').value};
+            if(tipe==='pegawai') data = { nama:document.getElementById('p_nama').value, nuptk:document.getElementById('p_nuptk').value||"-", kategori:document.getElementById('p_kategori').value, jabatan:document.getElementById('p_jabatan').value||"-", tempatLahir:document.getElementById('p_tempat').value||"-", tanggalLahir:document.getElementById('p_tgl_lahir').value||"-", pendidikan:document.getElementById('p_pendidikan').value||"-", tanggalBergabung:document.getElementById('p_tgl_masuk').value||"-", email:document.getElementById('p_email').value||"-", foto:document.getElementById('p_foto').value||"https://i.ibb.co/Xz9Gf4z/default.png"};
+            else if(tipe==='berita') data = { tanggal:id?document.getElementById('b_tgl').value:new Date().toISOString().split('T')[0], judul:document.getElementById('b_judul').value, kategori:document.getElementById('b_kategori').value||"-", gambar:document.getElementById('b_gambar').value||"-", isi:document.getElementById('b_isi').value};
+            else if(tipe==='karya') data = { tanggal:id?document.getElementById('k_tgl').value:new Date().toISOString().split('T')[0], penulis:document.getElementById('k_penulis').value, kategori:document.getElementById('k_kategori').value, judul:document.getElementById('k_judul').value, gambar:document.getElementById('k_gambar').value||"-", deskripsi:document.getElementById('k_deskripsi').value};
+            else if(tipe==='kelas') data = { nama_kelas:document.getElementById('c_nama').value, laki:parseInt(document.getElementById('c_laki').value)||0, perempuan:parseInt(document.getElementById('c_perempuan').value)||0 };
 
             const btn = document.getElementById('btn_' + tipe); const oriText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MEMPROSES...'; btn.disabled = true;
 
-            try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) }); batalEdit(tipe); fetchAll(); alert("Data Berhasil Disimpan!"); } 
-            catch(e) { alert("Gagal menghubungi server!"); } finally { btn.innerHTML = oriText; btn.disabled = false; }
+            try {
+                if(id) {
+                    await updateDoc(doc(db, tipe, id), data);
+                } else {
+                    await addDoc(collection(db, tipe), data);
+                }
+                window.batalEdit(tipe);
+                alert("Data Berhasil Disimpan!"); 
+                // Tidak perlu panggil fungsi fetch lagi, tabel akan update otomatis secara ajaib!
+            } catch(e) { 
+                console.error(e);
+                alert("Gagal menyimpan data!"); 
+            } finally { 
+                btn.innerHTML = oriText; btn.disabled = false; 
+            }
         }
 
-        async function hapusData(tipe, id) {
-            if(!confirm("Apakah Anda yakin ingin menghapus data ini secara permanen?")) return;
-            try { alert("Menghapus..."); await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ tipe_data: tipe, action: "hapus", id: id }) }); fetchAll(); } 
-            catch(e) { alert("Gagal menghapus!"); }
+        window.hapusData = async function(tipe, id) {
+            if(!confirm("Hapus data ini secara permanen?")) return;
+            try { 
+                await deleteDoc(doc(db, tipe, id));
+            } catch(e) { alert("Gagal menghapus!"); }
         }
 
-        async function gantiSandi() {
-            const btn = document.getElementById('btnGantiSandi'); const val = document.getElementById('sandi_baru').value;
-            if(val.length < 5) return alert("Sandi harus memiliki minimal 5 karakter!");
+        window.gantiSandi = async function() {
+            const val = document.getElementById('sandi_baru').value;
+            if(val.length < 5) return alert("Sandi minimal 5 karakter!");
+            const btn = document.getElementById('btnGantiSandi');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MEMPERBARUI...'; btn.disabled = true;
-            try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: "ganti_sandi", sandi_baru: val }) }); alert("Sandi Keamanan Berhasil Diperbarui!"); document.getElementById('sandi_baru').value=""; } 
-            catch(e) { alert("Sandi berhasil diperbarui!"); } finally { btn.innerHTML = "PERBARUI SANDI"; btn.disabled = false; }
+            try { 
+                await setDoc(doc(db, "profil", "admin_auth"), { sandi: val });
+                alert("Sandi berhasil diperbarui!"); 
+                document.getElementById('sandi_baru').value=""; 
+            } catch(e) { 
+                console.error(e);
+                alert("Gagal memperbarui sandi!"); 
+            } finally { 
+                btn.innerHTML = "PERBARUI SANDI"; btn.disabled = false; 
+            }
         }
 
-        function logout() { localStorage.removeItem("admin_token"); window.location.href = "index.html"; }
-        document.addEventListener('DOMContentLoaded', fetchAll);
+        window.logout = function() { localStorage.removeItem("admin_token"); window.location.href = "index.html"; }
     </script>
 </body>
 </html>
