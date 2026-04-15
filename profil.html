@@ -3,119 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - SDIT Qurratu A'yun Al-Islami</title>
+    <title>Profil Sekolah - SDIT Qurratu A'yun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
-        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
-        .custom-scroll::-webkit-scrollbar { width: 5px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #eab308; border-radius: 10px; } /* Warna Kuning menyesuaikan tema Profil */
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
-    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+<body class="bg-gray-50 text-gray-800 font-sans pb-20">
 
-    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
-        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-home text-blue-600 text-lg md:text-xl"></i></a>
-        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-yellow-500 rounded-2xl shadow-lg border border-yellow-400"><i class="fas fa-flag text-white text-lg md:text-xl"></i></a>
-        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
-        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
-        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
-        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
-        <a href="redaksi.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl"></i></a>
+    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 bg-slate-900/90 backdrop-blur-xl px-4 py-3 rounded-full shadow-2xl">
+        <a href="index.html" class="w-10 h-10 bg-white flex items-center justify-center rounded-xl shadow"><i class="fas fa-home text-blue-600"></i></a>
+        <a href="profil.html" class="w-10 h-10 bg-yellow-500 flex items-center justify-center rounded-xl shadow text-white"><i class="fas fa-flag"></i></a>
+        <a href="pegawai.html" class="w-10 h-10 bg-white flex items-center justify-center rounded-xl shadow"><i class="fas fa-users text-green-600"></i></a>
+        <a href="kelas.html" class="w-10 h-10 bg-white flex items-center justify-center rounded-xl shadow"><i class="fas fa-school text-purple-600"></i></a>
     </nav>
 
-    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center">
-        <div class="flex items-center gap-4">
-            <img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'">
-            <h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
-        </div>
+    <header class="bg-white shadow-sm p-4 flex items-center gap-4">
+        <img src="logo.png" class="h-10 w-auto" onerror="this.style.display='none'">
+        <h1 class="text-xl font-black text-blue-800 uppercase italic">SDIT Qurratu A'yun Al-Islami</h1>
     </header>
 
-    <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
-        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic">Memuat kabar terbaru...</span></div>
-    </div>
+    <main class="max-w-4xl mx-auto p-6 mt-6">
+        <div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border-t-[12px] border-yellow-400">
+            <div class="p-8 md:p-12">
+                <h2 class="text-3xl font-black text-gray-800 mb-8 border-l-8 border-yellow-400 pl-4 uppercase italic">Visi, Misi & Tujuan</h2>
+                
+                <div id="profil_loading" class="text-gray-400 italic py-10 text-center"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data profil...</div>
+                
+                <div id="profil_content" class="hidden space-y-10 animate-fade-in">
+                    <div>
+                        <h3 class="text-lg font-black text-yellow-600 mb-3 flex items-center gap-2"><i class="fas fa-eye"></i> VISI SEKOLAH</h3>
+                        <p id="v_visi" class="text-gray-600 leading-relaxed bg-yellow-50 p-6 rounded-3xl italic font-medium"></p>
+                    </div>
 
-    <main class="flex-1 px-4 py-10 md:p-10 md:ml-16 w-full max-w-7xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-black mb-8 text-gray-800 border-l-8 border-yellow-500 pl-4">Profil Sekolah</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-8 border-blue-600 flex flex-col">
-                <h3 class="text-2xl font-bold mb-4 text-blue-700"><i class="fas fa-eye mr-2"></i>Visi</h3>
-                <div id="txtVisi" class="text-gray-600 h-48 md:h-64 overflow-y-auto custom-scroll text-justify italic pr-2 font-medium leading-relaxed">Menarik data visi dari server...</div>
-            </div>
-            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-8 border-yellow-500 flex flex-col">
-                <h3 class="text-2xl font-bold mb-4 text-yellow-600"><i class="fas fa-bullseye mr-2"></i>Misi</h3>
-                <div id="txtMisi" class="text-gray-600 h-48 md:h-64 overflow-y-auto custom-scroll pr-2 leading-relaxed">Menarik data misi dari server...</div>
-            </div>
-            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-8 border-green-500 flex flex-col">
-                <h3 class="text-2xl font-bold mb-4 text-green-700"><i class="fas fa-chart-line mr-2"></i>Tujuan</h3>
-                <div id="txtTujuan" class="text-gray-600 h-48 md:h-64 overflow-y-auto custom-scroll pr-2 leading-relaxed">Menarik data tujuan dari server...</div>
+                    <div>
+                        <h3 class="text-lg font-black text-blue-700 mb-3 flex items-center gap-2"><i class="fas fa-rocket"></i> MISI SEKOLAH</h3>
+                        <div id="v_misi" class="text-gray-600 leading-relaxed prose prose-slate whitespace-pre-line ml-4"></div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-black text-green-600 mb-3 flex items-center gap-2"><i class="fas fa-bullseye"></i> TUJUAN SEKOLAH</h3>
+                        <div id="v_tujuan" class="text-gray-600 leading-relaxed prose prose-slate whitespace-pre-line ml-4"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white pt-10 pb-8 relative z-40 w-full mt-auto">
-        <p class="text-lg font-bold text-center">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="window.location.href='login.html'" class="mt-6 text-gray-400 border border-gray-700 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
-            <i class="fas fa-cog"></i> Panel Admin
-        </button>
-        <div class="h-28 md:hidden w-full bg-transparent pointer-events-none"></div>
-    </footer>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
-            authDomain: "websekolah-9bcde.firebaseapp.com",
-            projectId: "websekolah-9bcde",
-            storageBucket: "websekolah-9bcde.firebasestorage.app",
-            messagingSenderId: "113406929634",
-            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function loadData() {
+        async function loadProfil() {
             try {
-                // Fetch Ticker
-                const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
-                const ticker = document.getElementById('tickerContent');
-                let items = [...beritaSnap.docs.map(d => ({...d.data()})).slice(0,3), ...karyaSnap.docs.map(d => ({...d.data()})).slice(0,3)];
-                if(items.length > 0) {
-                    ticker.innerHTML = items.map(item => `<a href="${item.penulis ? 'karya.html' : 'berita.html'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('') + ticker.innerHTML;
-                }
-
-                // Fetch Visi Misi Tujuan
                 const snap = await getDoc(doc(db, "profil", "sekolah"));
-                if(snap.exists()) {
-                    const d = snap.data();
-                    
-                    document.getElementById('txtVisi').innerText = d.visi || "Data Visi belum diisi.";
-                    
-                    // Fungsi pengubah teks biasa (dengan enter) menjadi List Bullet (Titik-titik)
-                    const formatList = (text) => {
-                        if (!text) return "-";
-                        const poin = text.split('\n').filter(t => t.trim() !== '');
-                        return "<ul class='list-decimal pl-5 space-y-3'>" + poin.map(p => `<li>${p}</li>`).join('') + "</ul>";
-                    };
-
-                    document.getElementById('txtMisi').innerHTML = formatList(d.misi);
-                    document.getElementById('txtTujuan').innerHTML = formatList(d.tujuan);
-                } else {
-                    document.getElementById('txtVisi').innerText = "Silakan isi data Visi di Panel Admin.";
-                    document.getElementById('txtMisi').innerText = "Silakan isi data Misi di Panel Admin.";
-                    document.getElementById('txtTujuan').innerText = "Silakan isi data Tujuan di Panel Admin.";
+                if (snap.exists()) {
+                    const data = snap.data();
+                    document.getElementById('v_visi').innerText = data.visi || "-";
+                    document.getElementById('v_misi').innerText = data.misi || "-";
+                    document.getElementById('v_tujuan').innerText = data.tujuan || "-";
+                    document.getElementById('profil_loading').classList.add('hidden');
+                    document.getElementById('profil_content').classList.remove('hidden');
                 }
-
-            } catch (err) { console.error(err); }
+            } catch (e) { console.error(e); }
         }
-
-        document.addEventListener('DOMContentLoaded', loadData);
+        loadProfil();
     </script>
 </body>
 </html>
