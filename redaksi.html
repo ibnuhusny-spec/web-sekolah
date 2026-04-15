@@ -3,79 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redaksi & Kontak - SDIT Qurratu A'yun</title>
+    <title>Redaksi - SDIT Qurratu A'yun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans pb-20">
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
 
-    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 bg-slate-900/90 backdrop-blur-xl px-4 py-3 rounded-full shadow-2xl">
-        <a href="index.html" class="w-10 h-10 bg-white flex items-center justify-center rounded-xl shadow"><i class="fas fa-home text-blue-600"></i></a>
-        <a href="profil.html" class="w-10 h-10 bg-white flex items-center justify-center rounded-xl shadow"><i class="fas fa-flag text-yellow-500"></i></a>
-        <a href="pegawai.html" class="w-10 h-10 bg-white flex items-center justify-center rounded-xl shadow"><i class="fas fa-users text-green-600"></i></a>
-        <a href="redaksi.html" class="w-10 h-10 bg-indigo-600 flex items-center justify-center rounded-xl shadow text-white"><i class="fas fa-id-badge"></i></a>
+    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
+        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-home text-blue-600 text-lg md:text-xl"></i></a>
+        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
+        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
+        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
+        <a href="redaksi.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-indigo-600 rounded-2xl shadow-lg border border-indigo-500"><i class="fas fa-edit text-white text-lg md:text-xl"></i></a>
     </nav>
 
-    <header class="bg-white shadow-sm p-4 flex items-center gap-4">
-        <img src="logo.png" class="h-10 w-auto" onerror="this.style.display='none'">
-        <h1 class="text-xl font-black text-blue-800 uppercase italic">SDIT Qurratu A'yun Al-Islami</h1>
-    </header>
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center text-center"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
 
-    <main class="max-w-4xl mx-auto p-6 mt-6">
-        <div class="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border-t-[12px] border-indigo-600">
-            <div class="p-8 md:p-12">
-                <h2 class="text-3xl font-black text-gray-800 mb-8 border-l-8 border-indigo-600 pl-4 uppercase italic">Hubungi Kami</h2>
-                
-                <div id="redaksi_loading" class="text-gray-400 italic py-10 text-center"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat info kontak...</div>
-                
-                <div id="redaksi_content" class="hidden animate-fade-in space-y-12">
-                    <div class="bg-indigo-50 p-8 rounded-3xl space-y-4 shadow-inner">
-                        <div class="grid grid-cols-1 md:grid-cols-[140px_auto] gap-1 md:gap-0">
-                            <span class="text-indigo-400 font-black uppercase text-xs">Alamat Kantor</span>
-                            <span id="v_alamat" class="font-bold text-indigo-900">: </span>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-[140px_auto] gap-1 md:gap-0 border-t border-indigo-100 pt-4">
-                            <span class="text-indigo-400 font-black uppercase text-xs">Email Resmi</span>
-                            <span id="v_email" class="font-bold text-indigo-900">: </span>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-[140px_auto] gap-1 md:gap-0 border-t border-indigo-100 pt-4">
-                            <span class="text-indigo-400 font-black uppercase text-xs">WhatsApp</span>
-                            <span id="v_wa" class="font-bold text-indigo-900">: </span>
-                        </div>
-                    </div>
+    <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-br from-slate-100 to-indigo-100 min-h-screen">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black mb-8 text-slate-800 border-l-8 border-indigo-600 pl-4 uppercase italic">Susunan Redaksi</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-8 border-indigo-600">
+                    <h3 class="text-xl font-black text-indigo-600 mb-6 flex items-center gap-2"><i class="fas fa-users-cog"></i> TIM PENYUSUN</h3>
+                    <div id="displayTim" class="text-slate-600 leading-loose whitespace-pre-line font-medium">Memuat data tim dari Firebase...</div>
+                </div>
 
-                    <div>
-                        <h3 class="text-lg font-black text-indigo-600 mb-6 flex items-center gap-2 uppercase italic"><i class="fas fa-users-cog"></i> Susunan Redaksi Website</h3>
-                        <div id="v_tim" class="text-gray-600 whitespace-pre-line leading-loose font-medium ml-4"></div>
+                <div class="bg-indigo-900 p-6 md:p-8 rounded-3xl shadow-xl text-white">
+                    <h3 class="text-xl font-black mb-6 flex items-center gap-2 text-indigo-300"><i class="fas fa-address-card"></i> HUBUNGI KAMI</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 flex justify-center"><i class="fas fa-map-marker-alt mt-1 text-indigo-300 text-xl"></i></div>
+                            <div><p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Alamat Redaksi</p><p id="displayAlamat" class="text-sm">Memuat alamat...</p></div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 flex justify-center"><i class="fas fa-envelope mt-1 text-indigo-300 text-xl"></i></div>
+                            <div><p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Email Resmi</p><p id="displayEmail" class="text-sm font-bold">Memuat email...</p></div>
+                        </div>
+                        <a id="linkWA" href="#" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white p-4 rounded-2xl text-center font-black transition shadow-lg mt-4">
+                            <i class="fab fa-whatsapp mr-2 text-xl"></i> HUBUNGI VIA WHATSAPP
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
+    <footer class="bg-gray-900 text-white pt-10 pb-8 relative z-40 w-full mt-auto">
+        <p class="text-lg font-bold text-center">SDIT Qurratu A'yun Al-Islami</p>
+        <button onclick="window.location.href='login.html'" class="mt-6 text-gray-400 border border-gray-700 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
+            <i class="fas fa-cog"></i> Panel Admin
+        </button>
+        <div class="h-28 md:hidden w-full bg-transparent pointer-events-none"></div>
+    </footer>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
+        // Konfigurasi dari Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
+            authDomain: "websekolah-9bcde.firebaseapp.com",
+            projectId: "websekolah-9bcde",
+            storageBucket: "websekolah-9bcde.firebasestorage.app",
+            messagingSenderId: "113406929634",
+            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
+        };
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         async function loadRedaksi() {
             try {
                 const snap = await getDoc(doc(db, "profil", "redaksi"));
-                if (snap.exists()) {
+                if(snap.exists()) {
                     const d = snap.data();
-                    document.getElementById('v_alamat').innerHTML = `: ${d.alamat || '-'}`;
-                    document.getElementById('v_email').innerHTML = `: ${d.email || '-'}`;
-                    document.getElementById('v_wa').innerHTML = `: ${d.whatsapp || '-'}`;
-                    document.getElementById('v_tim').innerText = d.tim || "-";
-                    document.getElementById('redaksi_loading').classList.add('hidden');
-                    document.getElementById('redaksi_content').classList.remove('hidden');
+                    document.getElementById('displayTim').innerText = d.tim || "Belum ada data tim. Silakan isi di Panel Admin.";
+                    document.getElementById('displayAlamat').innerText = d.alamat || "-";
+                    document.getElementById('displayEmail').innerText = d.email || "-";
+                    
+                    const btnWA = document.getElementById('linkWA');
+                    if (d.whatsapp) {
+                        btnWA.href = `https://wa.me/${d.whatsapp}`;
+                    } else {
+                        btnWA.href = "#";
+                    }
+                } else {
+                    document.getElementById('displayTim').innerText = "Data redaksi belum diatur. Silakan masuk ke Panel Admin dan isi pada tab Redaksi.";
                 }
-            } catch (e) { console.error(e); }
+            } catch(e) { 
+                console.error("Gagal memuat Firebase:", e); 
+                document.getElementById('displayTim').innerText = "Gagal mengambil data dari server.";
+            }
         }
-        loadRedaksi();
+        
+        document.addEventListener('DOMContentLoaded', loadRedaksi);
     </script>
 </body>
 </html>
