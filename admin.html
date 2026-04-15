@@ -6,6 +6,16 @@
     <title>CMS SDIT Qurratu A'yun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <style>
+        /* Gaya khusus untuk merapikan kotak editor */
+        .ql-toolbar.ql-snow { border-radius: 0.75rem 0.75rem 0 0; background-color: #f8fafc; border-color: #e2e8f0; border-width: 2px; }
+        .ql-container.ql-snow { border-radius: 0 0 0.75rem 0.75rem; border-color: #e2e8f0; border-width: 0 2px 2px 2px; font-family: inherit; font-size: 1rem; }
+        .ql-editor { min-height: 200px; }
+    </style>
 </head>
 <body class="bg-gray-100 flex flex-col md:flex-row min-h-screen font-sans hidden" id="admin_body">
 
@@ -76,13 +86,44 @@
             <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b uppercase text-xs text-gray-400"><th class="pb-3">Nama Pegawai</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_pegawai" class="divide-y divide-gray-100"></tbody></table></div>
         </div>
         
-        <div id="tab-berita" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-red-600"><h2 id="title_berita" class="text-lg font-black mb-4 text-red-600 flex items-center gap-2"><i class="fas fa-bullhorn"></i> Terbitkan Berita</h2><form id="form_berita" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="b_id"><input type="hidden" id="b_tgl"><input id="b_judul" placeholder="Judul Berita" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none" required><input id="b_kategori" placeholder="Kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none"><input type="url" id="b_gambar" placeholder="URL Gambar" class="p-3 md:p-4 border-2 rounded-xl outline-none"><textarea id="b_isi" placeholder="Isi berita..." class="md:col-span-2 p-4 border-2 rounded-xl outline-none h-40" required></textarea><button type="button" onclick="simpan('berita')" id="btn_berita" class="md:col-span-2 bg-red-600 text-white font-bold py-4 rounded-xl mt-2">TERBITKAN</button><button type="button" onclick="batalEdit('berita')" id="batal_berita" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden">Batal</button></form></div><div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b text-xs text-gray-400"><th>Judul</th><th class="text-right">Aksi</th></tr></thead><tbody id="list_berita" class="divide-y"></tbody></table></div></div>
+        <div id="tab-berita" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-red-600"><h2 id="title_berita" class="text-lg font-black mb-4 text-red-600 flex items-center gap-2"><i class="fas fa-bullhorn"></i> Terbitkan Berita</h2>
+            <form id="form_berita" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="b_id"><input type="hidden" id="b_tgl">
+                <input id="b_judul" placeholder="Judul Berita" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500" required>
+                <input id="b_kategori" placeholder="Kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500">
+                <input type="url" id="b_gambar" placeholder="URL Gambar" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500">
+                
+                <div class="md:col-span-2 mt-2">
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Isi Berita</label>
+                    <div id="editor_berita" class="bg-white"></div>
+                </div>
+
+                <button type="button" onclick="simpan('berita')" id="btn_berita" class="md:col-span-2 bg-red-600 text-white font-bold py-4 rounded-xl mt-4 shadow-md hover:bg-red-700">TERBITKAN BERITA</button>
+                <button type="button" onclick="batalEdit('berita')" id="batal_berita" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
+            </form></div>
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b text-xs text-gray-400 uppercase tracking-widest"><th class="pb-3">Judul Berita</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_berita" class="divide-y divide-gray-100"></tbody></table></div>
+        </div>
         
-        <div id="tab-karya" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-orange-500"><h2 id="title_karya" class="text-lg font-black mb-4 text-orange-500 flex items-center gap-2"><i class="fas fa-lightbulb"></i> Publikasi Karya</h2><form id="form_karya" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="k_id"><input type="hidden" id="k_tgl"><input id="k_judul" placeholder="Judul" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none" required><input id="k_penulis" placeholder="Penulis" class="p-3 md:p-4 border-2 rounded-xl outline-none" required><select id="k_kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none"><option value="Artikel">Artikel</option><option value="Sastra">Sastra</option><option value="Desain">Desain</option><option value="Aplikasi">Aplikasi</option></select><input type="url" id="k_gambar" placeholder="URL Gambar" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none"><textarea id="k_deskripsi" placeholder="Deskripsi..." class="md:col-span-2 p-4 border-2 rounded-xl h-40" required></textarea><button type="button" onclick="simpan('karya')" id="btn_karya" class="md:col-span-2 bg-orange-500 text-white font-bold py-4 rounded-xl mt-2">PUBLIKASI</button><button type="button" onclick="batalEdit('karya')" id="batal_karya" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden">Batal</button></form></div><div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b text-xs text-gray-400"><th>Judul</th><th class="text-right">Aksi</th></tr></thead><tbody id="list_karya" class="divide-y"></tbody></table></div></div>
+        <div id="tab-karya" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-orange-500"><h2 id="title_karya" class="text-lg font-black mb-4 text-orange-500 flex items-center gap-2"><i class="fas fa-lightbulb"></i> Publikasi Karya</h2>
+            <form id="form_karya" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="k_id"><input type="hidden" id="k_tgl">
+                <input id="k_judul" placeholder="Judul Karya" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500" required>
+                <input id="k_penulis" placeholder="Penulis" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500" required>
+                <select id="k_kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500"><option value="Artikel">Artikel</option><option value="Sastra">Sastra</option><option value="Desain">Desain</option><option value="Aplikasi">Aplikasi</option></select>
+                <input type="url" id="k_gambar" placeholder="URL Gambar Header" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500">
+                
+                <div class="md:col-span-2 mt-2">
+                    <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Isi / Deskripsi Karya</label>
+                    <div id="editor_karya" class="bg-white"></div>
+                </div>
+
+                <button type="button" onclick="simpan('karya')" id="btn_karya" class="md:col-span-2 bg-orange-500 text-white font-bold py-4 rounded-xl mt-4 shadow-md hover:bg-orange-600">PUBLIKASIKAN KARYA</button>
+                <button type="button" onclick="batalEdit('karya')" id="batal_karya" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
+            </form></div>
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b text-xs text-gray-400 uppercase tracking-widest"><th class="pb-3">Judul Karya</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_karya" class="divide-y divide-gray-100"></tbody></table></div>
+        </div>
         
         <div id="tab-kelas" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-purple-500"><h2 id="title_kelas" class="text-lg font-black mb-4 text-purple-600 flex items-center gap-2"><i class="fas fa-school"></i> Data Kelas</h2><form id="form_kelas" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="c_id"><input id="c_nama" placeholder="Nama Kelas" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none" required><input type="number" id="c_laki" placeholder="Laki-laki" class="p-3 md:p-4 border-2 rounded-xl outline-none" required><input type="number" id="c_perempuan" placeholder="Perempuan" class="p-3 md:p-4 border-2 rounded-xl outline-none" required><button type="button" onclick="simpan('kelas')" id="btn_kelas" class="md:col-span-2 bg-purple-600 text-white font-bold py-4 rounded-xl mt-2">SIMPAN</button><button type="button" onclick="batalEdit('kelas')" id="batal_kelas" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden">Batal</button></form></div><div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b text-xs text-gray-400"><th>Kelas</th><th class="text-right">Aksi</th></tr></thead><tbody id="list_kelas" class="divide-y"></tbody></table></div></div>
         
-        <div id="tab-redaksi" class="tab-content hidden"><div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-indigo-600 max-w-2xl mx-auto mt-4"><h2 class="text-2xl font-black mb-6 text-indigo-600 uppercase italic"><i class="fas fa-users-cog mr-2"></i>Informasi Redaksi</h2><form id="form_redaksi" class="space-y-4"><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Alamat Kantor</label><textarea id="r_alamat" class="w-full p-4 border-2 rounded-xl outline-none h-24"></textarea></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Email Redaksi</label><input type="email" id="r_email" class="w-full p-4 border-2 rounded-xl outline-none"></div><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">WhatsApp Redaksi</label><input type="text" id="r_wa" class="w-full p-4 border-2 rounded-xl outline-none"></div></div><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Susunan Tim (Pisahkan dengan baris baru)</label><textarea id="r_tim" class="w-full p-4 border-2 rounded-xl outline-none h-40"></textarea></div><button type="button" onclick="simpanRedaksi()" id="btnSimpanRedaksi" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl mt-4">PERBARUI DATA REDAKSI</button></form></div></div>
+        <div id="tab-redaksi" class="tab-content hidden"><div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-indigo-600 max-w-2xl mx-auto mt-4"><h2 class="text-2xl font-black mb-6 text-indigo-600 uppercase italic"><i class="fas fa-users-cog mr-2"></i>Informasi Redaksi</h2><form id="form_redaksi" class="space-y-4"><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Alamat Kantor</label><textarea id="r_alamat" class="w-full p-4 border-2 rounded-xl outline-none h-24"></textarea></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Email Redaksi</label><input type="email" id="r_email" class="w-full p-4 border-2 rounded-xl outline-none"></div><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">WhatsApp Redaksi</label><input type="text" id="r_wa" class="w-full p-4 border-2 rounded-xl outline-none"></div></div><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Susunan Tim (Pisahkan dengan baris baru)</label><textarea id="r_tim" class="w-full p-4 border-2 rounded-xl outline-none h-40"></textarea></div><button type="button" onclick="simpanRedaksi()" id="btnSimpanRedaksi" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl mt-4 shadow-lg hover:bg-indigo-700">PERBARUI DATA REDAKSI</button></form></div></div>
         
     </main>
 
@@ -104,37 +145,47 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
         window.globalData = { pegawai: [], berita: [], karya: [], kelas: [] };
-
         const EMAIL_SUPER_ADMIN = "ibnuhusny@gmail.com";
 
         // ========================================================
-        // PENJAGA PINTU UTAMA: Cek Status Login Setiap Saat
+        // INISIALISASI MESIN EDITOR (QUILL.JS)
+        // ========================================================
+        const quillOptions = {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'], 
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['blockquote'],
+                    ['clean'] // tombol untuk menghapus format
+                ]
+            }
+        };
+        window.quillBerita = new Quill('#editor_berita', { ...quillOptions, placeholder: 'Ketik isi berita di sini...' });
+        window.quillKarya = new Quill('#editor_karya', { ...quillOptions, placeholder: 'Ketik deskripsi atau isi karya di sini...' });
+
+        // ========================================================
+        // PENJAGA PINTU UTAMA
         // ========================================================
         onAuthStateChanged(auth, (user) => {
             if (user && user.email === EMAIL_SUPER_ADMIN) {
-                // Jika Pak Ibnu, buka kunci layar
                 document.getElementById('loading_screen').classList.add('hidden');
                 document.getElementById('admin_body').classList.remove('hidden');
-                
-                // Tampilkan foto & nama profil Bapak di sidebar
                 document.getElementById('admin_foto').src = user.photoURL || "https://i.ibb.co/Xz9Gf4z/default.png";
                 document.getElementById('admin_nama').innerText = user.displayName || "Admin";
-                
-                fetchProfilData(); // Mulai ambil data
+                fetchProfilData(); 
             } else {
-                // Jika bukan Pak Ibnu, langsung tendang ke halaman login
                 window.location.href = "login.html";
             }
         });
 
-        // FUNGSI LOGOUT AMAN
         window.logoutAdmin = async function() {
             if(confirm("Apakah Anda yakin ingin keluar dan mengunci Dashboard?")) {
                 await signOut(auth);
                 window.location.href = "login.html";
             }
         }
-        // ========================================================
 
         // Listeners Tabel
         onSnapshot(collection(db, "pegawai"), (s) => { window.globalData.pegawai = s.docs.map(d => ({ id: d.id, ...d.data() })); renderTable('list_pegawai', window.globalData.pegawai, 'nama', 'pegawai'); });
@@ -163,12 +214,18 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
             const item = window.globalData[tipe].find(x => x.id === id); if(!item) return;
             document.getElementById('batal_' + tipe).classList.remove('hidden');
+            
             if(tipe==='pegawai'){ document.getElementById('p_id').value=id; document.getElementById('p_nama').value=item.nama; document.getElementById('p_nuptk').value=item.nuptk; 
                 let kat = item.kategori; if (kat === 'tendik') kat = 'tendik_putra'; 
-                document.getElementById('p_kategori').value=kat; 
-                document.getElementById('p_jabatan').value=item.jabatan; document.getElementById('p_wa').value=item.whatsapp||""; document.getElementById('p_email').value=item.email||""; document.getElementById('p_tempat').value=item.tempatLahir; document.getElementById('p_tgl_lahir').value=item.tanggalLahir; document.getElementById('p_pendidikan').value=item.pendidikan; document.getElementById('p_tgl_masuk').value=item.tanggalBergabung; document.getElementById('p_foto').value=item.foto; }
-            else if(tipe==='berita'){ document.getElementById('b_id').value=id; document.getElementById('b_tgl').value=item.tanggal; document.getElementById('b_judul').value=item.judul; document.getElementById('b_kategori').value=item.kategori; document.getElementById('b_gambar').value=item.gambar; document.getElementById('b_isi').value=item.isi; }
-            else if(tipe==='karya'){ document.getElementById('k_id').value=id; document.getElementById('k_tgl').value=item.tanggal; document.getElementById('k_judul').value=item.judul; document.getElementById('k_penulis').value=item.penulis; document.getElementById('k_kategori').value=item.kategori; document.getElementById('k_gambar').value=item.gambar; document.getElementById('k_deskripsi').value=item.deskripsi; }
+                document.getElementById('p_kategori').value=kat; document.getElementById('p_jabatan').value=item.jabatan; document.getElementById('p_wa').value=item.whatsapp||""; document.getElementById('p_email').value=item.email||""; document.getElementById('p_tempat').value=item.tempatLahir; document.getElementById('p_tgl_lahir').value=item.tanggalLahir; document.getElementById('p_pendidikan').value=item.pendidikan; document.getElementById('p_tgl_masuk').value=item.tanggalBergabung; document.getElementById('p_foto').value=item.foto; }
+            else if(tipe==='berita'){ 
+                document.getElementById('b_id').value=id; document.getElementById('b_tgl').value=item.tanggal; document.getElementById('b_judul').value=item.judul; document.getElementById('b_kategori').value=item.kategori; document.getElementById('b_gambar').value=item.gambar; 
+                window.quillBerita.root.innerHTML = item.isi; // Memasukkan teks ke editor
+            }
+            else if(tipe==='karya'){ 
+                document.getElementById('k_id').value=id; document.getElementById('k_tgl').value=item.tanggal; document.getElementById('k_judul').value=item.judul; document.getElementById('k_penulis').value=item.penulis; document.getElementById('k_kategori').value=item.kategori; document.getElementById('k_gambar').value=item.gambar; 
+                window.quillKarya.root.innerHTML = item.deskripsi; // Memasukkan teks ke editor
+            }
             else if(tipe==='kelas'){ document.getElementById('c_id').value=id; document.getElementById('c_nama').value=item.nama_kelas; document.getElementById('c_laki').value=item.laki; document.getElementById('c_perempuan').value=item.perempuan; }
         }
 
@@ -176,14 +233,24 @@
             document.getElementById('form_' + tipe).reset();
             document.getElementById(tipe.charAt(0) + '_id').value = "";
             document.getElementById('batal_' + tipe).classList.add('hidden');
+            if(tipe === 'berita') window.quillBerita.setContents([]);
+            if(tipe === 'karya') window.quillKarya.setContents([]);
         }
 
         window.simpan = async function(tipe) {
             const id = document.getElementById(tipe.charAt(0) + '_id').value;
             let data = {};
             if(tipe==='pegawai') data = { nama:document.getElementById('p_nama').value, nuptk:document.getElementById('p_nuptk').value, kategori:document.getElementById('p_kategori').value, jabatan:document.getElementById('p_jabatan').value, whatsapp:document.getElementById('p_wa').value, email:document.getElementById('p_email').value, tempatLahir:document.getElementById('p_tempat').value, tanggalLahir:document.getElementById('p_tgl_lahir').value, pendidikan:document.getElementById('p_pendidikan').value, tanggalBergabung:document.getElementById('p_tgl_masuk').value, foto:document.getElementById('p_foto').value };
-            else if(tipe==='berita') data = { tanggal:id?document.getElementById('b_tgl').value:new Date().toISOString().split('T')[0], judul:document.getElementById('b_judul').value, kategori:document.getElementById('b_kategori').value, gambar:document.getElementById('b_gambar').value, isi:document.getElementById('b_isi').value };
-            else if(tipe==='karya') data = { tanggal:id?document.getElementById('k_tgl').value:new Date().toISOString().split('T')[0], penulis:document.getElementById('k_penulis').value, kategori:document.getElementById('k_kategori').value, judul:document.getElementById('k_judul').value, gambar:document.getElementById('k_gambar').value, deskripsi:document.getElementById('k_deskripsi').value };
+            else if(tipe==='berita') {
+                const isiHTML = window.quillBerita.root.innerHTML;
+                if(isiHTML === '<p><br></p>') return alert("Isi berita tidak boleh kosong!");
+                data = { tanggal:id?document.getElementById('b_tgl').value:new Date().toISOString().split('T')[0], judul:document.getElementById('b_judul').value, kategori:document.getElementById('b_kategori').value, gambar:document.getElementById('b_gambar').value, isi: isiHTML };
+            }
+            else if(tipe==='karya') {
+                const deskripsiHTML = window.quillKarya.root.innerHTML;
+                if(deskripsiHTML === '<p><br></p>') return alert("Deskripsi karya tidak boleh kosong!");
+                data = { tanggal:id?document.getElementById('k_tgl').value:new Date().toISOString().split('T')[0], penulis:document.getElementById('k_penulis').value, kategori:document.getElementById('k_kategori').value, judul:document.getElementById('k_judul').value, gambar:document.getElementById('k_gambar').value, deskripsi: deskripsiHTML };
+            }
             else if(tipe==='kelas') data = { nama_kelas:document.getElementById('c_nama').value, laki:parseInt(document.getElementById('c_laki').value), perempuan:parseInt(document.getElementById('c_perempuan').value) };
 
             try { if(id) await updateDoc(doc(db, tipe, id), data); else await addDoc(collection(db, tipe), data); window.batalEdit(tipe); alert("Data Berhasil Disimpan!"); } 
@@ -201,23 +268,16 @@
             const btn = document.getElementById('btnSimpanProfilSekolah');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MENYIMPAN...'; btn.disabled = true;
             try {
-                await setDoc(doc(db, "profil", "sekolah"), {
-                    visi: document.getElementById('ps_visi').value,
-                    misi: document.getElementById('ps_misi').value,
-                    tujuan: document.getElementById('ps_tujuan').value
-                });
+                await setDoc(doc(db, "profil", "sekolah"), { visi: document.getElementById('ps_visi').value, misi: document.getElementById('ps_misi').value, tujuan: document.getElementById('ps_tujuan').value });
                 alert("Profil Sekolah Berhasil Diperbarui!");
-            } catch(e) { alert("Gagal menyimpan profil: " + e.message); } finally { btn.innerHTML = "SIMPAN PROFIL SEKOLAH"; btn.disabled = false; }
+            } catch(e) { alert("Gagal: " + e.message); } finally { btn.innerHTML = "SIMPAN PROFIL SEKOLAH"; btn.disabled = false; }
         }
 
         window.simpanRedaksi = async function() {
             const btn = document.getElementById('btnSimpanRedaksi');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MENYIMPAN...'; btn.disabled = true;
             try {
-                await setDoc(doc(db, "profil", "redaksi"), {
-                    alamat: document.getElementById('r_alamat').value, email: document.getElementById('r_email').value,
-                    whatsapp: document.getElementById('r_wa').value, tim: document.getElementById('r_tim').value
-                });
+                await setDoc(doc(db, "profil", "redaksi"), { alamat: document.getElementById('r_alamat').value, email: document.getElementById('r_email').value, whatsapp: document.getElementById('r_wa').value, tim: document.getElementById('r_tim').value });
                 alert("Data Redaksi Berhasil Diperbarui!");
             } catch(e) { alert("Gagal: " + e.message); } finally { btn.innerHTML = "PERBARUI DATA REDAKSI"; btn.disabled = false; }
         }
