@@ -13,22 +13,21 @@
         <div class="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
         <img src="logo.png" alt="Logo" class="h-20 mx-auto mb-6 drop-shadow-md" onerror="this.style.display='none'">
         <h2 class="text-2xl font-black text-gray-800 mb-2 uppercase tracking-widest">Ruang Admin</h2>
-        <p class="text-sm text-gray-500 mb-8">Masukkan sandi rahasia Anda</p>
+        <p class="text-sm text-gray-500 mb-8">Sistem Keamanan Super Admin</p>
         
-        <div class="relative mb-6">
-            <i class="fas fa-lock absolute left-4 top-4 text-gray-400"></i>
-            <input type="password" id="inputSandi" placeholder="Sandi Keamanan" class="w-full pl-12 p-4 border-2 rounded-xl bg-gray-50 outline-none focus:border-blue-500 font-bold tracking-widest transition" onkeypress="if(event.key === 'Enter') cekSandi()">
-        </div>
+        <p id="pesanStatus" class="text-red-500 text-xs font-bold mb-4 hidden bg-red-50 p-3 rounded-lg border border-red-100"></p>
         
-        <p id="pesanError" class="text-red-500 text-xs font-bold mb-4 hidden"><i class="fas fa-exclamation-triangle mr-1"></i> Sandi salah!</p>
-        
-        <button onclick="cekSandi()" id="btnLogin" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg transition"><i class="fas fa-sign-in-alt mr-2"></i> MASUK KE CMS</button>
+        <button onclick="prosesLoginSuperAdmin()" id="btnLogin" class="w-full bg-white border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 text-gray-700 font-black py-4 rounded-xl shadow-sm transition flex items-center justify-center gap-3">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5">
+            VERIFIKASI GOOGLE
+        </button>
+
         <a href="index.html" class="block mt-6 text-sm text-gray-400 hover:text-gray-600 transition"><i class="fas fa-arrow-left mr-1"></i> Kembali ke Beranda</a>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
@@ -40,37 +39,45 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-        window.cekSandi = async function() {
+        // GANTI DENGAN EMAIL ASLI BAPAK (Harus sama persis dengan yang di Firebase Rules)
+        const EMAIL_SUPER_ADMIN = "ibnuhusny@gmail.com";
+
+        window.prosesLoginSuperAdmin = async function() {
             const btn = document.getElementById('btnLogin');
-            const inputSandi = document.getElementById('inputSandi').value;
-            if(!inputSandi) return;
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> MEMERIKSA...';
-            btn.disabled = true; document.getElementById('pesanError').classList.add('hidden');
+            const pesan = document.getElementById('pesanStatus');
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2 text-blue-600"></i> MEMERIKSA...';
+            btn.disabled = true; 
+            pesan.classList.add('hidden');
 
             try {
-                // Ambil sandi dari Firebase (Default: rahasia123)
-                const docRef = doc(db, "profil", "admin_auth");
-                const docSnap = await getDoc(docRef);
-                let sandiAsli = "rahasia123";
-                
-                if (docSnap.exists() && docSnap.data().sandi) {
-                    sandiAsli = docSnap.data().sandi;
-                }
+                // Munculkan Popup Google Login
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
 
-                if(inputSandi === sandiAsli) {
-                    localStorage.setItem("admin_token", "sah");
-                    window.location.href = "admin.html";
+                // Cek KTP (Email) yang barusan login
+                if(user.email === EMAIL_SUPER_ADMIN) {
+                    pesan.className = "text-green-600 text-xs font-bold mb-4 block bg-green-50 p-3 rounded-lg border border-green-100";
+                    pesan.innerHTML = '<i class="fas fa-check-circle mr-1"></i> Akses Diterima! Mengalihkan...';
+                    
+                    // Alihkan ke halaman admin Bapak
+                    setTimeout(() => {
+                        window.location.href = "admin.html";
+                    }, 1000);
                 } else {
-                    document.getElementById('pesanError').classList.remove('hidden');
+                    // Jika email salah, usir (Sign Out) dan beri peringatan
+                    await signOut(auth);
+                    pesan.className = "text-red-500 text-xs font-bold mb-4 block bg-red-50 p-3 rounded-lg border border-red-100";
+                    pesan.innerHTML = '<i class="fas fa-exclamation-triangle mr-1"></i> Maaf, ini bukan akun Admin.';
                 }
             } catch (err) { 
-                alert("Gagal menghubungi Firebase."); 
-                console.error(err);
+                pesan.className = "text-red-500 text-xs font-bold mb-4 block bg-red-50 p-3 rounded-lg border border-red-100";
+                pesan.innerHTML = '<i class="fas fa-times-circle mr-1"></i> Gagal login: ' + err.message;
             } finally { 
-                btn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i> MASUK KE CMS'; 
+                btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5"> VERIFIKASI GOOGLE'; 
                 btn.disabled = false; 
             }
         }
