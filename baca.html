@@ -39,7 +39,7 @@
             <div id="isi_artikel" class="prose prose-blue max-w-none text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">
                 </div>
 
-            <div class="mt-12 border-t pt-8">
+            <div class="mt-12 border-t pt-8 mb-12">
                 <p class="font-bold text-gray-400 uppercase text-xs mb-4 text-center">Bagikan informasi ini</p>
                 <div class="flex justify-center gap-4">
                     <button onclick="shareWA()" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-black flex items-center gap-2 shadow-lg transition transform hover:-translate-y-1">
@@ -47,12 +47,48 @@
                     </button>
                 </div>
             </div>
-        </article>
+
+            <div class="border-t-4 border-gray-200 pt-8 mt-8">
+                <h3 class="text-2xl font-black text-gray-800 mb-6 flex items-center gap-2">
+                    <i class="fas fa-comments text-blue-500"></i> Ruang Diskusi
+                </h3>
+
+                <div id="area_form_komentar" class="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 mb-8">
+                    
+                    <div id="belum_login" class="text-center py-4">
+                        <p class="text-gray-500 mb-4 text-sm font-bold">Silakan masuk menggunakan akun Google untuk ikut berdiskusi.</p>
+                        <button onclick="loginGoogle()" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2 rounded-full font-bold flex items-center justify-center mx-auto gap-3 shadow-sm transition">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5"> Masuk dengan Google
+                        </button>
+                    </div>
+
+                    <div id="sudah_login" class="hidden">
+                        <div class="flex items-center gap-3 mb-4 border-b border-gray-100 pb-4">
+                            <img id="user_foto" src="" class="w-10 h-10 rounded-full bg-gray-200 object-cover shadow-sm">
+                            <div class="flex-1">
+                                <p id="user_nama" class="font-bold text-sm text-gray-800"></p>
+                                <p id="user_email" class="text-[10px] text-gray-500 bg-gray-100 inline-block px-2 py-0.5 rounded-full mt-1"></p>
+                            </div>
+                            <button onclick="logoutGoogle()" class="text-xs text-red-500 hover:text-red-700 underline font-bold bg-red-50 px-3 py-1 rounded-lg">Keluar</button>
+                        </div>
+                        <textarea id="input_komentar" rows="3" placeholder="Tulis komentar, masukan, atau apresiasi Anda di sini..." class="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-none mb-3"></textarea>
+                        <button onclick="kirimKomentar()" id="btn_kirim" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition w-full md:w-auto flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Kirim Komentar
+                        </button>
+                    </div>
+                </div>
+
+                <div id="daftar_komentar" class="space-y-4">
+                    <div class="text-center text-gray-400 italic text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat komentar...</div>
+                </div>
+            </div>
+            </article>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
@@ -65,16 +101,37 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        
+        // Setup Autentikasi Google
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        let currentUser = null;
+
+        // Pantau Perubahan Status Login User
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('belum_login').classList.add('hidden');
+                document.getElementById('sudah_login').classList.remove('hidden');
+                document.getElementById('user_nama').innerText = user.displayName;
+                document.getElementById('user_email').innerText = user.email;
+                document.getElementById('user_foto').src = user.photoURL || 'https://i.ibb.co/Xz9Gf4z/default.png';
+            } else {
+                currentUser = null;
+                document.getElementById('belum_login').classList.remove('hidden');
+                document.getElementById('sudah_login').classList.add('hidden');
+            }
+        });
+
+        window.loginGoogle = () => signInWithPopup(auth, provider).catch(e => alert('Gagal memuat halaman login: ' + e.message));
+        window.logoutGoogle = () => signOut(auth);
 
         const params = new URLSearchParams(window.location.search);
         const docId = params.get('id');
         const type = params.get('type'); 
 
         async function loadContent() {
-            if(!docId || !type) {
-                document.getElementById('loading').innerHTML = "Link tidak valid.";
-                return;
-            }
+            if(!docId || !type) return document.getElementById('loading').innerHTML = "Link tidak valid.";
 
             try {
                 const docRef = doc(db, type, docId);
@@ -82,34 +139,22 @@
 
                 if (snap.exists()) {
                     const data = snap.data();
-                    
                     document.title = data.judul + " - SDIT Qurratu A'yun";
                     document.getElementById('nav_title').innerText = data.judul;
                     document.getElementById('judul_artikel').innerText = data.judul;
                     document.getElementById('tgl_artikel').innerText = formatTanggal(data.tanggal);
                     document.getElementById('isi_artikel').innerText = data.isi || data.deskripsi;
                     
-                    // --- LOGIKA UNTUK MENYEMBUNYIKAN BINGKAI JIKA TIDAK ADA GAMBAR ---
                     const isNoImg = !data.gambar || data.gambar === "-";
                     if (!isNoImg) {
                         document.getElementById('gambar_container').classList.remove('hidden');
                         document.getElementById('gambar_artikel').src = data.gambar;
                     }
-                    // -----------------------------------------------------------------
 
-                    // Penyesuaian label berdasarkan tipe (Berita vs Karya)
                     if(type === 'karya') {
                         document.getElementById('author_box').classList.remove('hidden');
                         document.getElementById('penulis_artikel').innerText = data.penulis;
-                        
-                        // Menyesuaikan warna label berdasarkan kategori karya
-                        const w = {
-                            "Artikel": "bg-blue-500",
-                            "Sastra": "bg-emerald-500", 
-                            "Desain": "bg-pink-500",
-                            "Aplikasi": "bg-purple-500"
-                        }[data.kategori] || "bg-gray-500";
-                        
+                        const w = {"Artikel":"bg-blue-500","Sastra":"bg-emerald-500","Desain":"bg-pink-500","Aplikasi":"bg-purple-500"}[data.kategori] || "bg-gray-500";
                         document.getElementById('label_kategori').className = `px-3 py-1 rounded-full text-[10px] font-black text-white ${w} uppercase tracking-widest`;
                         document.getElementById('label_kategori').innerText = data.kategori || "KARYA";
                     } else {
@@ -119,12 +164,82 @@
 
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('article_body').classList.remove('hidden');
+
+                    // Setelah artikel termuat, muat juga komentarnya
+                    loadKomentar();
                 } else {
                     document.getElementById('loading').innerHTML = "Maaf, kiriman tidak ditemukan.";
                 }
             } catch (e) {
                 console.error(e);
                 document.getElementById('loading').innerHTML = "Terjadi kesalahan koneksi.";
+            }
+        }
+
+        // FUNGSI MENGIRIM KOMENTAR KE FIREBASE
+        window.kirimKomentar = async () => {
+            const teks = document.getElementById('input_komentar').value.trim();
+            if(!teks) return alert("Komentar tidak boleh kosong!");
+            if(!currentUser) return alert("Silakan login dengan Google terlebih dahulu!");
+
+            const btn = document.getElementById('btn_kirim');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+            btn.disabled = true;
+
+            try {
+                // Simpan komentar ke koleksi khusus bernama 'komentar'
+                await addDoc(collection(db, "komentar"), {
+                    postId: docId,
+                    nama: currentUser.displayName,
+                    email: currentUser.email,
+                    foto: currentUser.photoURL,
+                    teks: teks,
+                    tanggal: new Date().toISOString()
+                });
+                
+                document.getElementById('input_komentar').value = ""; // Kosongkan input
+                loadKomentar(); // Segarkan daftar komentar
+            } catch(e) {
+                alert("Gagal mengirim komentar: " + e.message);
+            } finally {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Komentar';
+                btn.disabled = false;
+            }
+        };
+
+        // FUNGSI MEMUAT DAFTAR KOMENTAR
+        async function loadKomentar() {
+            if(!docId) return;
+            const q = query(collection(db, "komentar"), where("postId", "==", docId));
+            try {
+                const snap = await getDocs(q);
+                let koms = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                
+                // Urutkan dari yang terbaru
+                koms.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal)); 
+                
+                const box = document.getElementById('daftar_komentar');
+                if(koms.length === 0) {
+                    box.innerHTML = '<p class="text-center text-gray-400 italic text-sm py-6 bg-gray-50 rounded-2xl border border-gray-100">Belum ada komentar. Jadilah yang pertama memberikan apresiasi!</p>';
+                    return;
+                }
+
+                box.innerHTML = koms.map(k => `
+                    <div class="bg-white border border-gray-100 shadow-sm p-4 rounded-2xl flex gap-4 transition hover:shadow-md">
+                        <img src="${k.foto || 'https://i.ibb.co/Xz9Gf4z/default.png'}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+                        <div class="flex-1">
+                            <div class="flex flex-col md:flex-row justify-between md:items-baseline mb-2">
+                                <h4 class="font-bold text-gray-800 text-sm">${k.nama}</h4>
+                                <span class="text-[10px] text-gray-400"><i class="fas fa-clock"></i> ${formatTanggalWaktu(k.tanggal)}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${k.teks}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch(e) {
+                console.error(e);
+                document.getElementById('daftar_komentar').innerHTML = '<p class="text-red-500 text-center text-sm">Gagal memuat komentar. Periksa koneksi internet.</p>';
             }
         }
 
@@ -135,6 +250,14 @@
                 const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
                 return `${d.getDate()} ${bln[d.getMonth()]} ${d.getFullYear()}`;
             } catch{ return iso; } 
+        }
+
+        function formatTanggalWaktu(iso) {
+            try {
+                const d = new Date(iso);
+                if(isNaN(d.getTime())) return iso;
+                return d.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) + ' pukul ' + d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+            } catch{ return iso; }
         }
 
         window.shareWA = function() {
