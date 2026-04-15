@@ -35,19 +35,57 @@
     </div>
 
     <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-br from-red-50 to-orange-50 min-h-screen">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-black mb-4 text-gray-800 border-l-8 border-red-600 pl-4">Kabar Sekolah</h2>
-            <p class="text-gray-500 mb-10 md:ml-6">Informasi, pengumuman, dan berita terbaru seputar kegiatan sekolah.</p>
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black mb-2 text-gray-800 border-l-8 border-red-600 pl-4">Kabar Sekolah</h2>
+            <p class="text-gray-500 mb-8 md:ml-6">Informasi, pengumuman, dan berita terbaru seputar kegiatan sekolah.</p>
 
-            <div class="columns-1 md:columns-2 lg:columns-3 gap-8 md:ml-6 space-y-8" id="beritaGrid">
-                <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari Firebase...</div>
+            <div class="flex flex-col lg:flex-row gap-8 md:ml-6">
+                
+                <div class="lg:w-3/4">
+                    <div id="statusPencarian" class="hidden mb-6 bg-red-100 text-red-800 p-4 rounded-xl font-bold flex justify-between items-center">
+                        <span id="teksStatusPencarian">Menampilkan hasil...</span>
+                        <button onclick="resetPencarian()" class="bg-white px-3 py-1 rounded-lg text-sm hover:bg-red-200 transition">Hapus Filter <i class="fas fa-times"></i></button>
+                    </div>
+                    
+                    <div class="columns-1 md:columns-2 gap-6 space-y-6" id="beritaGrid">
+                        <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari Firebase...</div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/4 space-y-8">
+                    
+                    <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
+                        <h3 class="font-black text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-search text-red-500"></i> Cari Berita</h3>
+                        <div class="relative">
+                            <input type="text" id="kolomCari" placeholder="Ketik kata kunci..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200 transition">
+                            <button onclick="cariBerita()" class="absolute right-2 top-2 bg-red-600 text-white w-8 h-8 rounded-lg hover:bg-red-700 transition flex items-center justify-center">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
+                        <h3 class="font-black text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-calendar-alt text-red-500"></i> Arsip Berita</h3>
+                        <ul id="arsipList" class="space-y-1">
+                            <li class="text-gray-400 italic text-sm">Memuat arsip...</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
+                        <h3 class="font-black text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-fire text-orange-500"></i> Berita Pilihan</h3>
+                        <div id="beritaPilihanList" class="flex flex-col gap-4">
+                            <div class="text-gray-400 italic text-sm">Memuat pilihan...</div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </main>
 
     <footer class="bg-gray-900 text-white pt-10 pb-36 md:py-10 text-center relative z-40">
         <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="masukCMS()" class="mt-6 mb-4 md:mb-0 text-gray-400 border border-gray-700 px-5 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
+        <button onclick="window.location.href='login.html'" class="mt-6 mb-4 md:mb-0 text-gray-400 border border-gray-700 px-5 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
             <i class="fas fa-cog"></i> Panel Admin
         </button>
     </footer>
@@ -68,8 +106,17 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.masukCMS = function() { window.location.href = 'login.html'; }
-        function formatTanggal(iso) { try { return new Date(iso).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}); } catch{ return iso; } }
+        // VARIABEL GLOBAL UNTUK MENYIMPAN SEMUA BERITA
+        window.dataBerita = []; 
+
+        function formatTanggal(iso) { 
+            try { 
+                const d = new Date(iso);
+                if (isNaN(d.getTime())) return iso;
+                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                return `${d.getDate()} ${bln[d.getMonth()]} ${d.getFullYear()}`;
+            } catch{ return iso; } 
+        }
 
         async function loadData() {
             try {
@@ -77,12 +124,8 @@
 
                 // Ticker
                 const ticker = document.getElementById('tickerContent');
-                
-                // --- INI BAGIAN YANG DIPERBAIKI ---
                 let berita = beritaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
                 let karya = karyaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
-                // ----------------------------------
-
                 let items = [...berita.slice(0,3), ...karya.slice(0,3)];
                 
                 if(items.length > 0) {
@@ -90,37 +133,138 @@
                     ticker.innerHTML = content + content;
                 } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan...</span>'; }
 
-                // Grid Berita
-                const grid = document.getElementById('beritaGrid');
-                if(berita.length === 0) { grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada berita.</div>`; return; }
+                // Simpan ke variabel global agar bisa difilter & dicari
+                window.dataBerita = berita;
 
-                grid.innerHTML = berita.map((b, i) => {
-                    const isNoImg = !b.gambar || b.gambar === "-";
-                    let html = `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s">`;
-                    
-                    if (!isNoImg) html += `<div class="relative max-h-56 overflow-hidden"><img src="${b.gambar}" class="w-full object-cover h-48"><span class="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${b.kategori}</span></div>`;
-                    
-                    html += `<div class="p-6 flex-1 flex flex-col ${isNoImg ? 'border-t-8 border-red-600' : ''}">
-                                ${isNoImg ? `<span class="bg-red-100 text-red-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block w-max">${b.kategori}</span>` : ''}
-                                <h3 class="text-2xl font-black text-gray-800 mb-3 leading-tight">${b.judul}</h3>
-                                
-                                <p class="text-gray-600 mb-5 leading-relaxed line-clamp-3">${b.isi}</p>
-                                
-                                <a href="baca.html?id=${b.id}&type=berita" class="mb-6 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white border border-red-100 py-3 rounded-xl font-bold text-center transition duration-300 text-sm flex justify-center items-center gap-2">
-                                    BACA SELENGKAPNYA <i class="fas fa-arrow-right"></i>
-                                </a>
-
-                                <div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
-                                    <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500"><i class="fas fa-calendar-alt"></i></div>
-                                    <div><p class="font-bold text-sm text-gray-800">Diterbitkan</p><p class="text-xs text-gray-500">${formatTanggal(b.tanggal)}</p></div>
-                                </div>
-                            </div></div>`;
-                            
-                    return html;
-                }).join('');
+                // Eksekusi fungsi-fungsi pembangun UI
+                renderBerita(window.dataBerita);
+                bangunArsipUI();
+                bangunBeritaPilihan();
 
             } catch (err) { console.error(err); }
         }
+
+        // FUNGSI MENCETAK GRID BERITA
+        window.renderBerita = function(dataArray) {
+            const grid = document.getElementById('beritaGrid');
+            if(dataArray.length === 0) { 
+                grid.innerHTML = `<div class="text-center py-10 text-gray-400 col-span-full">Maaf, tidak ada berita yang ditemukan.</div>`; 
+                return; 
+            }
+
+            grid.innerHTML = dataArray.map((b, i) => {
+                const isNoImg = !b.gambar || b.gambar === "-";
+                let html = `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.05}s">`;
+                
+                if (!isNoImg) html += `<div class="relative max-h-56 overflow-hidden"><img src="${b.gambar}" class="w-full object-cover h-48"><span class="absolute top-4 left-4 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${b.kategori}</span></div>`;
+                
+                html += `<div class="p-6 flex-1 flex flex-col ${isNoImg ? 'border-t-8 border-red-600' : ''}">
+                            ${isNoImg ? `<span class="bg-red-100 text-red-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block w-max">${b.kategori}</span>` : ''}
+                            <h3 class="text-xl font-black text-gray-800 mb-3 leading-tight">${b.judul}</h3>
+                            <p class="text-sm text-gray-600 mb-5 leading-relaxed line-clamp-3">${b.isi}</p>
+                            <a href="baca.html?id=${b.id}&type=berita" class="mt-auto mb-4 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white py-2 rounded-xl font-bold text-center transition duration-300 text-xs flex justify-center items-center gap-2 border border-red-100">
+                                BACA SELENGKAPNYA <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <div class="flex items-center gap-3 pt-3 border-t border-gray-100">
+                                <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-500 text-xs"><i class="fas fa-calendar-alt"></i></div>
+                                <div><p class="text-[11px] text-gray-500">${formatTanggal(b.tanggal)}</p></div>
+                            </div>
+                        </div></div>`;
+                return html;
+            }).join('');
+        };
+
+        // FUNGSI 1: MENCARI BERITA
+        window.cariBerita = function() {
+            const input = document.getElementById('kolomCari').value.toLowerCase();
+            if(!input) return;
+
+            const hasil = window.dataBerita.filter(b => b.judul.toLowerCase().includes(input) || b.isi.toLowerCase().includes(input));
+            
+            document.getElementById('statusPencarian').classList.remove('hidden');
+            document.getElementById('teksStatusPencarian').innerText = `Pencarian: "${input}" (${hasil.length} hasil)`;
+            renderBerita(hasil);
+        };
+
+        // Tangkap Enter saat mengetik di kolom cari
+        document.getElementById('kolomCari').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') cariBerita();
+        });
+
+        // FUNGSI 2: MENYARING BERDASARKAN BULAN (ARSIP)
+        window.filterArsip = function(bulanTahun) {
+            document.getElementById('kolomCari').value = ""; // Kosongkan kolom pencarian
+            
+            if(bulanTahun === 'semua') {
+                document.getElementById('statusPencarian').classList.add('hidden');
+                renderBerita(window.dataBerita);
+                return;
+            }
+
+            const hasil = window.dataBerita.filter(b => {
+                const d = new Date(b.tanggal);
+                if(isNaN(d.getTime())) return false;
+                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                return (bln[d.getMonth()] + " " + d.getFullYear()) === bulanTahun;
+            });
+
+            document.getElementById('statusPencarian').classList.remove('hidden');
+            document.getElementById('teksStatusPencarian').innerText = `Arsip Bulan: ${bulanTahun} (${hasil.length} tulisan)`;
+            renderBerita(hasil);
+        };
+
+        // FUNGSI RESET FILTER
+        window.resetPencarian = function() {
+            document.getElementById('kolomCari').value = "";
+            document.getElementById('statusPencarian').classList.add('hidden');
+            renderBerita(window.dataBerita);
+        };
+
+        // WIDGET BUILDER: ARSIP BULANAN
+        function bangunArsipUI() {
+            const arsipObj = {};
+            window.dataBerita.forEach(b => {
+                const d = new Date(b.tanggal);
+                if(isNaN(d.getTime())) return;
+                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                const label = bln[d.getMonth()] + " " + d.getFullYear();
+                arsipObj[label] = (arsipObj[label] || 0) + 1;
+            });
+
+            const container = document.getElementById('arsipList');
+            let html = `<li class="cursor-pointer text-gray-700 hover:text-red-600 font-bold text-sm flex justify-between border-b border-gray-100 pb-3 transition" onclick="filterArsip('semua')">
+                            <span><i class="fas fa-layer-group text-red-400 mr-2 w-4"></i> Semua Berita</span> 
+                            <span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-xs">${window.dataBerita.length}</span>
+                        </li>`;
+            
+            for(let key in arsipObj) {
+                html += `<li class="cursor-pointer text-gray-600 hover:text-red-600 font-bold text-sm flex justify-between border-b border-gray-100 py-3 transition" onclick="filterArsip('${key}')">
+                            <span><i class="fas fa-folder-open text-red-400 mr-2 w-4"></i> ${key}</span> 
+                            <span class="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-xs">${arsipObj[key]}</span>
+                        </li>`;
+            }
+            container.innerHTML = html;
+        }
+
+        // WIDGET BUILDER: BERITA PILIHAN (MENGAMBIL 4 BERITA TERBARU)
+        function bangunBeritaPilihan() {
+            const container = document.getElementById('beritaPilihanList');
+            if(window.dataBerita.length === 0) return;
+
+            // Ambil 4 berita teratas (sudah tersortir terbaru dari Firebase)
+            const pilihan = window.dataBerita.slice(0, 4);
+            
+            container.innerHTML = pilihan.map(b => `
+                <a href="baca.html?id=${b.id}&type=berita" class="flex gap-3 items-center group p-2 hover:bg-red-50 rounded-xl transition">
+                    <img src="${b.gambar === '-' || !b.gambar ? 'https://i.ibb.co/Xz9Gf4z/default.png' : b.gambar}" class="w-16 h-16 object-cover rounded-xl shadow-sm border border-gray-200 flex-shrink-0">
+                    <div>
+                        <h4 class="text-xs font-black text-gray-800 group-hover:text-red-600 line-clamp-2 transition leading-tight mb-1">${b.judul}</h4>
+                        <p class="text-[10px] text-gray-400"><i class="fas fa-clock text-red-300"></i> ${formatTanggal(b.tanggal)}</p>
+                    </div>
+                </a>
+            `).join('');
+        }
+
         document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
