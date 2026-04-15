@@ -34,31 +34,68 @@
         <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
     </div>
 
-    <main class="flex-1 px-4 py-10 md:p-10 md:ml-16 bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-black mb-4 text-gray-800 border-l-8 border-orange-500 pl-4">Ruang Karya & Inovasi</h2>
-            <p class="text-gray-500 mb-10 md:ml-6">Wadah apresiasi untuk artikel, sastra, karya desain, dan inovasi pendidikan dewan guru.</p>
+    <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black mb-2 text-gray-800 border-l-8 border-orange-500 pl-4">Ruang Karya & Inovasi</h2>
+            <p class="text-gray-500 mb-8 md:ml-6">Wadah apresiasi untuk artikel, sastra, desain, dan inovasi dewan guru.</p>
 
             <div class="flex flex-wrap gap-3 mb-10 md:ml-6">
-                <button class="filter-btn px-4 md:px-6 py-2 rounded-full font-bold shadow bg-orange-500 text-white transition text-sm md:text-base" onclick="filterKarya('semua', this)" id="btnSemua">Semua Karya</button>
-                <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Artikel', this)">📝 Artikel</button>
-                <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Sastra', this)">📚 Sastra</button>
-                <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Desain', this)">🎨 Desain</button>
-                <button class="filter-btn px-4 md:px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm md:text-base" onclick="filterKarya('Aplikasi', this)">💻 Aplikasi</button>
+                <button class="filter-btn px-6 py-2 rounded-full font-bold shadow bg-orange-500 text-white transition text-sm" onclick="filterKarya('semua', this)" id="btnSemua">Semua Karya</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm" onclick="filterKarya('Artikel', this)">📝 Artikel</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm" onclick="filterKarya('Sastra', this)">📚 Sastra</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm" onclick="filterKarya('Desain', this)">🎨 Desain</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-orange-100 transition text-sm" onclick="filterKarya('Aplikasi', this)">💻 Aplikasi</button>
             </div>
 
-            <div class="columns-1 md:columns-2 lg:columns-3 gap-8 md:ml-6 space-y-8" id="karyaGrid">
-                <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari Firebase...</div>
+            <div class="flex flex-col lg:flex-row gap-8 md:ml-6">
+                
+                <div class="lg:w-3/4">
+                    <div id="statusPencarian" class="hidden mb-6 bg-orange-100 text-orange-800 p-4 rounded-xl font-bold flex justify-between items-center">
+                        <span id="teksStatusPencarian">Menampilkan hasil...</span>
+                        <button onclick="resetFilter()" class="bg-white px-3 py-1 rounded-lg text-sm hover:bg-orange-200 transition">Hapus Filter <i class="fas fa-times"></i></button>
+                    </div>
+
+                    <div class="columns-1 md:columns-2 gap-6 space-y-6" id="karyaGrid">
+                        <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari Firebase...</div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/4 space-y-8">
+                    
+                    <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
+                        <h3 class="font-black text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-search text-orange-500"></i> Cari Karya</h3>
+                        <div class="relative">
+                            <input type="text" id="kolomCari" placeholder="Ketik judul/penulis..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition">
+                            <button onclick="cariKarya()" class="absolute right-2 top-2 bg-orange-600 text-white w-8 h-8 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
+                        <h3 class="font-black text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-calendar-alt text-orange-500"></i> Arsip Karya</h3>
+                        <ul id="arsipList" class="space-y-1">
+                            <li class="text-gray-400 italic text-sm">Memuat arsip...</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
+                        <h3 class="font-black text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-lightbulb text-yellow-500"></i> Karya Pilihan</h3>
+                        <div id="karyaPilihanList" class="flex flex-col gap-4">
+                            <div class="text-gray-400 italic text-sm">Memuat pilihan...</div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white pt-10 pb-8 relative z-40 w-full mt-auto">
-        <p class="text-lg font-bold text-center">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="window.location.href='login.html'" class="mt-6 text-gray-400 border border-gray-700 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
+    <footer class="bg-gray-900 text-white pt-10 pb-36 md:py-10 text-center relative z-40">
+        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
+        <button onclick="window.location.href='login.html'" class="mt-6 mb-4 md:mb-0 text-gray-400 border border-gray-700 px-5 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
             <i class="fas fa-cog"></i> Panel Admin
         </button>
-        <div class="h-28 md:hidden w-full bg-transparent pointer-events-none"></div>
     </footer>
 
     <script type="module">
@@ -94,75 +131,55 @@
                 const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
 
                 const ticker = document.getElementById('tickerContent');
-                
-                // --- BAGIAN YANG DIPERBAIKI (Penambahan id: d.id) ---
                 let berita = beritaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
                 let karya = karyaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
-                // ---------------------------------------------------
-
-                let items = [...berita.slice(0,3), ...karya.slice(0,3)];
                 
+                let items = [...berita.slice(0,3), ...karya.slice(0,3)];
                 if(items.length > 0) {
                     let content = items.map(item => `<a href="${item.penulis ? 'karya.html' : 'berita.html'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
                     ticker.innerHTML = content + content;
-                } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada pembaruan...</span>'; }
+                }
 
                 window.dataKarya = karya;
-                window.renderKarya();
+                renderKarya(window.dataKarya);
+                bangunArsipKarya();
+                bangunKaryaPilihan();
 
             } catch (err) { console.error(err); }
         }
 
-        window.renderKarya = function() {
+        window.renderKarya = function(dataArray) {
             const grid = document.getElementById('karyaGrid');
-            const filtered = window.dataKarya.filter(k => window.currentKategori === 'semua' || k.kategori === window.currentKategori);
+            const filtered = dataArray.filter(k => window.currentKategori === 'semua' || k.kategori === window.currentKategori);
 
-            if(filtered.length === 0) { grid.innerHTML = `<div class="text-center py-10 text-gray-400">Belum ada karya untuk kategori ini.</div>`; return; }
+            if(filtered.length === 0) { grid.innerHTML = `<div class="text-center py-10 text-gray-400">Tidak ada karya yang ditemukan.</div>`; return; }
 
             grid.innerHTML = filtered.map((k, i) => {
                 const isNoImg = !k.gambar || k.gambar === "-";
-                const w = {
-                    "Artikel": "bg-blue-500",
-                    "Sastra": "bg-emerald-500", 
-                    "Desain": "bg-pink-500",
-                    "Aplikasi": "bg-purple-500"
-                }[k.kategori] || "bg-gray-500";
+                const badgeColor = { "Artikel": "bg-blue-500", "Sastra": "bg-emerald-500", "Desain": "bg-pink-500", "Aplikasi": "bg-purple-500" }[k.kategori] || "bg-gray-500";
                 
                 if(isNoImg) {
-                    return `<div class="break-inside-avoid flex flex-col h-full animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative" style="animation-delay: ${i*0.1}s">
+                    return `<div class="break-inside-avoid flex flex-col h-full animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative" style="animation-delay: ${i*0.05}s">
                                 <i class="fas fa-quote-right absolute -top-4 -right-4 text-7xl opacity-10"></i>
-                                <span class="${w} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block w-max">${k.kategori}</span>
+                                <span class="${badgeColor} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block w-max">${k.kategori}</span>
                                 <h3 class="text-2xl font-black mb-3 leading-tight text-orange-400">${k.judul}</h3>
-                                
                                 <p class="text-gray-300 mb-5 leading-relaxed italic line-clamp-3">${k.deskripsi}</p>
-                                
-                                <a href="baca.html?id=${k.id}&type=karya" class="mt-auto mb-6 block text-center border border-orange-500/50 hover:bg-orange-500 text-orange-400 hover:text-white py-3 rounded-xl text-xs font-bold transition duration-300 flex items-center justify-center gap-2">
-                                    BACA SELENGKAPNYA <i class="fas fa-arrow-right"></i>
-                                </a>
-
+                                <a href="baca.html?id=${k.id}&type=karya" class="mt-auto mb-6 block text-center border border-orange-500/50 hover:bg-orange-500 text-orange-400 hover:text-white py-3 rounded-xl text-xs font-bold transition duration-300 flex items-center justify-center gap-2">BACA SELENGKAPNYA <i class="fas fa-arrow-right"></i></a>
                                 <div class="flex items-center gap-3 pt-4 border-t border-slate-700">
-                                    <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-orange-400"><i class="fas fa-user-edit"></i></div>
-                                    <div><p class="font-bold text-sm text-gray-100">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div>
+                                    <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-orange-400 text-xs"><i class="fas fa-user-edit"></i></div>
+                                    <div><p class="font-bold text-xs text-gray-100">${k.penulis}</p><p class="text-[10px] text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div>
                                 </div>
                             </div>`;
                 } else {
-                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s">
-                                <div class="relative max-h-64 overflow-hidden">
-                                    <img src="${k.gambar}" class="w-full object-cover">
-                                    <span class="absolute top-4 left-4 ${w} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span>
-                                </div>
+                    return `<div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.05}s">
+                                <div class="relative max-h-64 overflow-hidden"><img src="${k.gambar}" class="w-full object-cover h-48"><span class="absolute top-4 left-4 ${badgeColor} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${k.kategori}</span></div>
                                 <div class="p-6 flex-1 flex flex-col">
                                     <h3 class="text-xl font-bold text-gray-800 mb-3 leading-tight">${k.judul}</h3>
-                                    
                                     <p class="text-sm text-gray-600 mb-5 line-clamp-3">${k.deskripsi}</p>
-                                    
-                                    <a href="baca.html?id=${k.id}&type=karya" class="mt-auto mb-6 bg-orange-50 hover:bg-orange-500 text-orange-600 hover:text-white py-3 rounded-xl text-xs font-bold text-center transition duration-300 flex items-center justify-center gap-2 border border-orange-100">
-                                        BACA SELENGKAPNYA <i class="fas fa-arrow-right"></i>
-                                    </a>
-
+                                    <a href="baca.html?id=${k.id}&type=karya" class="mt-auto mb-6 bg-orange-50 hover:bg-orange-500 text-orange-600 hover:text-white py-3 rounded-xl text-xs font-bold text-center transition duration-300 flex items-center justify-center gap-2 border border-orange-100">BACA SELENGKAPNYA <i class="fas fa-arrow-right"></i></a>
                                     <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
-                                        <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500"><i class="fas fa-user"></i></div>
-                                        <div><p class="font-bold text-sm text-gray-800">${k.penulis}</p><p class="text-xs text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div>
+                                        <div class="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 text-xs"><i class="fas fa-user"></i></div>
+                                        <div><p class="font-bold text-xs text-gray-800">${k.penulis}</p><p class="text-[10px] text-gray-400">${formatTanggalIndo(k.tanggal)}</p></div>
                                     </div>
                                 </div>
                             </div>`;
@@ -170,13 +187,69 @@
             }).join('');
         };
 
+        window.cariKarya = function() {
+            const input = document.getElementById('kolomCari').value.toLowerCase();
+            if(!input) return;
+            const hasil = window.dataKarya.filter(k => k.judul.toLowerCase().includes(input) || k.penulis.toLowerCase().includes(input) || k.deskripsi.toLowerCase().includes(input));
+            document.getElementById('statusPencarian').classList.remove('hidden');
+            document.getElementById('teksStatusPencarian').innerText = `Pencarian: "${input}" (${hasil.length} karya)`;
+            renderKarya(hasil);
+        };
+
+        window.filterArsipKarya = function(bulanTahun) {
+            if(bulanTahun === 'semua') { resetFilter(); return; }
+            const hasil = window.dataKarya.filter(k => {
+                const d = new Date(k.tanggal);
+                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                return (bln[d.getMonth()] + " " + d.getFullYear()) === bulanTahun;
+            });
+            document.getElementById('statusPencarian').classList.remove('hidden');
+            document.getElementById('teksStatusPencarian').innerText = `Arsip: ${bulanTahun} (${hasil.length} karya)`;
+            renderKarya(hasil);
+        };
+
+        window.resetFilter = function() {
+            document.getElementById('kolomCari').value = "";
+            document.getElementById('statusPencarian').classList.add('hidden');
+            renderKarya(window.dataKarya);
+        };
+
         window.filterKarya = function(kat, btn) {
             window.currentKategori = kat;
             document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('bg-orange-500', 'text-white'); b.classList.add('bg-white', 'text-gray-600'); });
-            btn.classList.remove('bg-white', 'text-gray-600'); btn.classList.add('bg-orange-500', 'text-white');
-            window.renderKarya();
+            btn.classList.replace('bg-white', 'bg-orange-500'); btn.classList.replace('text-gray-600', 'text-white');
+            renderKarya(window.dataKarya);
         };
 
+        function bangunArsipKarya() {
+            const arsipObj = {};
+            window.dataKarya.forEach(k => {
+                const d = new Date(k.tanggal);
+                if(isNaN(d.getTime())) return;
+                const label = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][d.getMonth()] + " " + d.getFullYear();
+                arsipObj[label] = (arsipObj[label] || 0) + 1;
+            });
+            let html = `<li class="cursor-pointer text-gray-700 hover:text-orange-600 font-bold text-sm flex justify-between border-b py-3 transition" onclick="filterArsipKarya('semua')"><span><i class="fas fa-layer-group text-orange-400 mr-2"></i> Semua Karya</span> <span class="bg-orange-50 text-orange-600 px-2 py-1 rounded-full text-xs">${window.dataKarya.length}</span></li>`;
+            for(let key in arsipObj) {
+                html += `<li class="cursor-pointer text-gray-600 hover:text-orange-600 font-bold text-sm flex justify-between border-b py-3 transition" onclick="filterArsipKarya('${key}')"><span><i class="fas fa-folder-open text-orange-400 mr-2"></i> ${key}</span> <span class="bg-gray-100 text-gray-500 px-2 py-1 rounded-full text-xs">${arsipObj[key]}</span></li>`;
+            }
+            document.getElementById('arsipList').innerHTML = html;
+        }
+
+        function bangunKaryaPilihan() {
+            const pilihan = window.dataKarya.slice(0, 4);
+            document.getElementById('karyaPilihanList').innerHTML = pilihan.map(k => `
+                <a href="baca.html?id=${k.id}&type=karya" class="flex gap-3 items-center group p-2 hover:bg-orange-50 rounded-xl transition">
+                    <img src="${k.gambar === '-' || !k.gambar ? 'https://i.ibb.co/Xz9Gf4z/default.png' : k.gambar}" class="w-14 h-14 object-cover rounded-xl shadow-sm flex-shrink-0">
+                    <div>
+                        <h4 class="text-xs font-black text-gray-800 group-hover:text-orange-600 line-clamp-2 leading-tight mb-1">${k.judul}</h4>
+                        <p class="text-[10px] text-gray-400 italic">Oleh: ${k.penulis}</p>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        document.getElementById('kolomCari').addEventListener('keypress', (e) => e.key === 'Enter' && cariKarya());
         document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
