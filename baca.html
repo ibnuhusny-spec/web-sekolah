@@ -130,6 +130,17 @@
         const docId = params.get('id');
         const type = params.get('type'); 
 
+        // =========================================================================
+        // FUNGSI PENETRALISIR KODE JAHAT (XSS Protection)
+        // =========================================================================
+        function amankanTeks(str) {
+            if (!str) return "";
+            return str.replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+            }[tag] || tag));
+        }
+        // =========================================================================
+
         async function loadContent() {
             if(!docId || !type) return document.getElementById('loading').innerHTML = "Link tidak valid.";
 
@@ -232,7 +243,7 @@
                                 <h4 class="font-bold text-gray-800 text-sm">${k.nama}</h4>
                                 <span class="text-[10px] text-gray-400"><i class="fas fa-clock"></i> ${formatTanggalWaktu(k.tanggal)}</span>
                             </div>
-                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${k.teks}</p>
+                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${amankanTeks(k.teks)}</p>
                         </div>
                     </div>
                 `).join('');
