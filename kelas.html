@@ -27,7 +27,7 @@
         <div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div>
     </header>
 
-    <main class="flex-1 p-4 md:p-10 md:ml-16 max-w-6xl mx-auto w-full mt-4">
+    <main class="flex-1 p-4 md:p-10 md:ml-16 max-w-5xl mx-auto w-full mt-4">
         <h2 class="text-3xl md:text-4xl font-black mb-2 text-gray-800 border-l-8 border-purple-600 pl-4">Data Keadaan Siswa</h2>
         <p class="text-gray-500 mb-8 md:ml-6">Akumulasi dan rincian jumlah siswa per kelas.</p>
 
@@ -49,8 +49,27 @@
             </div>
         </div>
 
-        <div id="kelas_grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:ml-6">
-            <div class="text-gray-500 italic col-span-full"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data kelas...</div>
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden md:ml-6">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left min-w-[600px]">
+                    <thead>
+                        <tr class="bg-purple-50 text-purple-800 uppercase text-[10px] md:text-xs tracking-widest border-b-2 border-purple-100">
+                            <th class="p-4 md:p-5 font-black w-16 text-center">No</th>
+                            <th class="p-4 md:p-5 font-black">Nama Kelas</th>
+                            <th class="p-4 md:p-5 font-black text-center text-blue-600"><i class="fas fa-male mr-1"></i> Laki-laki</th>
+                            <th class="p-4 md:p-5 font-black text-center text-pink-600"><i class="fas fa-female mr-1"></i> Perempuan</th>
+                            <th class="p-4 md:p-5 font-black text-center bg-purple-100 rounded-tr-3xl">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kelas_tbody" class="divide-y divide-gray-50 text-sm md:text-base">
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-gray-400 italic">
+                                <i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data kelas...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 
@@ -65,14 +84,24 @@
         async function loadKelas() {
             try {
                 const snap = await getDocs(collection(db, "kelas"));
-                const grid = document.getElementById('kelas_grid');
+                const tbody = document.getElementById('kelas_tbody');
                 
                 let sumLaki = 0;
                 let sumPerempuan = 0;
 
-                // Render Kartu Kelas sekaligus menghitung total
-                const htmlContent = snap.docs.map(doc => {
-                    const d = doc.data();
+                // 1. Ambil semua data ke dalam array
+                let dataKelas = snap.docs.map(doc => doc.data());
+
+                // 2. LOGIKA PENGURUTAN (Sorting A-Z / 1-6)
+                dataKelas.sort((a, b) => {
+                    const namaA = (a.nama_kelas || "").toString().toLowerCase();
+                    const namaB = (b.nama_kelas || "").toString().toLowerCase();
+                    // localeCompare dengan opsi 'numeric' akan cerdas mengurutkan angka (contoh: 1, 2, 10, 11)
+                    return namaA.localeCompare(namaB, undefined, { numeric: true, sensitivity: 'base' });
+                });
+
+                // 3. Render ke dalam baris tabel (<tr>)
+                const htmlContent = dataKelas.map((d, index) => {
                     const laki = parseInt(d.laki) || 0;
                     const perempuan = parseInt(d.perempuan) || 0;
                     const totalSiswa = laki + perempuan;
@@ -81,30 +110,20 @@
                     sumPerempuan += perempuan;
 
                     return `
-                    <div class="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition duration-300 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-16 h-16 bg-purple-50 rounded-bl-full -z-10"></div>
-                        <div class="flex justify-between items-start mb-6">
-                            <h3 class="text-2xl font-black text-gray-800 uppercase">${d.nama_kelas}</h3>
-                            <span class="bg-purple-100 text-purple-700 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">Total: ${totalSiswa}</span>
-                        </div>
-                        
-                        <div class="space-y-3 mt-4 text-sm bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                            <div class="grid grid-cols-[100px_auto] items-center">
-                                <span class="text-blue-500 font-bold uppercase text-[10px]"><i class="fas fa-male mr-1"></i> Laki-laki</span>
-                                <span class="font-bold text-gray-700">: ${laki} Siswa</span>
-                            </div>
-                            <div class="grid grid-cols-[100px_auto] items-center">
-                                <span class="text-pink-500 font-bold uppercase text-[10px]"><i class="fas fa-female mr-1"></i> Perempuan</span>
-                                <span class="font-bold text-gray-700">: ${perempuan} Siswa</span>
-                            </div>
-                        </div>
-                    </div>`;
+                    <tr class="hover:bg-purple-50/30 transition duration-150">
+                        <td class="p-4 md:p-5 text-center text-gray-400 font-bold">${index + 1}</td>
+                        <td class="p-4 md:p-5 font-black text-gray-800 uppercase">${d.nama_kelas}</td>
+                        <td class="p-4 md:p-5 text-center font-bold text-gray-600">${laki}</td>
+                        <td class="p-4 md:p-5 text-center font-bold text-gray-600">${perempuan}</td>
+                        <td class="p-4 md:p-5 text-center font-black text-purple-700 bg-purple-50/50">${totalSiswa}</td>
+                    </tr>`;
                 }).join('');
 
-                if(snap.empty) {
-                    grid.innerHTML = `<div class="text-gray-400 italic">Belum ada data kelas.</div>`;
+                if(dataKelas.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">Belum ada data kelas.</td></tr>`;
                 } else {
-                    grid.innerHTML = htmlContent;
+                    tbody.innerHTML = htmlContent;
+                    
                     // Tampilkan akumulasi ke kotak atas
                     document.getElementById('tot_laki').innerText = sumLaki;
                     document.getElementById('tot_perempuan').innerText = sumPerempuan;
@@ -112,7 +131,7 @@
                 }
             } catch (e) { 
                 console.error(e);
-                document.getElementById('kelas_grid').innerHTML = `<div class="text-red-500">Gagal memuat data kelas.</div>`;
+                document.getElementById('kelas_tbody').innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Gagal memuat data kelas.</td></tr>`;
             }
         }
         loadKelas();
