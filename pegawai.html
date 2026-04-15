@@ -3,137 +3,502 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dewan Guru & Pegawai - SDIT Qurratu A'yun</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Profil Pegawai - Sekolah</title>
     <style>
-        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
-        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade { animation: fadeIn 0.5s ease forwards; }
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
-    </style>
-</head>
-<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
-
-    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
-        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-home text-blue-600 text-lg md:text-xl"></i></a>
-        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
-        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-green-500 rounded-2xl shadow-lg border-green-400"><i class="fas fa-users text-white text-lg md:text-xl"></i></a>
-        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
-        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
-        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
-        <a href="redaksi.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl"></i></a>
-    </nav>
-
-    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center">
-        <div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div>
-    </header>
-
-    <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
-        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
-    </div>
-
-    <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-br from-green-50 to-emerald-50 min-h-screen">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-black mb-2 text-gray-800 border-l-8 border-green-500 pl-4">Keadaan Guru & Pegawai</h2>
-            <p class="text-gray-500 mb-8 md:ml-6">Data statistik dan profil pendidik SDIT Qurratu A'yun Al-Islami Maros.</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 md:ml-6">
-                <div class="bg-blue-600 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden">
-                    <i class="fas fa-male absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
-                    <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Guru Putra</p>
-                    <h3 class="text-4xl font-black" id="countPutra">0</h3>
-                </div>
-
-                <div class="bg-pink-500 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden">
-                    <i class="fas fa-female absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
-                    <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Guru Putri</p>
-                    <h3 class="text-4xl font-black" id="countPutri">0</h3>
-                </div>
-
-                <div class="bg-emerald-600 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden">
-                    <i class="fas fa-user-tie absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
-                    <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Tendik</p>
-                    <h3 class="text-4xl font-black" id="countTendik">0</h3>
-                </div>
-            </div>
-
-            <div class="columns-1 md:columns-2 lg:columns-3 gap-8 md:ml-6 space-y-8" id="pegawaiGrid">
-                <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data...</div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-gray-900 text-white pt-10 pb-36 md:py-10 text-center relative z-40">
-        <p class="text-lg font-bold">SDIT Qurratu A'yun Al-Islami</p>
-        <button onclick="window.location.href='login.html'" class="mt-6 mb-4 md:mb-0 text-gray-400 border border-gray-700 px-5 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
-            <i class="fas fa-cog"></i> Panel Admin
-        </button>
-    </footer>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
-            authDomain: "websekolah-9bcde.firebaseapp.com",
-            projectId: "websekolah-9bcde",
-            storageBucket: "websekolah-9bcde.firebasestorage.app",
-            messagingSenderId: "113406929634",
-            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        async function loadData() {
-            try {
-                // Ticker
-                const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
-                const ticker = document.getElementById('tickerContent');
-                let berita = beritaSnap.docs.map(d => d.data());
-                let karya = karyaSnap.docs.map(d => d.data());
-                let items = [...berita.slice(0,3), ...karya.slice(0,3)];
-                if(items.length > 0) {
-                    let content = items.map(item => `<a href="${item.penulis ? 'karya.html' : 'berita.html'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
-                    ticker.innerHTML = content + content;
-                }
-
-                // Load Pegawai
-                const snap = await getDocs(collection(db, "pegawai"));
-                const dataPegawai = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-                // Statistik
-                document.getElementById('countPutra').innerText = dataPegawai.filter(p => p.kategori === 'Guru Putra').length;
-                document.getElementById('countPutri').innerText = dataPegawai.filter(p => p.kategori === 'Guru Putri').length;
-                document.getElementById('countTendik').innerText = dataPegawai.filter(p => p.kategori === 'Tendik').length;
-
-                // Render Grid (Gaya Desain Asli Bapak)
-                const grid = document.getElementById('pegawaiGrid');
-                grid.innerHTML = dataPegawai.map((p, i) => {
-                    const isNoImg = !p.gambar || p.gambar === "-";
-                    const w = { "Guru Putra": "bg-blue-600", "Guru Putri": "bg-pink-500", "Tendik": "bg-emerald-600" }[p.kategori] || "bg-gray-500";
-
-                    return `
-                        <div class="break-inside-avoid animate-fade shadow-lg hover:shadow-2xl transition duration-300 rounded-3xl overflow-hidden bg-white flex flex-col h-full relative" style="animation-delay: ${i*0.1}s">
-                            <div class="relative max-h-64 overflow-hidden">
-                                <img src="${isNoImg ? 'https://i.ibb.co/Xz9Gf4z/default.png' : p.gambar}" class="w-full object-cover">
-                                <span class="absolute top-4 left-4 ${w} text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">${p.kategori}</span>
-                            </div>
-                            <div class="p-6 flex-1 flex flex-col">
-                                <h3 class="text-2xl font-black text-gray-800 mb-1 leading-tight">${p.nama}</h3>
-                                <p class="text-gray-500 font-bold text-sm uppercase tracking-widest">${p.jabatan || 'Guru'}</p>
-                            </div>
-                        </div>`;
-                }).join('');
-
-            } catch (err) { console.error(err); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        document.addEventListener('DOMContentLoaded', loadData);
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box input {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .teacher-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+            position: relative;
+        }
+
+        .teacher-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Warna Badge Disesuaikan */
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .badge.guru-putra { background-color: #3182ce; } /* Biru */
+        .badge.guru-putri { background-color: #d53f8c; } /* Pink */
+        .badge.tendik { background-color: #38a169; }     /* Hijau */
+
+        .teacher-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .teacher-info {
+            padding: 25px;
+        }
+
+        .teacher-name {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .teacher-subject {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .teacher-details {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: flex-start;
+            font-size: 0.9em;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            width: 90px;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            color: #333;
+            flex: 1;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .teachers-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-box {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏫 Profil Pegawai Sekolah</h1>
+            <p>Informasi Data Guru dan Tenaga Kependidikan</p>
+        </header>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Cari nama, mata pelajaran, atau jabatan..." onkeyup="filterCards()">
+            </div>
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="setKategori('semua', this)">Semua Pegawai</button>
+            <button class="filter-btn" onclick="setKategori('guru_putra', this)">Guru Putra</button>
+            <button class="filter-btn" onclick="setKategori('guru_putri', this)">Guru Putri</button>
+            <button class="filter-btn" onclick="setKategori('tendik', this)">Tendik</button>
+        </div>
+
+        <div class="teachers-grid" id="staffGrid"></div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. DATA PEGAWAI (GURU PUTRA, GURU PUTRI, TENDIK)
+        // ==========================================
+        const staffData = [
+            // --- GURU PUTRA ---
+            {
+                kategori: "guru_putra",
+                nama: "RADIANT FADLI, S.Pd.",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]", 
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "01 Juli 2016",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=600"
+            },
+            {
+                kategori: "guru_putra",
+                nama: "BAHTIAR, S.Pd.I.",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "01 Juli 2014",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600"
+            },
+            {
+                kategori: "guru_putra",
+                nama: "AGUNG SETIABUDI, S.Pd.",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "01 Agustus 2017",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600"
+            },
+            {
+                kategori: "guru_putra",
+                nama: "FANDY AHMAD KLANA, S.S.",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "02 Februari 2018",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600"
+            },
+            {
+                kategori: "guru_putra",
+                nama: "SYAMSIR, S.Pd.",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "09 Oktober 2023",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600"
+            },
+            {
+                kategori: "guru_putra",
+                nama: "AHMAD PRISATRIALDI, S.Pd.",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "08 Januari 2024",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=600"
+            },
+            {
+                kategori: "guru_putra",
+                nama: "SYAHRUL RAMADHAN, S.H.",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "15 Juli 2024",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=600"
+            },
+
+            // --- GURU PUTRI ---
+            { kategori: "guru_putri", nama: "Dra. MARDIA HABE", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 Juli 2012", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600" },
+            { kategori: "guru_putri", nama: "Hj. NUR APNI, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 Juli 2014", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600" },
+            { kategori: "guru_putri", nama: "Hj. AMALIA AHSAN, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 Januari 2018", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600" },
+            { kategori: "guru_putri", nama: "DEWI SYAHARA NUR, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 November 2018", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600" },
+            { kategori: "guru_putri", nama: "INA MULYATI SALAM, S.T.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 Juli 2019", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600" },
+            { kategori: "guru_putri", nama: "HUMAERAH NAFISAH, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 Oktober 2019", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600" },
+            { kategori: "guru_putri", nama: "FITRIANI", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 Juli 2020", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=600" },
+            { kategori: "guru_putri", nama: "SATRIANI", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 Juli 2020", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600" },
+            { kategori: "guru_putri", nama: "NUR WAHIDAH", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "08 Juli 2021", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600" },
+            { kategori: "guru_putri", nama: "MUTI'AH S.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "04 Juli 2022", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1598550874175-4d0ef43ee90d?w=600" },
+            { kategori: "guru_putri", nama: "LIZA FANY ADELLA, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "04 Juli 2022", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600" },
+            { kategori: "guru_putri", nama: "DARMAWATI, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "14 Juli 2022", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600" },
+            { kategori: "guru_putri", nama: "ILMAH NURTAMI, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "14 Juli 2022", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=600" },
+            { kategori: "guru_putri", nama: "A. NURDIYAWANTI, M.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "14 Juli 2022", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1546961329-78bef0414d7c?w=600" },
+            { kategori: "guru_putri", nama: "RAHMAWATI BASRI, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "01 September 2022", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1521119989659-a83eee488004?w=600" },
+            { kategori: "guru_putri", nama: "SRI WAHYUNI, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "17 Juli 2023", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1589156191108-c762ff4b96ab?w=600" },
+            { kategori: "guru_putri", nama: "IHWANA, S.Pd.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "17 Juli 2023", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=600" },
+            { kategori: "guru_putri", nama: "SURIANTI", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "15 Juli 2024", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=600" },
+            { kategori: "guru_putri", nama: "HAJRIANI", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "15 Juli 2024", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=600" },
+            { kategori: "guru_putri", nama: "NUR RIZKY", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "26 September 2024", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=600" },
+            { kategori: "guru_putri", nama: "A. FATHIR TRY CAHYANI", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "10 Juli 2025", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600" },
+            { kategori: "guru_putri", nama: "NUR SULAIHA, S.H.", jabatan: "[Belum diisi]", tempatLahir: "[Belum diisi]", tanggalLahir: "[Belum diisi]", tanggalBergabung: "31 Juli 2025", pendidikan: "[Belum diisi]", email: "email@sekolah.com", foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600" },
+
+            // --- TENDIK ---
+            {
+                kategori: "tendik",
+                nama: "MUHAMMAD IHSAN",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "01 Juli 2019",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600"
+            },
+            {
+                kategori: "tendik",
+                nama: "TURMISI",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "17 Juli 2023",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600"
+            },
+            {
+                kategori: "tendik",
+                nama: "WAHYU SAPUTRA",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "19 Juli 2023",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=600"
+            },
+            {
+                kategori: "tendik",
+                nama: "MUH. SOFYAN ASNUR",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "29 Juli 2024",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600"
+            },
+            {
+                kategori: "tendik",
+                nama: "MUHAMMAD FIKRI HAEKAL",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "14 Juli 2025",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=600"
+            },
+            {
+                kategori: "tendik",
+                nama: "MUNADIL AMRI",
+                jabatan: "[Belum diisi]",
+                tempatLahir: "[Belum diisi]",
+                tanggalLahir: "[Belum diisi]",
+                tanggalBergabung: "25 Agustus 2025",
+                pendidikan: "[Belum diisi]",
+                email: "email@sekolah.com",
+                foto: "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=600"
+            }
+        ];
+
+        let currentKategori = 'semua';
+        const gridContainer = document.getElementById('staffGrid');
+
+        // ==========================================
+        // 2. FUNGSI UNTUK MENCETAK KARTU KE HTML
+        // ==========================================
+        function renderCards() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            gridContainer.innerHTML = ""; // Bersihkan kontainer
+
+            const filteredData = staffData.filter(staff => {
+                const matchKategori = (currentKategori === 'semua') || (staff.kategori === currentKategori);
+                const matchSearch = staff.nama.toLowerCase().includes(keyword) || 
+                                    staff.jabatan.toLowerCase().includes(keyword);
+                return matchKategori && matchSearch;
+            });
+
+            if(filteredData.length === 0) {
+                gridContainer.innerHTML = `<h3 style="color:white; text-align:center; grid-column: 1 / -1;">Pencarian tidak ditemukan...</h3>`;
+                return;
+            }
+
+            filteredData.forEach((staff, index) => {
+                // Menentukan class warna dan teks berdasarkan kategori
+                const badgeClass = staff.kategori.replace('_', '-');
+                let badgeText = '';
+                if(staff.kategori === 'guru_putra') badgeText = 'GURU PUTRA';
+                else if(staff.kategori === 'guru_putri') badgeText = 'GURU PUTRI';
+                else badgeText = 'TENDIK';
+
+                const cardHTML = `
+                    <div class="teacher-card" style="animation: fadeIn 0.5s ease forwards; animation-delay: ${index * 0.05}s; opacity: 0;">
+                        <span class="badge ${badgeClass}">${badgeText}</span>
+                        <img src="${staff.foto}" alt="${staff.nama}" class="teacher-img">
+                        <div class="teacher-info">
+                            <h2 class="teacher-name">${staff.nama}</h2>
+                            <p class="teacher-subject">${staff.jabatan}</p>
+                            <div class="teacher-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">TTL:</span>
+                                    <span class="detail-value">${staff.tempatLahir}, ${staff.tanggalLahir}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Pendidikan:</span>
+                                    <span class="detail-value">${staff.pendidikan}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Bergabung:</span>
+                                    <span class="detail-value">${staff.tanggalBergabung}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Email:</span>
+                                    <span class="detail-value">${staff.email}</span>
+                                </div>
+                            </div>
+                            <a href="mailto:${staff.email}" class="contact-btn">Kirim Email</a>
+                        </div>
+                    </div>
+                `;
+                gridContainer.innerHTML += cardHTML;
+            });
+        }
+
+        // ==========================================
+        // 3. FUNGSI FILTER & TOMBOL
+        // ==========================================
+        function setKategori(kategori, btnElement) {
+            currentKategori = kategori;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            renderCards();
+        }
+
+        function filterCards() {
+            renderCards();
+        }
+
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        document.addEventListener('DOMContentLoaded', renderCards);
     </script>
 </body>
 </html>
