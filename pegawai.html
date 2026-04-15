@@ -20,7 +20,7 @@
     <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
         <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-home text-blue-600 text-lg md:text-xl"></i></a>
         <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
-        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-green-500 rounded-2xl shadow-lg border-green-400"><i class="fas fa-users text-white text-lg md:text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white rounded-2xl shadow-lg border"><i class="fas fa-users text-gray-700 text-lg md:text-xl"></i></a>
         <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
         <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
         <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
@@ -35,31 +35,31 @@
         <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
     </div>
 
-    <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-br from-green-50 to-emerald-50 min-h-screen">
+    <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-br from-gray-50 to-slate-100 min-h-screen">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-black mb-2 text-gray-800 border-l-8 border-green-500 pl-4">Dewan Guru & Tenaga Kependidikan</h2>
+            <h2 class="text-3xl md:text-4xl font-black mb-2 text-gray-800 border-l-8 border-slate-700 pl-4">Dewan Guru & Pegawai</h2>
             <p class="text-gray-500 mb-8 md:ml-6">Profil pendidik dan tenaga kependidikan SDIT Qurratu A'yun Al-Islami Maros.</p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 md:ml-6">
-                <div class="bg-blue-600 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden group transition duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <i class="fas fa-male absolute -right-4 -bottom-4 text-7xl opacity-20 group-hover:scale-110 transition duration-300"></i>
+                <div class="bg-blue-600 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden group">
+                    <i class="fas fa-male absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
                     <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Guru Putra</p>
-                    <h3 class="text-5xl font-black" id="countPutra">0</h3>
+                    <h3 class="text-5xl font-blackCount" id="countPutra">0</h3>
                 </div>
 
-                <div class="bg-pink-500 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden group transition duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <i class="fas fa-female absolute -right-4 -bottom-4 text-7xl opacity-20 group-hover:scale-110 transition duration-300"></i>
+                <div class="bg-pink-500 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden group">
+                    <i class="fas fa-female absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
                     <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Guru Putri</p>
-                    <h3 class="text-5xl font-black" id="countPutri">0</h3>
+                    <h3 class="text-5xl font-blackCount" id="countPutri">0</h3>
                 </div>
 
-                <div class="bg-emerald-600 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden group transition duration-300 hover:shadow-2xl hover:-translate-y-1">
-                    <i class="fas fa-user-tie absolute -right-4 -bottom-4 text-7xl opacity-20 group-hover:scale-110 transition duration-300"></i>
+                <div class="bg-emerald-600 p-6 rounded-3xl shadow-lg text-white relative overflow-hidden group">
+                    <i class="fas fa-user-tie absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
                     <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Tenaga Kependidikan</p>
-                    <h3 class="text-5xl font-black" id="countTendik">0</h3>
+                    <h3 class="text-5xl font-blackCount" id="countTendik">0</h3>
                 </div>
             </div>
-            <div class="columns-1 md:columns-3 lg:columns-4 gap-6 space-y-6 md:ml-6" id="pegawaiGrid">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:ml-6" id="pegawaiGrid">
                 <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data profil...</div>
             </div>
 
@@ -91,7 +91,7 @@
 
         async function loadData() {
             try {
-                // 1. Muat Ticker (Berita & Karya terbaru)
+                // 1. Muat Ticker
                 const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
                 const ticker = document.getElementById('tickerContent');
                 let berita = beritaSnap.docs.map(d => d.data()).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
@@ -106,7 +106,7 @@
                 const pegawaiSnap = await getDocs(collection(db, "pegawai"));
                 const dataPegawai = pegawaiSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-                // === LOGIKA PERHITUNGAN STATISTIK ===
+                // === LOGIKA PERHITUNGAN STATISTIK (Tetap dipertahankan) ===
                 const totalPutra = dataPegawai.filter(p => p.kategori === 'Guru Putra').length;
                 const totalPutri = dataPegawai.filter(p => p.kategori === 'Guru Putri').length;
                 const totalTendik = dataPegawai.filter(p => p.kategori === 'Tendik').length;
@@ -116,29 +116,28 @@
                 document.getElementById('countPutri').innerText = totalPutri;
                 document.getElementById('countTendik').innerText = totalTendik;
 
-                // 3. Render Kartu Pegawai
+                // 3. Render Kartu Pegawai (MENGGUNAKAN DESAIN ASLINYA)
                 const grid = document.getElementById('pegawaiGrid');
                 if(dataPegawai.length === 0) {
                     grid.innerHTML = `<div class="text-center py-10 text-gray-400 col-span-full">Belum ada data pegawai.</div>`;
                     return;
                 }
 
+                // --- INI ADALAH LOGIKA DESAIN KARTU ASLI BAPAK ---
                 grid.innerHTML = dataPegawai.map((p, i) => {
                     const imgUrl = p.gambar && p.gambar !== "-" ? p.gambar : "https://i.ibb.co/Xz9Gf4z/default.png";
-                    const badgeColor = p.kategori === 'Guru Putra' ? 'bg-blue-100 text-blue-700' : 
-                                       p.kategori === 'Guru Putri' ? 'bg-pink-100 text-pink-700' : 'bg-emerald-100 text-emerald-700';
-
-                    return `<div class="break-inside-avoid animate-fade bg-white rounded-3xl shadow-lg border border-gray-100 p-6 flex flex-col items-center text-center transition duration-300 hover:shadow-xl hover:-translate-y-1" style="animation-delay: ${i*0.05}s">
+                    
+                    return `<div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 flex flex-col items-center text-center transition duration-300 hover:shadow-2xl hover:-translate-y-1 animate-fade" style="animation-delay: ${i*0.05}s">
                                 <img src="${imgUrl}" class="w-24 h-24 rounded-full object-cover mb-4 shadow-md border-4 border-gray-50">
-                                <span class="${badgeColor} text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-3">${p.kategori || 'Pegawai'}</span>
                                 <h3 class="font-black text-gray-800 text-lg leading-tight mb-1">${p.nama}</h3>
                                 <p class="text-sm text-gray-500 font-medium">${p.jabatan || 'Guru Kelas'}</p>
+                                <span class="bg-gray-100 text-gray-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mt-3">${p.kategori || 'Pegawai'}</span>
                             </div>`;
                 }).join('');
 
             } catch (err) { 
                 console.error(err); 
-                document.getElementById('pegawaiGrid').innerHTML = `<div class="text-red-500 col-span-full">Gagal memuat data.</div>`;
+                document.getElementById('pegawaiGrid').innerHTML = `<div class="text-red-500 col-span-full">Gagal memuat data. Periksa koneksi internet.</div>`;
             }
         }
 
