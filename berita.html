@@ -42,7 +42,8 @@
             <p class="text-gray-500 mb-8 md:ml-6">Informasi, pengumuman, dan berita terbaru seputar kegiatan sekolah.</p>
 
             <div class="flex flex-col lg:flex-row gap-8 md:ml-6">
-                <div class="lg:w-3/4">
+                
+                <div class="lg:w-2/3 xl:w-3/4">
                     <div id="statusPencarian" class="hidden mb-6 bg-red-100 text-red-800 p-4 rounded-xl font-bold flex justify-between items-center shadow-sm">
                         <span id="teksStatusPencarian">Menampilkan hasil...</span>
                         <button onclick="resetPencarian()" class="bg-white px-3 py-1 rounded-lg text-sm hover:bg-red-200 transition font-black uppercase text-xs tracking-widest border shadow-sm">Hapus Filter <i class="fas fa-times ml-1"></i></button>
@@ -53,7 +54,27 @@
                     </div>
                 </div>
 
-                <div class="lg:w-1/4 space-y-8">
+                <div class="lg:w-1/3 xl:w-1/4 space-y-8">
+                    
+                    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden relative">
+                        <div class="bg-gradient-to-r from-emerald-600 to-emerald-400 p-6 text-center text-white relative">
+                            <i class="fas fa-mosque absolute opacity-10 text-6xl right-[-10px] bottom-[-10px]"></i>
+                            <h3 class="text-4xl font-black tracking-widest mb-1" id="jamDigital">00:00:00</h3>
+                            <p class="text-xs font-bold text-emerald-100 uppercase tracking-widest" id="tanggalMasehi">Memuat...</p>
+                            <p class="text-sm font-black mt-2 text-yellow-300 italic" id="tanggalHijriah">...</p>
+                        </div>
+                        
+                        <div class="p-5">
+                            <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center justify-between">
+                                <span>Waktu Salat</span>
+                                <span class="text-emerald-500"><i class="fas fa-map-marker-alt"></i> Maros</span>
+                            </h4>
+                            <div id="jadwalSalat" class="space-y-2">
+                                <div class="text-center text-xs text-gray-400 italic py-2"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil jadwal...</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
                         <h3 class="font-black text-gray-800 mb-4 flex items-center gap-2 uppercase text-sm italic"><i class="fas fa-search text-red-500"></i> Cari Berita</h3>
                         <div class="relative">
@@ -77,6 +98,7 @@
                             <div class="text-gray-400 italic text-sm">Memuat pilihan...</div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -169,7 +191,7 @@
         window.cariBerita = function() {
             const input = document.getElementById('kolomCari').value.toLowerCase();
             if(!input) return;
-            const hasil = window.dataBerita.filter(b => b.judul.toLowerCase().includes(input) || b.isi.toLowerCase().includes(input));
+            const hasil = window.dataBerita.filter(b => b.judul.toLowerCase().includes(input) || stripHTML(b.isi).toLowerCase().includes(input));
             document.getElementById('statusPencarian').classList.remove('hidden');
             document.getElementById('teksStatusPencarian').innerText = `Pencarian: "${input}" (${hasil.length} hasil)`;
             renderBerita(hasil);
@@ -222,20 +244,101 @@
             container.innerHTML = html;
         }
 
+        // =====================================================================
+        // FUNGSI BARU: DESAIN BERITA PILIHAN TANPA GAMBAR DEFAULT
+        // =====================================================================
         function bangunBeritaPilihan() {
             const container = document.getElementById('beritaPilihanList');
             if(window.dataBerita.length === 0) return;
-            const pilihan = window.dataBerita.slice(0, 4);
-            container.innerHTML = pilihan.map(b => `
-                <a href="baca.html?id=${b.id}&type=berita" class="flex gap-3 items-center group p-2 hover:bg-red-50 rounded-xl transition">
-                    <img src="${b.gambar === '-' || !b.gambar ? 'https://i.ibb.co/Xz9Gf4z/default.png' : b.gambar}" class="w-16 h-16 object-cover rounded-xl shadow-sm border border-gray-100 flex-shrink-0">
-                    <div>
-                        <h4 class="text-xs font-black text-gray-800 group-hover:text-red-600 line-clamp-2 transition leading-tight mb-1 uppercase italic">${b.judul}</h4>
-                        <p class="text-[9px] font-black uppercase text-red-400 tracking-tighter"><i class="fas fa-clock mr-1"></i> ${formatTanggal(b.tanggal)}</p>
-                    </div>
-                </a>
-            `).join('');
+            const pilihan = window.dataBerita.slice(0, 5); // Ambil 5 terbaru
+            
+            container.innerHTML = pilihan.map(b => {
+                const isNoImg = !b.gambar || b.gambar === "-" || b.gambar.includes("default.png");
+
+                if (isNoImg) {
+                    // DESAIN TANPA GAMBAR (Gaya Highlight Pengumuman)
+                    return `
+                    <a href="baca.html?id=${b.id}&type=berita" class="block p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-red-50 transition group relative overflow-hidden">
+                        <i class="fas fa-bullhorn absolute -top-2 -right-2 text-4xl opacity-5 group-hover:text-red-500 group-hover:opacity-10 transition"></i>
+                        <span class="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md mb-2 inline-block text-red-500 bg-red-100">${b.kategori || "BERITA"}</span>
+                        <h4 class="text-xs font-black text-gray-800 group-hover:text-red-600 line-clamp-2 leading-tight mb-2 uppercase italic">${b.judul}</h4>
+                        <div class="flex items-center gap-2 border-t border-gray-200 pt-2">
+                            <div class="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center text-[8px] text-red-500"><i class="fas fa-clock"></i></div>
+                            <p class="text-[9px] text-gray-500 font-bold uppercase tracking-tighter">${formatTanggal(b.tanggal)}</p>
+                        </div>
+                    </a>`;
+                } else {
+                    // DESAIN DENGAN GAMBAR (Normal)
+                    return `
+                    <a href="baca.html?id=${b.id}&type=berita" class="flex gap-3 items-center group p-2 hover:bg-red-50 rounded-xl transition border border-transparent hover:border-red-100">
+                        <img src="${b.gambar}" class="w-14 h-14 object-cover rounded-xl shadow-sm border border-gray-200 flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-black text-gray-800 group-hover:text-red-600 line-clamp-2 transition leading-tight mb-1 uppercase italic">${b.judul}</h4>
+                            <p class="text-[9px] font-black uppercase text-red-400 tracking-tighter"><i class="fas fa-clock mr-1"></i> ${formatTanggal(b.tanggal)}</p>
+                        </div>
+                    </a>`;
+                }
+            }).join('');
         }
+
+        // =====================================================================
+        // FUNGSI BARU: WIDGET JAM, TANGGAL & JADWAL SALAT
+        // =====================================================================
+        
+        // 1. Penggerak Jam Digital
+        function updateJam() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('jamDigital').innerText = timeString.replace(/\./g, ':');
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('tanggalMasehi').innerText = now.toLocaleDateString('id-ID', options);
+        }
+        setInterval(updateJam, 1000);
+        updateJam();
+
+        // 2. Pengambil Jadwal Salat & Hijriah (API Kemenag / AlAdhan)
+        async function fetchJadwalSalat() {
+            // Koordinat Kabupaten Maros, Sulsel (-5.0116, 119.5367)
+            const apiUrl = 'https://api.aladhan.com/v1/timingsByCity?city=Maros&country=Indonesia&method=20'; 
+            
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if(data.code === 200) {
+                    const timings = data.data.timings;
+                    const hijri = data.data.date.hijri;
+                    
+                    // Cetak Tanggal Hijriah
+                    const bulanHijriah = ["Muharram", "Safar", "Rabiul Awwal", "Rabiul Akhir", "Jumadil Awwal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawwal", "Dzulqa'dah", "Dzulhijjah"];
+                    document.getElementById('tanggalHijriah').innerText = `${hijri.day} ${bulanHijriah[hijri.month.number - 1]} ${hijri.year} H`;
+
+                    // Cetak Jadwal Salat (Subuh, Dhuha, Dzuhur, Ashar, Maghrib, Isya)
+                    const jadwalList = [
+                        { nama: 'Subuh', waktu: timings.Fajr, icon: 'fa-cloud-sun' },
+                        { nama: 'Syuruq', waktu: timings.Sunrise, icon: 'fa-sun' },
+                        { nama: 'Dzuhur', waktu: timings.Dhuhr, icon: 'fa-sun' },
+                        { nama: 'Ashar', waktu: timings.Asr, icon: 'fa-cloud-sun' },
+                        { nama: 'Maghrib', waktu: timings.Maghrib, icon: 'fa-moon' },
+                        { nama: 'Isya', waktu: timings.Isha, icon: 'fa-star' }
+                    ];
+
+                    document.getElementById('jadwalSalat').innerHTML = jadwalList.map(j => `
+                        <div class="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+                            <span class="text-xs font-bold text-gray-600 uppercase tracking-widest"><i class="fas ${j.icon} w-5 text-emerald-400"></i> ${j.nama}</span>
+                            <span class="text-sm font-black text-gray-800">${j.waktu}</span>
+                        </div>
+                    `).join('');
+
+                }
+            } catch (error) {
+                console.error("Gagal mengambil jadwal salat:", error);
+                document.getElementById('jadwalSalat').innerHTML = `<div class="text-center text-xs text-red-400 py-2">Gagal memuat jadwal.</div>`;
+                document.getElementById('tanggalHijriah').innerText = "-";
+            }
+        }
+        fetchJadwalSalat();
 
         document.getElementById('kolomCari').addEventListener('keypress', (e) => e.key === 'Enter' && cariBerita());
         document.addEventListener('DOMContentLoaded', loadData);
