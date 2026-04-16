@@ -11,13 +11,20 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <style>
-        /* Gaya khusus untuk merapikan kotak editor */
+        /* Gaya khusus untuk merapikan kotak editor & mencegah tombol tertutup */
         .ql-toolbar.ql-snow { border-radius: 0.75rem 0.75rem 0 0; background-color: #f8fafc; border-color: #e2e8f0; border-width: 2px; }
-        .ql-container.ql-snow { border-radius: 0 0 0.75rem 0.75rem; border-color: #e2e8f0; border-width: 0 2px 2px 2px; font-family: inherit; font-size: 1rem; }
-        .ql-editor { min-height: 200px; }
+        .ql-container.ql-snow { 
+            border-radius: 0 0 0.75rem 0.75rem; 
+            border-color: #e2e8f0; 
+            border-width: 0 2px 2px 2px; 
+            font-family: inherit; 
+            font-size: 1rem; 
+            height: 250px; /* TINGGI DIKUNCI AGAR TOMBOL SIMPAN SELALU TERLIHAT */
+            overflow-y: auto;
+        }
     </style>
 </head>
-<body class="bg-gray-100 flex flex-col md:flex-row min-h-screen font-sans hidden" id="admin_body">
+<body class="bg-gray-100 flex flex-col md:flex-row min-h-screen font-sans hidden pb-10" id="admin_body">
 
     <div id="loading_screen" class="fixed inset-0 bg-slate-900 flex flex-col items-center justify-center z-[9999] text-white">
         <i class="fas fa-shield-alt text-6xl mb-4 text-blue-500 animate-pulse"></i>
@@ -92,12 +99,12 @@
                 <input id="b_kategori" placeholder="Kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500">
                 <input type="url" id="b_gambar" placeholder="URL Gambar" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500">
                 
-                <div class="md:col-span-2 mt-2">
+                <div class="md:col-span-2 mt-2 mb-4">
                     <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Isi Berita</label>
                     <div id="editor_berita" class="bg-white"></div>
                 </div>
 
-                <button type="button" onclick="simpan('berita')" id="btn_berita" class="md:col-span-2 bg-red-600 text-white font-bold py-4 rounded-xl mt-4 shadow-md hover:bg-red-700">TERBITKAN BERITA</button>
+                <button type="button" onclick="simpan('berita')" id="btn_berita" class="md:col-span-2 bg-red-600 text-white font-bold py-4 rounded-xl mt-2 shadow-md hover:bg-red-700">TERBITKAN BERITA</button>
                 <button type="button" onclick="batalEdit('berita')" id="batal_berita" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
             </form></div>
             <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b text-xs text-gray-400 uppercase tracking-widest"><th class="pb-3">Judul Berita</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_berita" class="divide-y divide-gray-100"></tbody></table></div>
@@ -107,15 +114,23 @@
             <form id="form_karya" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="k_id"><input type="hidden" id="k_tgl">
                 <input id="k_judul" placeholder="Judul Karya" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500" required>
                 <input id="k_penulis" placeholder="Penulis" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500" required>
-                <select id="k_kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500"><option value="Artikel">Artikel</option><option value="Sastra">Sastra</option><option value="Desain">Desain</option><option value="Aplikasi">Aplikasi</option></select>
-                <input type="url" id="k_gambar" placeholder="URL Gambar Header" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500">
                 
-                <div class="md:col-span-2 mt-2">
+                <select id="k_kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500">
+                    <option value="Artikel">Artikel</option>
+                    <option value="Sastra">Sastra</option>
+                    <option value="Cerita">Cerita</option>
+                    <option value="Desain">Desain</option>
+                    <option value="Aplikasi">Aplikasi</option>
+                </select>
+                
+                <input type="url" id="k_gambar" placeholder="URL Gambar Header" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500">
+                
+                <div class="md:col-span-2 mt-2 mb-4">
                     <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Isi / Deskripsi Karya</label>
                     <div id="editor_karya" class="bg-white"></div>
                 </div>
 
-                <button type="button" onclick="simpan('karya')" id="btn_karya" class="md:col-span-2 bg-orange-500 text-white font-bold py-4 rounded-xl mt-4 shadow-md hover:bg-orange-600">PUBLIKASIKAN KARYA</button>
+                <button type="button" onclick="simpan('karya')" id="btn_karya" class="md:col-span-2 bg-orange-500 text-white font-bold py-4 rounded-xl mt-2 shadow-md hover:bg-orange-600">PUBLIKASIKAN KARYA</button>
                 <button type="button" onclick="batalEdit('karya')" id="batal_karya" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
             </form></div>
             <div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b text-xs text-gray-400 uppercase tracking-widest"><th class="pb-3">Judul Karya</th><th class="pb-3 text-right">Aksi</th></tr></thead><tbody id="list_karya" class="divide-y divide-gray-100"></tbody></table></div>
@@ -220,11 +235,11 @@
                 document.getElementById('p_kategori').value=kat; document.getElementById('p_jabatan').value=item.jabatan; document.getElementById('p_wa').value=item.whatsapp||""; document.getElementById('p_email').value=item.email||""; document.getElementById('p_tempat').value=item.tempatLahir; document.getElementById('p_tgl_lahir').value=item.tanggalLahir; document.getElementById('p_pendidikan').value=item.pendidikan; document.getElementById('p_tgl_masuk').value=item.tanggalBergabung; document.getElementById('p_foto').value=item.foto; }
             else if(tipe==='berita'){ 
                 document.getElementById('b_id').value=id; document.getElementById('b_tgl').value=item.tanggal; document.getElementById('b_judul').value=item.judul; document.getElementById('b_kategori').value=item.kategori; document.getElementById('b_gambar').value=item.gambar; 
-                window.quillBerita.root.innerHTML = item.isi; // Memasukkan teks ke editor
+                window.quillBerita.root.innerHTML = item.isi; 
             }
             else if(tipe==='karya'){ 
                 document.getElementById('k_id').value=id; document.getElementById('k_tgl').value=item.tanggal; document.getElementById('k_judul').value=item.judul; document.getElementById('k_penulis').value=item.penulis; document.getElementById('k_kategori').value=item.kategori; document.getElementById('k_gambar').value=item.gambar; 
-                window.quillKarya.root.innerHTML = item.deskripsi; // Memasukkan teks ke editor
+                window.quillKarya.root.innerHTML = item.deskripsi; 
             }
             else if(tipe==='kelas'){ document.getElementById('c_id').value=id; document.getElementById('c_nama').value=item.nama_kelas; document.getElementById('c_laki').value=item.laki; document.getElementById('c_perempuan').value=item.perempuan; }
         }
