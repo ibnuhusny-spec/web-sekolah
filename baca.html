@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baca Artikel - SDIT Qurratu A'yun</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Memperbaiki jarak paragraf bawaan editor Quill */
+        .prose p { margin-top: 0.75em; margin-bottom: 0.75em; }
+    </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen pb-20">
 
@@ -25,10 +31,10 @@
         <article id="article_body" class="hidden animate-fade-in">
             <div id="meta_info" class="mb-6">
                 <span id="label_kategori" class="px-3 py-1 rounded-full text-[10px] font-black text-white bg-blue-600 uppercase tracking-widest"></span>
-                <h2 id="judul_artikel" class="text-3xl md:text-4xl font-black text-slate-900 mt-4 leading-tight"></h2>
+                <h2 id="judul_artikel" class="text-3xl md:text-4xl font-black text-slate-900 mt-4 leading-tight italic uppercase"></h2>
                 <p class="text-gray-500 text-sm mt-3 flex items-center gap-2 italic">
-                    <i class="fas fa-calendar-alt text-blue-500"></i> <span id="tgl_artikel"></span>
-                    <span id="author_box" class="hidden"> | <i class="fas fa-user text-orange-500 ml-2"></i> <span id="penulis_artikel"></span></span>
+                    <i class="fas fa-calendar-alt text-blue-500"></i> <span id="tgl_artikel" class="font-bold"></span>
+                    <span id="author_box" class="hidden"> | <i class="fas fa-pen-nib text-orange-500 ml-2"></i> <span id="penulis_artikel" class="font-bold text-orange-600 uppercase"></span></span>
                 </p>
             </div>
 
@@ -36,11 +42,11 @@
                 <img id="gambar_artikel" src="" class="w-full h-full object-cover">
             </div>
 
-            <div id="isi_artikel" class="prose prose-blue max-w-none text-gray-700 leading-relaxed text-lg whitespace-pre-wrap">
+            <div id="isi_artikel" class="prose prose-slate prose-lg max-w-none text-gray-700 leading-relaxed">
                 </div>
 
-            <div class="mt-12 border-t pt-8 mb-12">
-                <p class="font-bold text-gray-400 uppercase text-xs mb-4 text-center">Bagikan informasi ini</p>
+            <div class="mt-12 border-t border-gray-200 pt-8 mb-12">
+                <p class="font-black text-gray-400 uppercase tracking-widest text-xs mb-4 text-center">Bagikan informasi ini</p>
                 <div class="flex justify-center gap-4">
                     <button onclick="shareWA()" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-black flex items-center gap-2 shadow-lg transition transform hover:-translate-y-1">
                         <i class="fab fa-whatsapp text-xl"></i> SHARE KE WHATSAPP
@@ -49,7 +55,7 @@
             </div>
 
             <div class="border-t-4 border-gray-200 pt-8 mt-8">
-                <h3 class="text-2xl font-black text-gray-800 mb-6 flex items-center gap-2">
+                <h3 class="text-2xl font-black text-gray-800 mb-6 flex items-center gap-2 uppercase italic">
                     <i class="fas fa-comments text-blue-500"></i> Ruang Diskusi
                 </h3>
 
@@ -64,9 +70,9 @@
 
                     <div id="sudah_login" class="hidden">
                         <div class="flex items-center gap-3 mb-4 border-b border-gray-100 pb-4">
-                            <img id="user_foto" src="" class="w-10 h-10 rounded-full bg-gray-200 object-cover shadow-sm">
+                            <img id="user_foto" src="" class="w-10 h-10 rounded-full bg-gray-200 object-cover shadow-sm border border-gray-200">
                             <div class="flex-1">
-                                <p id="user_nama" class="font-bold text-sm text-gray-800"></p>
+                                <p id="user_nama" class="font-bold text-sm text-gray-800 uppercase"></p>
                                 <p id="user_email" class="text-[10px] text-gray-500 bg-gray-100 inline-block px-2 py-0.5 rounded-full mt-1"></p>
                             </div>
                             <button onclick="logoutGoogle()" class="text-xs text-red-500 hover:text-red-700 underline font-bold bg-red-50 px-3 py-1 rounded-lg">Keluar</button>
@@ -82,7 +88,7 @@
                     <div class="text-center text-gray-400 italic text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat komentar...</div>
                 </div>
             </div>
-            </article>
+        </article>
     </main>
 
     <script type="module">
@@ -131,7 +137,7 @@
         const type = params.get('type'); 
 
         // =========================================================================
-        // FUNGSI PENETRALISIR KODE JAHAT (XSS Protection)
+        // FUNGSI PENETRALISIR KODE JAHAT (XSS Protection) - HANYA UNTUK KOMENTAR
         // =========================================================================
         function amankanTeks(str) {
             if (!str) return "";
@@ -154,7 +160,9 @@
                     document.getElementById('nav_title').innerText = data.judul;
                     document.getElementById('judul_artikel').innerText = data.judul;
                     document.getElementById('tgl_artikel').innerText = formatTanggal(data.tanggal);
-                    document.getElementById('isi_artikel').innerText = data.isi || data.deskripsi;
+                    
+                    // PERUBAHAN UTAMA: innerHTML digunakan agar format tulisan Editor tidak rusak
+                    document.getElementById('isi_artikel').innerHTML = data.isi || data.deskripsi;
                     
                     const isNoImg = !data.gambar || data.gambar === "-";
                     if (!isNoImg) {
@@ -165,18 +173,17 @@
                     if(type === 'karya') {
                         document.getElementById('author_box').classList.remove('hidden');
                         document.getElementById('penulis_artikel').innerText = data.penulis;
-                        const w = {"Artikel":"bg-blue-500","Sastra":"bg-emerald-500","Desain":"bg-pink-500","Aplikasi":"bg-purple-500"}[data.kategori] || "bg-gray-500";
-                        document.getElementById('label_kategori').className = `px-3 py-1 rounded-full text-[10px] font-black text-white ${w} uppercase tracking-widest`;
+                        const w = {"Artikel":"bg-blue-500","Sastra":"bg-emerald-500","Cerita":"bg-teal-500","Desain":"bg-pink-500","Aplikasi":"bg-purple-500"}[data.kategori] || "bg-gray-500";
+                        document.getElementById('label_kategori').className = `px-3 py-1 rounded-full text-[10px] font-black text-white ${w} uppercase tracking-widest shadow-sm`;
                         document.getElementById('label_kategori').innerText = data.kategori || "KARYA";
                     } else {
-                        document.getElementById('label_kategori').className = "px-3 py-1 rounded-full text-[10px] font-black text-white bg-red-600 uppercase tracking-widest";
+                        document.getElementById('label_kategori').className = "px-3 py-1 rounded-full text-[10px] font-black text-white bg-red-600 uppercase tracking-widest shadow-sm";
                         document.getElementById('label_kategori').innerText = data.kategori || "BERITA";
                     }
 
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('article_body').classList.remove('hidden');
 
-                    // Setelah artikel termuat, muat juga komentarnya
                     loadKomentar();
                 } else {
                     document.getElementById('loading').innerHTML = "Maaf, kiriman tidak ditemukan.";
@@ -187,7 +194,6 @@
             }
         }
 
-        // FUNGSI MENGIRIM KOMENTAR KE FIREBASE
         window.kirimKomentar = async () => {
             const teks = document.getElementById('input_komentar').value.trim();
             if(!teks) return alert("Komentar tidak boleh kosong!");
@@ -198,7 +204,6 @@
             btn.disabled = true;
 
             try {
-                // Simpan komentar ke koleksi khusus bernama 'komentar'
                 await addDoc(collection(db, "komentar"), {
                     postId: docId,
                     nama: currentUser.displayName,
@@ -208,8 +213,8 @@
                     tanggal: new Date().toISOString()
                 });
                 
-                document.getElementById('input_komentar').value = ""; // Kosongkan input
-                loadKomentar(); // Segarkan daftar komentar
+                document.getElementById('input_komentar').value = ""; 
+                loadKomentar(); 
             } catch(e) {
                 alert("Gagal mengirim komentar: " + e.message);
             } finally {
@@ -218,32 +223,29 @@
             }
         };
 
-        // FUNGSI MEMUAT DAFTAR KOMENTAR
         async function loadKomentar() {
             if(!docId) return;
             const q = query(collection(db, "komentar"), where("postId", "==", docId));
             try {
                 const snap = await getDocs(q);
                 let koms = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                
-                // Urutkan dari yang terbaru
                 koms.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal)); 
                 
                 const box = document.getElementById('daftar_komentar');
                 if(koms.length === 0) {
-                    box.innerHTML = '<p class="text-center text-gray-400 italic text-sm py-6 bg-gray-50 rounded-2xl border border-gray-100">Belum ada komentar. Jadilah yang pertama memberikan apresiasi!</p>';
+                    box.innerHTML = '<p class="text-center text-gray-400 italic text-sm py-6 bg-gray-50 rounded-2xl border border-gray-100 shadow-inner">Belum ada komentar. Jadilah yang pertama memberikan apresiasi!</p>';
                     return;
                 }
 
                 box.innerHTML = koms.map(k => `
-                    <div class="bg-white border border-gray-100 shadow-sm p-4 rounded-2xl flex gap-4 transition hover:shadow-md">
-                        <img src="${k.foto || 'https://i.ibb.co/Xz9Gf4z/default.png'}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+                    <div class="bg-white border border-gray-100 shadow-sm p-5 rounded-3xl flex gap-4 transition hover:shadow-md">
+                        <img src="${k.foto || 'https://i.ibb.co/Xz9Gf4z/default.png'}" class="w-12 h-12 rounded-full object-cover flex-shrink-0 border-2 border-gray-100">
                         <div class="flex-1">
-                            <div class="flex flex-col md:flex-row justify-between md:items-baseline mb-2">
-                                <h4 class="font-bold text-gray-800 text-sm">${k.nama}</h4>
-                                <span class="text-[10px] text-gray-400"><i class="fas fa-clock"></i> ${formatTanggalWaktu(k.tanggal)}</span>
+                            <div class="flex flex-col md:flex-row justify-between md:items-baseline mb-2 border-b border-gray-50 pb-2">
+                                <h4 class="font-black text-gray-800 text-sm uppercase">${k.nama}</h4>
+                                <span class="text-[10px] text-gray-400 font-bold tracking-wider"><i class="fas fa-clock text-blue-300"></i> ${formatTanggalWaktu(k.tanggal)}</span>
                             </div>
-                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${amankanTeks(k.teks)}</p>
+                            <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">${amankanTeks(k.teks)}</p>
                         </div>
                     </div>
                 `).join('');
@@ -280,10 +282,5 @@
 
         loadContent();
     </script>
-
-    <style>
-        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
 </body>
 </html>
