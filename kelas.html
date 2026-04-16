@@ -9,6 +9,10 @@
     <style>
         .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
         .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        /* Animasi Teks Berjalan */
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-slate-100 text-gray-800 font-sans flex flex-col min-h-screen pb-20">
@@ -26,6 +30,10 @@
     <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center">
         <div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div>
     </header>
+
+    <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
+    </div>
 
     <main class="flex-1 p-4 md:p-10 md:ml-16 max-w-5xl mx-auto w-full mt-4">
         <h2 class="text-3xl md:text-4xl font-black mb-2 text-gray-800 border-l-8 border-purple-600 pl-4">Data Keadaan Siswa</h2>
@@ -83,24 +91,39 @@
 
         async function loadKelas() {
             try {
-                const snap = await getDocs(collection(db, "kelas"));
-                const tbody = document.getElementById('kelas_tbody');
+                // Mengambil Data Kelas, Berita, & Karya Sekaligus
+                const [snap, beritaSnap, karyaSnap] = await Promise.all([
+                    getDocs(collection(db, "kelas")),
+                    getDocs(collection(db, "berita")),
+                    getDocs(collection(db, "karya"))
+                ]);
+
+                // Membangun Teks Berjalan
+                const ticker = document.getElementById('tickerContent');
+                let berita = beritaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+                let karya = karyaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
                 
+                let items = [...berita.slice(0,3), ...karya.slice(0,3)];
+                if(items.length > 0) {
+                    let content = items.map(item => `<a href="baca.html?id=${item.id}&type=${item.penulis ? 'karya' : 'berita'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition tracking-tight uppercase italic text-xs"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
+                    ticker.innerHTML = content + content;
+                } else {
+                    ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada kabar terbaru...</span>';
+                }
+
+                // Mengolah Data Kelas
+                const tbody = document.getElementById('kelas_tbody');
                 let sumLaki = 0;
                 let sumPerempuan = 0;
 
-                // 1. Ambil semua data ke dalam array
                 let dataKelas = snap.docs.map(doc => doc.data());
 
-                // 2. LOGIKA PENGURUTAN (Sorting A-Z / 1-6)
                 dataKelas.sort((a, b) => {
                     const namaA = (a.nama_kelas || "").toString().toLowerCase();
                     const namaB = (b.nama_kelas || "").toString().toLowerCase();
-                    // localeCompare dengan opsi 'numeric' akan cerdas mengurutkan angka (contoh: 1, 2, 10, 11)
                     return namaA.localeCompare(namaB, undefined, { numeric: true, sensitivity: 'base' });
                 });
 
-                // 3. Render ke dalam baris tabel (<tr>)
                 const htmlContent = dataKelas.map((d, index) => {
                     const laki = parseInt(d.laki) || 0;
                     const perempuan = parseInt(d.perempuan) || 0;
@@ -124,7 +147,6 @@
                 } else {
                     tbody.innerHTML = htmlContent;
                     
-                    // Tampilkan akumulasi ke kotak atas
                     document.getElementById('tot_laki').innerText = sumLaki;
                     document.getElementById('tot_perempuan').innerText = sumPerempuan;
                     document.getElementById('tot_semua').innerText = sumLaki + sumPerempuan;
