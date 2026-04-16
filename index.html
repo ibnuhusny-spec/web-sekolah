@@ -60,7 +60,7 @@
         </div>
 
         <div class="relative z-10 max-w-4xl animate-fade">
-            <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 drop-shadow-lg">
+            <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 drop-shadow-lg uppercase italic">
                 Cerdas, Bertauhid,<br>dan Berakhlak Mulia
             </h2>
             <p class="text-lg md:text-xl text-blue-100 mb-10 leading-relaxed font-medium">
@@ -71,8 +71,9 @@
                 <a href="profil.html" class="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-black py-4 px-8 rounded-full shadow-lg shadow-yellow-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
                     <i class="fas fa-flag"></i> PROFIL SEKOLAH
                 </a>
-                <a href="berita.html" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-full shadow-lg shadow-blue-600/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-blue-400">
-                    <i class="fas fa-newspaper"></i> KABAR TERBARU
+                
+                <a href="berita.html" id="btnBeritaTerbaru" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-full shadow-lg shadow-blue-600/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-blue-400">
+                    <i class="fas fa-spinner fa-spin mr-1" id="iconLoadingBerita"></i> KABAR TERBARU
                 </a>
             </div>
         </div>
@@ -80,11 +81,11 @@
 
     <footer class="bg-gray-950 text-gray-400 pt-10 pb-28 md:pb-10 relative z-40 w-full">
         <div class="max-w-6xl mx-auto px-6 text-center">
-            <p class="text-xl font-black text-white mb-2">SDIT Qurratu A'yun Al-Islami</p>
+            <p class="text-xl font-black text-white mb-2 uppercase tracking-widest italic">SDIT Qurratu A'yun Al-Islami</p>
             <p class="text-sm mb-6 max-w-md mx-auto">Mendidik generasi Islam yang tangguh, cerdas, dan berakhlak mulia di Kabupaten Maros.</p>
             
             <div class="border-t border-gray-800 pt-6">
-                <button onclick="window.location.href='login.html'" class="text-gray-500 border border-gray-800 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
+                <button onclick="window.location.href='login.html'" class="text-gray-500 border border-gray-800 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm mb-4 md:mb-0">
                     <i class="fas fa-cog"></i> Panel Admin Sekolah
                 </button>
             </div>
@@ -94,7 +95,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
@@ -108,20 +109,50 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function loadTicker() {
+        async function initHomePage() {
             try {
-                const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
+                // 1. TUGAS PERTAMA: MUAT TICKER (Teks Berjalan)
+                const [beritaSnapTicker, karyaSnapTicker] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
                 const ticker = document.getElementById('tickerContent');
-                let items = [...beritaSnap.docs.map(d => ({...d.data()})).slice(0,3), ...karyaSnap.docs.map(d => ({...d.data()})).slice(0,3)];
+                let items = [...beritaSnapTicker.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3), ...karyaSnapTicker.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3)];
                 
                 if(items.length > 0) {
-                    let content = items.map(item => `<a href="${item.penulis ? 'karya.html' : 'berita.html'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
+                    let content = items.map(item => `<a href="baca.html?id=${item.id}&type=${item.penulis ? 'karya' : 'berita'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition uppercase italic text-xs tracking-tight"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
                     ticker.innerHTML = content + content;
                 }
-            } catch (err) { console.error(err); }
+
+                // 2. TUGAS KEDUA: BIKIN TOMBOL "KABAR TERBARU" JADI PINTAR
+                const btnBerita = document.getElementById('btnBeritaTerbaru');
+                const iconLoading = document.getElementById('iconLoadingBerita');
+                
+                // Ambil semua berita (karena kadang query orderBy bermasalah jika belum di-index di Firebase)
+                let beritaList = beritaSnapTicker.docs.map(d => ({ id: d.id, ...d.data() }));
+                
+                if (beritaList.length > 0) {
+                    // Urutkan manual berdasarkan tanggal terbaru (Z-A)
+                    beritaList.sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+                    
+                    // Ambil ID berita urutan pertama (paling atas)
+                    const beritaTerbaruId = beritaList[0].id;
+                    
+                    // Ubah link tombolnya langsung mengarah ke halaman baca
+                    btnBerita.href = `baca.html?id=${beritaTerbaruId}&type=berita`;
+                }
+                
+                // Hapus ikon loading setelah selesai mencari
+                iconLoading.classList.remove('fa-spinner', 'fa-spin');
+                iconLoading.classList.add('fa-newspaper');
+
+            } catch (err) { 
+                console.error(err); 
+                // Jika error/gagal ambil data, tombol kembalikan ke ikon normal
+                const iconLoading = document.getElementById('iconLoadingBerita');
+                iconLoading.classList.remove('fa-spinner', 'fa-spin');
+                iconLoading.classList.add('fa-newspaper');
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', loadTicker);
+        document.addEventListener('DOMContentLoaded', initHomePage);
     </script>
 </body>
 </html>
