@@ -13,6 +13,7 @@
         .animate-fade { animation: fadeIn 0.5s ease forwards; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
@@ -30,11 +31,11 @@
     <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center text-center"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
 
     <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
-        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic">Memuat kabar terbaru...</span></div>
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
     </div>
 
-    <main class="flex-1 px-4 py-10 md:p-10 md:ml-16 bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen">
-        <h2 class="text-3xl font-black mb-8 text-gray-800 border-l-8 border-green-500 pl-4">Guru & Pegawai</h2>
+    <main class="flex-1 px-4 py-10 md:p-10 md:ml-16 bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen pb-28 md:pb-10">
+        <h2 class="text-3xl font-black mb-8 text-gray-800 border-l-8 border-green-500 pl-4 uppercase italic">Guru & Pegawai</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="bg-blue-600 p-6 rounded-2xl shadow-lg text-white relative overflow-hidden">
@@ -69,7 +70,7 @@
     </main>
 
     <footer class="bg-gray-900 text-white pt-10 pb-8 relative z-40 w-full mt-auto">
-        <p class="text-lg font-bold text-center">SDIT Qurratu A'yun Al-Islami</p>
+        <p class="text-lg font-bold text-center uppercase tracking-widest italic">SDIT Qurratu A'yun Al-Islami</p>
         <button onclick="window.location.href='login.html'" class="mt-6 text-gray-400 border border-gray-700 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
             <i class="fas fa-cog"></i> Panel Admin
         </button>
@@ -80,15 +81,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
-            authDomain: "websekolah-9bcde.firebaseapp.com",
-            projectId: "websekolah-9bcde",
-            storageBucket: "websekolah-9bcde.firebasestorage.app",
-            messagingSenderId: "113406929634",
-            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.staffData = [];
@@ -122,10 +115,14 @@
 
                 window.renderCards();
 
+                // PERBAIKAN: Teks Berjalan Sekarang Bisa Diklik!
                 const ticker = document.getElementById('tickerContent');
-                let items = [...beritaSnap.docs.map(d => d.data()).slice(0,3), ...karyaSnap.docs.map(d => d.data()).slice(0,3)];
+                let items = [...beritaSnap.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3), ...karyaSnap.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3)];
                 if(items.length > 0) {
-                    ticker.innerHTML = items.map(i => `<span class="mx-10 font-bold text-blue-900">🔥 ${i.judul} </span>`).join('') + ticker.innerHTML;
+                    let content = items.map(item => `<a href="baca.html?id=${item.id}&type=${item.penulis ? 'karya' : 'berita'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition uppercase italic text-xs tracking-tight"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
+                    ticker.innerHTML = content + content;
+                } else {
+                    ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada kabar terbaru...</span>';
                 }
             } catch (err) { console.error(err); }
         }
@@ -134,7 +131,6 @@
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             const grid = document.getElementById('staffGrid');
             
-            // 1. FILTERING DATA
             let filtered = window.staffData.filter(s => {
                 let kat = s.kategori;
                 if (kat === 'tendik') kat = 'tendik_putra'; 
@@ -142,20 +138,12 @@
                        s.nama.toLowerCase().includes(keyword);
             });
 
-            // 2. SORTING (PENGURUTAN) BERDASARKAN KATEGORI (Guru Putra -> Guru Putri -> Tendik)
             filtered.sort((a, b) => {
-                // Beri bobot pada tiap kategori
                 const bobot = { 'guru_putra': 1, 'guru_putri': 2, 'tendik_putra': 3, 'tendik_putri': 3, 'tendik': 3 };
-                
-                const bobotA = bobot[a.kategori] || 99; // Jika kategori tidak dikenal, taruh paling bawah
+                const bobotA = bobot[a.kategori] || 99;
                 const bobotB = bobot[b.kategori] || 99;
-                
-                if (bobotA !== bobotB) {
-                    return bobotA - bobotB; // Urutkan berdasarkan bobot (1, 2, 3)
-                } else {
-                    // Jika kategorinya SAMA (misal sama-sama Guru Putra), urutkan berdasarkan Abjad Nama (A-Z)
-                    return a.nama.localeCompare(b.nama);
-                }
+                if (bobotA !== bobotB) return bobotA - bobotB;
+                else return a.nama.localeCompare(b.nama);
             });
 
             if(filtered.length === 0) { grid.innerHTML = `<div class="text-gray-500 italic">Tidak ada data pegawai.</div>`; return; }
@@ -171,7 +159,6 @@
                 const labels = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik_putra: 'TENDIK', tendik_putri: 'TENDIK' };
                 
                 let fotoTampil = s.foto;
-                
                 if (kat === 'guru_putri' || kat === 'tendik_putri') {
                     fotoTampil = siluetHijab;
                 } else if (!s.foto || s.foto === "-" || s.foto === "" || s.foto.includes("default.png")) {
