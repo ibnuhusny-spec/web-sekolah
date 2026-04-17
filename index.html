@@ -30,9 +30,7 @@
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen overflow-x-hidden">
 
     <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
-        
         <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-blue-600 rounded-2xl shadow-lg border border-blue-500"><i class="fas fa-home text-white text-lg md:text-xl"></i></a>
-        
         <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
         <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
         <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
@@ -76,15 +74,12 @@
             </p>
             
             <div class="flex flex-col md:flex-row gap-4 justify-center flex-wrap">
-                
                 <a href="ppdb.html" class="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-black py-4 px-8 rounded-full shadow-lg shadow-green-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-green-400 animate-pulse hover:animate-none w-full md:w-auto">
                     <i class="fas fa-user-graduate text-xl"></i> PENDAFTARAN PPDB
                 </a>
-
                 <a href="profil.html" class="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-black py-4 px-8 rounded-full shadow-lg shadow-yellow-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 w-full md:w-auto">
                     <i class="fas fa-flag"></i> PROFIL SEKOLAH
                 </a>
-                
                 <a href="berita.html" id="btnBeritaTerbaru" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-full shadow-lg shadow-blue-600/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-blue-400 w-full md:w-auto">
                     <i class="fas fa-spinner fa-spin mr-1" id="iconLoadingBerita"></i> KABAR TERBARU
                 </a>
@@ -128,14 +123,15 @@
         <div class="h-10 md:hidden w-full bg-transparent pointer-events-none"></div>
     </footer>
 
-    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20SDIT%20Qurratu%20A'yun,%20saya%20ingin%20bertanya..." target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-[100] animate-bounce hover:animate-none group">
+    <a href="https://wa.me/" id="floating_wa" target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-[100] animate-bounce hover:animate-none group">
         <i class="fab fa-whatsapp"></i>
         <span class="absolute right-16 bg-white text-gray-800 text-xs font-bold px-3 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-green-100">Hubungi Admin</span>
     </a>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        // PENTING: Tambahkan doc dan getDoc di sini
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
         const app = initializeApp(firebaseConfig);
@@ -143,6 +139,17 @@
 
         async function initHomePage() {
             try {
+                // 1. TARIK DATA NOMOR WA DARI TAB REDAKSI (ADMIN)
+                const redaksiSnap = await getDoc(doc(db, "profil", "redaksi"));
+                if(redaksiSnap.exists() && redaksiSnap.data().whatsapp) {
+                    let waRedaksi = redaksiSnap.data().whatsapp;
+                    // Rapikan jika nomornya dimulai dengan angka 0
+                    if(waRedaksi.startsWith('0')) waRedaksi = '62' + waRedaksi.substring(1);
+                    // Tanamkan ke tombol mengambang
+                    document.getElementById('floating_wa').href = `https://wa.me/${waRedaksi}?text=Assalamu'alaikum%20Admin%20SDIT%20Qurratu%20A'yun...`;
+                }
+
+                // 2. KODE LAMA UNTUK TICKER BERITA
                 const [beritaSnapTicker, karyaSnapTicker] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
                 const ticker = document.getElementById('tickerContent');
                 let items = [...beritaSnapTicker.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3), ...karyaSnapTicker.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3)];
