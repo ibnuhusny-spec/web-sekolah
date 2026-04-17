@@ -18,12 +18,18 @@
         }
         .modal-bg { background-color: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); }
         
-        /* GAYA KHUSUS UNTUK MENCETAK (PRINT) KERTAS A4 */
+        /* GAYA KHUSUS UNTUK MENCETAK (PRINT) KERTAS A4 - SUDAH DIPERBAIKI AGAR TIDAK TERPOTONG */
         @media print {
-            body * { visibility: hidden; } /* Sembunyikan seluruh website */
-            #area_cetak_ppdb, #area_cetak_ppdb * { visibility: visible; } /* Tampilkan hanya form PPDB */
-            #area_cetak_ppdb { position: absolute; left: 0; top: 0; width: 100%; border: none !important; box-shadow: none !important; margin: 0; padding: 0; }
-            .no-print { display: none !important; } /* Sembunyikan tombol cetak saat dicetak */
+            body { background: white !important; }
+            body * { visibility: hidden; } 
+            #area_cetak_ppdb, #area_cetak_ppdb * { visibility: visible; } 
+            #area_cetak_ppdb { 
+                position: absolute; left: 0; top: 0; width: 100%; 
+                /* Kunci perbaikan agar kertas bisa berhalaman-halaman: */
+                height: auto !important; max-height: none !important; overflow: visible !important;
+                border: none !important; box-shadow: none !important; margin: 0; padding: 0; 
+            }
+            .no-print { display: none !important; } 
             .bg-gray-50 { background-color: transparent !important; border: 1px solid #ccc; }
         }
     </style>
@@ -133,7 +139,15 @@
         <div id="tab-ppdb" class="tab-content hidden">
             <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                 <h2 class="text-2xl font-black text-blue-800 uppercase italic"><i class="fas fa-user-graduate mr-2 text-blue-500"></i> Data Calon Siswa (PPDB)</h2>
-                <button onclick="bukaModalPengaturanPPDB()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-xl flex items-center gap-2 shadow-md"><i class="fas fa-cog"></i> Kontak Panitia</button>
+                
+                <div class="flex gap-2">
+                    <button onclick="downloadExcelPPDB()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 shadow-md">
+                        <i class="fas fa-file-excel"></i> <span class="hidden md:inline">Download Excel</span>
+                    </button>
+                    <button onclick="bukaModalPengaturanPPDB()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 shadow-md">
+                        <i class="fas fa-cog"></i> <span class="hidden md:inline">Kontak Panitia</span>
+                    </button>
+                </div>
             </div>
 
             <div class="grid grid-cols-3 gap-4 mb-6">
@@ -166,11 +180,11 @@
         </div>
     </div>
 
-    <div id="modal_detail_ppdb" class="fixed inset-0 modal-bg hidden flex items-start md:items-center justify-center z-[9999] p-0 md:p-4 overflow-y-auto">
+    <div id="modal_detail_ppdb" class="fixed inset-0 modal-bg hidden flex items-start justify-center z-[9999] p-0 md:p-4 overflow-y-auto">
         
-        <div id="area_cetak_ppdb" class="bg-white md:rounded-3xl shadow-2xl w-full max-w-4xl min-h-screen md:min-h-[auto] md:max-h-[90vh] overflow-y-auto border-t-8 border-blue-600 animate-fade relative pb-20">
+        <div id="area_cetak_ppdb" class="bg-white md:rounded-3xl shadow-2xl w-full max-w-4xl min-h-screen md:min-h-[auto] md:max-h-none overflow-y-visible border-t-8 border-blue-600 relative pb-10 mt-0 md:mt-10">
             
-            <button onclick="tutupModalDetailPPDB()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-3xl no-print"><i class="fas fa-times-circle"></i></button>
+            <button onclick="tutupModalDetailPPDB()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-3xl no-print z-50"><i class="fas fa-times-circle"></i></button>
 
             <div class="text-center pt-8 border-b-2 border-black pb-4 mb-6 mx-8 hidden print:block">
                 <h1 class="text-2xl font-black uppercase">SDIT Qurratu A'yun Al-Islami</h1>
@@ -398,6 +412,42 @@
         }
         window.tutupModalDetailPPDB = () => document.getElementById('modal_detail_ppdb').classList.add('hidden');
 
+
+        // =====================================
+        // FUNGSI DOWNLOAD EXCEL (CSV)
+        // =====================================
+        window.downloadExcelPPDB = function() {
+            const data = window.globalData.ppdb;
+            if(data.length === 0) return alert("Belum ada data pendaftar untuk didownload.");
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            // Header Kolom
+            csvContent += "No Daftar,Tanggal Daftar,Status,NIK,NISN,Nama Anak,Tempat Lahir,Tgl Lahir,L/P,Agama,Asal TK,Alamat Lengkap,Nama Ayah,Pekerjaan Ayah,No WA Ayah,Nama Ibu,Pekerjaan Ibu,No WA Ibu\n";
+            
+            // Isi Baris Data
+            data.forEach(x => {
+                const tglDaftar = new Date(x.tanggal_daftar).toLocaleDateString('id-ID');
+                const almt = `${x.dusun} RT/RW ${x.rt_rw} Kel. ${x.kelurahan} Kec. ${x.kecamatan} Kab. ${x.kabupaten}`;
+                
+                const row = [
+                    x.no_pendaftaran, tglDaftar, x.status, 
+                    x.nik || "-", x.nisn || "-", x.nama_anak, x.tempat_lahir, x.tanggal_lahir, x.jk, x.agama, x.asal_sekolah,
+                    `"${almt}"`, // Alamat diapit tanda kutip agar tanda koma di dalamnya aman
+                    (x.ayah?.nama || "-"), (x.ayah?.pekerjaan || "-"), (x.ayah?.kontak || "-"),
+                    (x.ibu?.nama || "-"), (x.ibu?.pekerjaan || "-"), (x.ibu?.kontak || "-")
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            // Eksekusi Download
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Data_PPDB_Qurratu_Ayun.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
         // MODAL PENGATURAN PPDB
         window.bukaModalPengaturanPPDB = async function() {
