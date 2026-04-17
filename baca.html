@@ -15,7 +15,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade { animation: fadeIn 0.5s ease forwards; }
         
-        /* Mempercantik area konten artikel */
         .ql-editor { padding: 0 !important; font-family: inherit !important; font-size: 1rem !important; line-height: 1.8 !important; color: #334155; }
         .ql-editor h1, .ql-editor h2, .ql-editor h3 { color: #1e293b; font-weight: 900; margin-top: 1.5em; margin-bottom: 0.5em; }
         .ql-editor img { border-radius: 1rem; margin: 1.5rem 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
@@ -34,7 +33,7 @@
         <a href="redaksi.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl"></i></a>
     </nav>
 
-    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex items-center justify-between sticky top-0">
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex items-center justify-between sticky top-0 z-[60]">
         <button onclick="goBack()" class="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold bg-gray-100 hover:bg-blue-50 px-4 py-2 rounded-full transition shadow-sm text-sm">
             <i class="fas fa-arrow-left"></i> <span class="hidden sm:inline">Kembali</span>
         </button>
@@ -68,7 +67,7 @@
                     <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-gray-500 uppercase tracking-widest mb-10 pb-6 border-b-2 border-gray-100">
                         <span id="meta_tanggal"><i class="fas fa-calendar-alt text-blue-400 mr-1"></i> -</span>
                         <span id="meta_penulis" class="hidden"><i class="fas fa-user-edit text-orange-400 mr-1"></i> -</span>
-                        <span><i class="fas fa-eye text-green-400 mr-1"></i> Dibaca <span id="view_count">1</span> kali</span>
+                        <span><i class="fas fa-eye text-green-400 mr-1"></i> Dibaca <span id="view_count"><i class="fas fa-spinner fa-spin"></i></span> kali</span>
                     </div>
 
                     <div class="ql-snow">
@@ -128,14 +127,15 @@
         <p class="text-lg font-bold uppercase tracking-widest italic text-white">SDIT Qurratu A'yun Al-Islami</p>
     </footer>
 
-    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20SDIT%20Qurratu%20A'yun..." target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-[100] group hidden md:flex">
+    <a href="https://wa.me/" id="floating_wa" target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-[100] group hidden md:flex">
         <i class="fab fa-whatsapp"></i>
         <span class="absolute right-16 bg-white text-gray-800 text-xs font-bold px-3 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-green-100">Hubungi Admin</span>
     </a>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        // PENTING: Tambahkan 'updateDoc' dan 'increment' ke sini!
+        import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
@@ -145,16 +145,13 @@
         // AMBIL PARAMETER URL (Contoh: baca.html?id=123&type=berita)
         const urlParams = new URLSearchParams(window.location.search);
         const docId = urlParams.get('id');
-        const docType = urlParams.get('type') || 'berita'; // default berita
+        const docType = urlParams.get('type') || 'berita'; 
         let articleTitle = "Artikel SDIT Qurratu A'yun";
 
         // TOMBOL KEMBALI CERDAS
         window.goBack = function() {
-            if (document.referrer.includes(window.location.hostname)) {
-                window.history.back();
-            } else {
-                window.location.href = docType === 'karya' ? 'karya.html' : 'berita.html';
-            }
+            if (document.referrer.includes(window.location.hostname)) { window.history.back(); } 
+            else { window.location.href = docType === 'karya' ? 'karya.html' : 'berita.html'; }
         };
 
         function formatTanggal(iso) { 
@@ -166,14 +163,19 @@
         }
 
         async function loadArtikel() {
-            if(!docId) {
-                document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Artikel tidak ditemukan.</p>";
-                return;
-            }
+            if(!docId) { document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Artikel tidak ditemukan.</p>"; return; }
 
             try {
                 const docRef = doc(db, docType, docId);
                 const docSnap = await getDoc(docRef);
+
+                // Coba tarik kontak WA Admin untuk tombol mengambang
+                const redaksiSnap = await getDoc(doc(db, "profil", "redaksi"));
+                if(redaksiSnap.exists() && redaksiSnap.data().whatsapp) {
+                    let waRedaksi = redaksiSnap.data().whatsapp;
+                    if(waRedaksi.startsWith('0')) waRedaksi = '62' + waRedaksi.substring(1);
+                    document.getElementById('floating_wa').href = `https://wa.me/${waRedaksi}?text=Assalamu'alaikum%20Admin...`;
+                }
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -185,18 +187,14 @@
 
                     document.getElementById('judul_artikel').innerText = data.judul;
                     document.getElementById('meta_tanggal').innerHTML = `<i class="fas fa-calendar-alt text-blue-400 mr-1"></i> ${formatTanggal(data.tanggal)}`;
-                    
-                    // Render Isi Konten HTML (Dari Quill Editor)
                     document.getElementById('isi_artikel').innerHTML = data.isi || data.deskripsi || "Tidak ada konten.";
 
-                    // Atur Kategori & Penulis
                     const kat = data.kategori || (docType === 'karya' ? 'KARYA GURU' : 'BERITA');
                     if (docType === 'karya' && data.penulis) {
                         document.getElementById('meta_penulis').classList.remove('hidden');
                         document.getElementById('meta_penulis').innerHTML = `<i class="fas fa-user-edit text-orange-400 mr-1"></i> ${data.penulis}`;
                     }
 
-                    // Tampilkan Gambar Cover (Jika ada)
                     const isNoImg = !data.gambar || data.gambar === "-" || data.gambar.includes("default.png");
                     if (!isNoImg) {
                         document.getElementById('cover_artikel').classList.remove('hidden');
@@ -210,13 +208,30 @@
                         if(docType === 'karya') document.getElementById('badge_kategori_noimg').classList.replace('text-blue-600', 'text-orange-600');
                     }
 
-                    // Simulasi View Count (Random untuk estetika web statis)
-                    document.getElementById('view_count').innerText = Math.floor(Math.random() * 50) + 15;
+                    // ==========================================
+                    // LOGIKA ANGKA PEMBACA (VIEW COUNT) ASLI
+                    // ==========================================
+                    let currentViews = data.views || 0;
+                    const viewKey = `viewed_${docType}_${docId}`; // Contoh: viewed_berita_123
+                    
+                    // Cek apakah HP/Laptop ini sudah pernah membaca artikel ini?
+                    if(!localStorage.getItem(viewKey)) {
+                        try {
+                            // Jika belum, tambahkan +1 ke database Firebase
+                            await updateDoc(docRef, { views: increment(1) });
+                            localStorage.setItem(viewKey, 'true'); // Kunci agar tidak nambah lagi kalau di-refresh
+                            currentViews++;
+                        } catch(e) {
+                            console.log("Gagal menambah view", e);
+                        }
+                    }
+                    
+                    // Tampilkan angka aslinya ke layar
+                    document.getElementById('view_count').innerText = currentViews;
+                    // ==========================================
 
-                    loadKomentar(); // Panggil fungsi komentar setelah artikel dimuat
-                } else {
-                    document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Artikel telah dihapus atau tidak tersedia.</p>";
-                }
+                    loadKomentar(); 
+                } else { document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Artikel telah dihapus atau tidak tersedia.</p>"; }
             } catch(e) {
                 console.error(e);
                 document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Gagal memuat artikel dari server.</p>";
@@ -225,7 +240,7 @@
         loadArtikel();
 
         // ==========================================
-        // FITUR SHARE (BAGIKAN)
+        // FITUR SHARE
         // ==========================================
         window.shareKe = function(platform) {
             const url = window.location.href;
@@ -233,10 +248,7 @@
             if(platform === 'wa') window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
             if(platform === 'fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
         }
-        window.salinLink = function() {
-            navigator.clipboard.writeText(window.location.href);
-            alert("Tautan artikel berhasil disalin!");
-        }
+        window.salinLink = function() { navigator.clipboard.writeText(window.location.href); alert("Tautan artikel berhasil disalin!"); }
 
         // ==========================================
         // LOGIKA KOMENTAR 
