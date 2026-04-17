@@ -52,26 +52,26 @@
                 <p class="text-sm text-gray-600 mb-6 leading-relaxed">Jika Ayah/Bunda mengalami kesulitan dalam mengisi formulir, silakan hubungi panitia melalui kontak di bawah ini, atau tinggalkan pertanyaan di ruang komentar.</p>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <a href="https://wa.me/6281234567890?text=Assalamu'alaikum%20Ust.%20Radiant,%20saya%20ingin%20bertanya%20seputar%20PPDB..." target="_blank" class="flex items-center gap-4 bg-green-50 p-4 rounded-2xl border border-green-100 hover:bg-green-100 hover:shadow-md transition group">
+                    <a href="#" id="link_wa_putra" target="_blank" class="flex items-center gap-4 bg-green-50 p-4 rounded-2xl border border-green-100 hover:bg-green-100 hover:shadow-md transition group">
                         <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-xl group-hover:scale-110 transition shadow-sm"><i class="fab fa-whatsapp"></i></div>
                         <div class="text-left">
                             <p class="text-[10px] font-black text-green-600 uppercase tracking-widest">Panitia (Putra)</p>
-                            <p class="text-sm font-bold text-gray-800">Ust. Radiant Fadli</p>
+                            <p class="text-sm font-bold text-gray-800" id="nama_panitia_putra"><i class="fas fa-spinner fa-spin"></i> Memuat...</p>
                         </div>
                     </a>
                     
-                    <a href="https://wa.me/6281234567891?text=Assalamu'alaikum%20Ustzh.%20Ummu,%20saya%20ingin%20bertanya%20seputar%20PPDB..." target="_blank" class="flex items-center gap-4 bg-green-50 p-4 rounded-2xl border border-green-100 hover:bg-green-100 hover:shadow-md transition group">
+                    <a href="#" id="link_wa_putri" target="_blank" class="flex items-center gap-4 bg-green-50 p-4 rounded-2xl border border-green-100 hover:bg-green-100 hover:shadow-md transition group">
                         <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-xl group-hover:scale-110 transition shadow-sm"><i class="fab fa-whatsapp"></i></div>
                         <div class="text-left">
                             <p class="text-[10px] font-black text-green-600 uppercase tracking-widest">Panitia (Putri)</p>
-                            <p class="text-sm font-bold text-gray-800">Ustzh. Ummu Qonitah</p>
+                            <p class="text-sm font-bold text-gray-800" id="nama_panitia_putri"><i class="fas fa-spinner fa-spin"></i> Memuat...</p>
                         </div>
                     </a>
                 </div>
                 
                 <div class="flex items-center justify-center md:justify-start gap-3 text-sm font-bold text-gray-600 bg-gray-50 p-4 rounded-2xl border border-gray-200">
                     <div class="w-8 h-8 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center"><i class="fas fa-envelope"></i></div>
-                    Surel: <a href="mailto:ppdb@sdit-qurratuayun.sch.id" class="text-blue-600 hover:underline">ppdb@sdit-qurratuayun.sch.id</a>
+                    Surel: <a href="#" id="link_email" class="text-blue-600 hover:underline">Memuat...</a>
                 </div>
             </div>
         </div>
@@ -280,12 +280,53 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // ==========================================
+        // MENGAMBIL KONTAK PANITIA SECARA DINAMIS
+        // ==========================================
+        async function loadKontakPanitia() {
+            try {
+                // Mengambil data dari koleksi 'pengaturan', dokumen 'ppdb_kontak'
+                const docRef = doc(db, "pengaturan", "ppdb_kontak");
+                const snap = await getDoc(docRef);
+
+                if (snap.exists()) {
+                    const data = snap.data();
+                    
+                    // Update Panitia Putra
+                    document.getElementById('nama_panitia_putra').innerText = data.nama_putra;
+                    document.getElementById('link_wa_putra').href = `https://wa.me/${data.wa_putra}?text=Assalamu'alaikum%20panitia%20PPDB%20SDIT%20Qurratu%20A'yun...`;
+                    
+                    // Update Panitia Putri
+                    document.getElementById('nama_panitia_putri').innerText = data.nama_putri;
+                    document.getElementById('link_wa_putri').href = `https://wa.me/${data.wa_putri}?text=Assalamu'alaikum%20panitia%20PPDB%20SDIT%20Qurratu%20A'yun...`;
+                    
+                    // Update Email
+                    const elEmail = document.getElementById('link_email');
+                    elEmail.innerText = data.email;
+                    elEmail.href = `mailto:${data.email}`;
+                } else {
+                    // JIKA DATA DI FIREBASE BELUM DIBUAT OLEH ADMIN, GUNAKAN DATA SEMENTARA INI
+                    document.getElementById('nama_panitia_putra').innerText = "Ust. Radiant Fadli";
+                    document.getElementById('link_wa_putra').href = "https://wa.me/6281234567890";
+                    
+                    document.getElementById('nama_panitia_putri').innerText = "Ustzh. Ummu Qonitah";
+                    document.getElementById('link_wa_putri').href = "https://wa.me/6281234567891";
+                    
+                    document.getElementById('link_email').innerText = "ppdb@sdit-qurratuayun.sch.id";
+                    document.getElementById('link_email').href = "mailto:ppdb@sdit-qurratuayun.sch.id";
+                }
+            } catch(e) {
+                console.error("Gagal memuat kontak panitia", e);
+            }
+        }
+        loadKontakPanitia(); // Jalankan fungsinya
 
         // ==========================================
         // LOGIKA KOMENTAR / TANYA JAWAB
@@ -327,7 +368,6 @@
             btn.disabled = true;
 
             try {
-                // Disimpan di koleksi komentar dengan tanda khusus postId = 'ppdb'
                 await addDoc(collection(db, "komentar"), {
                     postId: 'ppdb', 
                     nama: currentUser.displayName,
@@ -360,8 +400,7 @@
                 }
 
                 box.innerHTML = koms.map(k => {
-                    // Deteksi jika yang membalas adalah admin (bisa disesuaikan emailnya)
-                    const isAdmin = k.email === 'admin@sdit-qurratuayun.sch.id' || k.email.includes('husny'); // Contoh deteksi admin
+                    const isAdmin = k.email === 'admin@sdit-qurratuayun.sch.id' || k.email.includes('husny'); 
                     
                     return `
                     <div class="bg-white border ${isAdmin ? 'border-blue-200 bg-blue-50' : 'border-gray-200'} shadow-sm p-5 rounded-2xl flex gap-4 transition hover:shadow-md">
