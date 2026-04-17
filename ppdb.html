@@ -43,6 +43,39 @@
 
     <main class="flex-1 p-4 md:p-8 md:ml-16 max-w-4xl mx-auto w-full relative z-50">
         
+        <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-xl border border-blue-100 mb-8 flex flex-col md:flex-row gap-6 items-center md:items-start animate-fade">
+            <div class="w-20 h-20 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-4xl shrink-0 border-4 border-white shadow-md">
+                <i class="fas fa-headset"></i>
+            </div>
+            <div class="flex-1 text-center md:text-left">
+                <h3 class="text-2xl font-black text-blue-800 uppercase italic mb-2">Pusat Bantuan PPDB</h3>
+                <p class="text-sm text-gray-600 mb-6 leading-relaxed">Jika Ayah/Bunda mengalami kesulitan dalam mengisi formulir, silakan hubungi panitia melalui kontak di bawah ini, atau tinggalkan pertanyaan di ruang komentar.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <a href="https://wa.me/6281234567890?text=Assalamu'alaikum%20Ust.%20Radiant,%20saya%20ingin%20bertanya%20seputar%20PPDB..." target="_blank" class="flex items-center gap-4 bg-green-50 p-4 rounded-2xl border border-green-100 hover:bg-green-100 hover:shadow-md transition group">
+                        <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-xl group-hover:scale-110 transition shadow-sm"><i class="fab fa-whatsapp"></i></div>
+                        <div class="text-left">
+                            <p class="text-[10px] font-black text-green-600 uppercase tracking-widest">Panitia (Putra)</p>
+                            <p class="text-sm font-bold text-gray-800">Ust. Radiant Fadli</p>
+                        </div>
+                    </a>
+                    
+                    <a href="https://wa.me/6281234567891?text=Assalamu'alaikum%20Ustzh.%20Ummu,%20saya%20ingin%20bertanya%20seputar%20PPDB..." target="_blank" class="flex items-center gap-4 bg-green-50 p-4 rounded-2xl border border-green-100 hover:bg-green-100 hover:shadow-md transition group">
+                        <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-xl group-hover:scale-110 transition shadow-sm"><i class="fab fa-whatsapp"></i></div>
+                        <div class="text-left">
+                            <p class="text-[10px] font-black text-green-600 uppercase tracking-widest">Panitia (Putri)</p>
+                            <p class="text-sm font-bold text-gray-800">Ustzh. Ummu Qonitah</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="flex items-center justify-center md:justify-start gap-3 text-sm font-bold text-gray-600 bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                    <div class="w-8 h-8 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center"><i class="fas fa-envelope"></i></div>
+                    Surel: <a href="mailto:ppdb@sdit-qurratuayun.sch.id" class="text-blue-600 hover:underline">ppdb@sdit-qurratuayun.sch.id</a>
+                </div>
+            </div>
+        </div>
+
         <div id="layar_pesan" class="hidden bg-white rounded-3xl shadow-xl flex flex-col items-center justify-center p-12 text-center min-h-[400px]">
             <div id="animasi_loading" class="hidden">
                 <i class="fas fa-circle-notch fa-spin text-6xl text-blue-500 mb-6"></i>
@@ -201,16 +234,159 @@
                 </button>
             </div>
         </form>
+
+        <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-xl border border-gray-100 mt-4 mb-8">
+            <h3 class="text-2xl font-black text-gray-800 mb-2 flex items-center gap-2 uppercase italic">
+                <i class="fas fa-comments text-blue-500"></i> Ruang Tanya Jawab
+            </h3>
+            <p class="text-sm text-gray-600 mb-6">Tinggalkan pertanyaan seputar PPDB di bawah ini. Panitia akan membalas melalui kolom komentar.</p>
+
+            <div id="area_form_komentar" class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8">
+                
+                <div id="belum_login" class="text-center py-2">
+                    <p class="text-gray-500 mb-4 text-sm font-bold">Silakan masuk menggunakan akun Google untuk ikut bertanya.</p>
+                    <button onclick="loginGoogle()" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 px-6 py-2 rounded-full font-bold flex items-center justify-center mx-auto gap-3 shadow-sm transition">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5"> Masuk dengan Google
+                    </button>
+                </div>
+
+                <div id="sudah_login" class="hidden">
+                    <div class="flex items-center gap-3 mb-4 border-b border-gray-200 pb-4">
+                        <img id="user_foto" src="" class="w-10 h-10 rounded-full bg-gray-200 object-cover shadow-sm border border-gray-200">
+                        <div class="flex-1">
+                            <p id="user_nama" class="font-bold text-sm text-gray-800 uppercase"></p>
+                            <p id="user_email" class="text-[10px] text-gray-500 bg-gray-200 inline-block px-2 py-0.5 rounded-full mt-1"></p>
+                        </div>
+                        <button onclick="logoutGoogle()" class="text-xs text-red-500 hover:text-red-700 underline font-bold bg-red-50 px-3 py-1 rounded-lg">Keluar</button>
+                    </div>
+                    <textarea id="input_komentar" rows="3" placeholder="Ketik pertanyaan Anda di sini..." class="w-full bg-white border border-gray-300 rounded-xl p-4 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-none mb-3"></textarea>
+                    <button onclick="kirimKomentar()" id="btn_kirim" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition w-full md:w-auto flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Kirim Pertanyaan
+                    </button>
+                </div>
+            </div>
+
+            <div id="daftar_komentar" class="space-y-4">
+                <div class="text-center text-gray-400 italic text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat diskusi...</div>
+            </div>
+        </div>
+        
     </main>
+
+    <footer class="bg-gray-950 text-gray-400 pt-10 pb-36 md:py-10 text-center relative z-40 w-full mt-auto">
+        <p class="text-lg font-bold uppercase tracking-widest italic text-white">SDIT Qurratu A'yun Al-Islami</p>
+        <p class="text-xs mt-2">Sistem Pendaftaran Peserta Didik Baru (PPDB) Online</p>
+    </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // ==========================================
+        // LOGIKA KOMENTAR / TANYA JAWAB
+        // ==========================================
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('belum_login').classList.add('hidden');
+                document.getElementById('sudah_login').classList.remove('hidden');
+                document.getElementById('user_nama').innerText = user.displayName;
+                document.getElementById('user_email').innerText = user.email;
+                document.getElementById('user_foto').src = user.photoURL || 'https://i.ibb.co/Xz9Gf4z/default.png';
+            } else {
+                currentUser = null;
+                document.getElementById('belum_login').classList.remove('hidden');
+                document.getElementById('sudah_login').classList.add('hidden');
+            }
+        });
+
+        window.loginGoogle = () => signInWithPopup(auth, provider).catch(e => alert('Gagal login: ' + e.message));
+        window.logoutGoogle = () => signOut(auth);
+
+        function amankanTeks(str) {
+            if (!str) return "";
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        window.kirimKomentar = async () => {
+            const teks = document.getElementById('input_komentar').value.trim();
+            if(!teks) return alert("Pertanyaan tidak boleh kosong!");
+            if(!currentUser) return alert("Silakan login dengan Google terlebih dahulu!");
+
+            const btn = document.getElementById('btn_kirim');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+            btn.disabled = true;
+
+            try {
+                // Disimpan di koleksi komentar dengan tanda khusus postId = 'ppdb'
+                await addDoc(collection(db, "komentar"), {
+                    postId: 'ppdb', 
+                    nama: currentUser.displayName,
+                    email: currentUser.email,
+                    foto: currentUser.photoURL,
+                    teks: teks,
+                    tanggal: new Date().toISOString()
+                });
+                document.getElementById('input_komentar').value = ""; 
+                loadKomentar(); 
+            } catch(e) {
+                alert("Gagal mengirim pertanyaan: " + e.message);
+            } finally {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Pertanyaan';
+                btn.disabled = false;
+            }
+        };
+
+        async function loadKomentar() {
+            const q = query(collection(db, "komentar"), where("postId", "==", "ppdb"));
+            try {
+                const snap = await getDocs(q);
+                let koms = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                koms.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal)); 
+                
+                const box = document.getElementById('daftar_komentar');
+                if(koms.length === 0) {
+                    box.innerHTML = '<p class="text-center text-gray-500 italic text-sm py-6 bg-gray-50 rounded-2xl border border-gray-200 shadow-inner">Belum ada pertanyaan. Jadilah yang pertama bertanya!</p>';
+                    return;
+                }
+
+                box.innerHTML = koms.map(k => {
+                    // Deteksi jika yang membalas adalah admin (bisa disesuaikan emailnya)
+                    const isAdmin = k.email === 'admin@sdit-qurratuayun.sch.id' || k.email.includes('husny'); // Contoh deteksi admin
+                    
+                    return `
+                    <div class="bg-white border ${isAdmin ? 'border-blue-200 bg-blue-50' : 'border-gray-200'} shadow-sm p-5 rounded-2xl flex gap-4 transition hover:shadow-md">
+                        <img src="${k.foto || 'https://i.ibb.co/Xz9Gf4z/default.png'}" class="w-10 h-10 rounded-full object-cover flex-shrink-0 border border-gray-200">
+                        <div class="flex-1">
+                            <div class="flex flex-col md:flex-row justify-between md:items-baseline mb-2 border-b border-gray-100 pb-2">
+                                <h4 class="font-black text-gray-800 text-sm uppercase flex items-center gap-2">
+                                    ${k.nama} ${isAdmin ? '<span class="bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded-full"><i class="fas fa-check-circle"></i> PANITIA</span>' : ''}
+                                </h4>
+                                <span class="text-[10px] text-gray-400 font-bold tracking-wider mt-1 md:mt-0">${new Date(k.tanggal).toLocaleDateString('id-ID')}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${amankanTeks(k.teks)}</p>
+                        </div>
+                    </div>
+                `}).join('');
+            } catch(e) {
+                console.error(e);
+                document.getElementById('daftar_komentar').innerHTML = '<p class="text-red-500 text-center text-sm">Gagal memuat diskusi.</p>';
+            }
+        }
+        loadKomentar();
+
+        // ==========================================
+        // LOGIKA KIRIM FORMULIR PPDB
+        // ==========================================
         document.getElementById('form_ppdb').addEventListener('submit', async (e) => {
             e.preventDefault(); 
             
@@ -218,55 +394,43 @@
             document.getElementById('layar_pesan').classList.remove('hidden');
             document.getElementById('animasi_loading').classList.remove('hidden');
 
-            // Generate No Pendaftaran (Contoh: PPDB-2026-X1Y2)
             const tahun = new Date().getFullYear();
             const acak = Math.random().toString(36).substring(2, 6).toUpperCase();
             const noDaftar = `PPDB-${tahun}-${acak}`;
 
-            // Ambil semua nilai (Pastikan huruf kapital jika itu nama/alamat)
             const val = (id) => document.getElementById(id).value.toUpperCase();
-            const valOri = (id) => document.getElementById(id).value; // Untuk angka/email
+            const valOri = (id) => document.getElementById(id).value; 
 
             const dataPendaftar = {
-                // Info Sistem
                 no_pendaftaran: noDaftar,
                 tanggal_daftar: new Date().toISOString(),
                 status: "Menunggu Verifikasi",
                 
-                // 1. Data Pendaftaran
                 nik: valOri('f_nik'), nisn: valOri('f_nisn'),
-                
-                // 2. Data Anak
                 nama_anak: val('f_nama'), tempat_lahir: val('f_tempat_lahir'),
                 tanggal_lahir: valOri('f_tgl_lahir'), jk: valOri('f_jk'), agama: valOri('f_agama'),
                 kewarganegaraan: valOri('f_kewarganegaraan'), asal_sekolah: val('f_asal_sekolah'),
                 
-                // Detail Alamat
                 dusun: val('f_dusun'), rt_rw: valOri('f_rt_rw'), kelurahan: val('f_kelurahan'),
                 kecamatan: val('f_kecamatan'), kabupaten: val('f_kabupaten'), kodepos: valOri('f_kodepos'),
                 
-                // Pendukung
                 transportasi: valOri('f_transportasi'), no_akta: valOri('f_no_akta'), 
                 no_bpjs: valOri('f_no_bpjs'), no_kks: valOri('f_no_kks'), no_kitas: valOri('f_no_kitas'),
 
-                // 3. Orang Tua
                 ayah: { nama: val('f_ayah_nama'), tahun: valOri('f_ayah_tahun'), keadaan: valOri('f_ayah_keadaan'), pendidikan: val('f_ayah_pendidikan'), pekerjaan: val('f_ayah_pekerjaan'), penghasilan: valOri('f_ayah_penghasilan'), kontak: valOri('f_ayah_kontak'), alamat: val('f_ayah_alamat') },
                 ibu: { nama: val('f_ibu_nama'), tahun: valOri('f_ibu_tahun'), keadaan: valOri('f_ibu_keadaan'), pendidikan: val('f_ibu_pendidikan'), pekerjaan: val('f_ibu_pekerjaan'), penghasilan: valOri('f_ibu_penghasilan'), kontak: valOri('f_ibu_kontak'), alamat: val('f_ibu_alamat') },
                 
-                // 4. Wali
                 wali: { nama: val('f_wali_nama'), tahun: valOri('f_wali_tahun'), pendidikan: val('f_wali_pendidikan'), pekerjaan: val('f_wali_pekerjaan'), penghasilan: valOri('f_wali_penghasilan'), kontak: valOri('f_wali_kontak'), kontak_alt: valOri('f_wali_kontak_alt'), alamat: val('f_wali_alamat') },
 
-                // 5. Periodik
                 periodik: { tb: valOri('f_per_tb'), bb: valOri('f_per_bb'), jarak: valOri('f_per_jarak'), waktu: valOri('f_per_waktu'), anak_ke: valOri('f_per_anak_ke'), saudara: valOri('f_per_saudara'), anggota: valOri('f_per_anggota') }
             };
 
             try {
                 await addDoc(collection(db, "ppdb"), dataPendaftar);
                 
-                // Sukses
                 document.getElementById('animasi_loading').classList.add('hidden');
                 document.getElementById('animasi_sukses').classList.remove('hidden');
-                document.getElementById('cetak_no_daftar').innerText = noDaftar; // Tampilkan No Daftar ke user
+                document.getElementById('cetak_no_daftar').innerText = noDaftar; 
                 
             } catch (error) {
                 console.error("Gagal menyimpan data:", error);
