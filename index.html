@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita - SDIT Qurratu A'yun Al-Islami</title>
+    <title>Beranda - SDIT Qurratu A'yun Al-Islami</title>
 
     <meta name="google-site-verification" content="BtWc-bs3qDZxiVEJQblcn6SKzxzG5NpzmYUBJb_QJ2w" />
     <meta name="description" content="Website Resmi SDIT Qurratu A'yun Al-Islami Maros. Mewujudkan generasi yang cerdas, bertauhid, dan berakhlak mulia. Informasi pendaftaran, berita sekolah, dan profil guru.">
@@ -115,8 +115,19 @@
                     </div>
                 </div>
             </div>
+            
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-xs text-gray-500">&copy; 2026 SDIT Qurratu A'yun Al-Islami. Hak Cipta Dilindungi.</p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                    <p class="text-xs text-gray-500">&copy; 2026 SDIT Qurratu A'yun Al-Islami.<br class="sm:hidden"> Hak Cipta Dilindungi.</p>
+                    
+                    <div class="bg-gray-900 border border-gray-700 px-4 py-1.5 rounded-full flex items-center gap-2 shadow-inner">
+                        <i class="fas fa-chart-line text-blue-400"></i>
+                        <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Pengunjung:</span>
+                        <span id="angka_pengunjung" class="text-xs font-black text-white"><i class="fas fa-spinner fa-spin"></i></span>
+                    </div>
+                </div>
+
                 <button onclick="window.location.href='login.html'" class="text-gray-500 border border-gray-800 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center gap-2 shadow-sm mb-4 md:mb-0"><i class="fas fa-lock"></i> Panel Admin</button>
             </div>
         </div>
@@ -130,26 +141,61 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        // PENTING: Tambahkan doc dan getDoc di sini
-        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        // PENTING: Tambahkan setDoc, updateDoc, dan increment
+        import { getFirestore, collection, getDocs, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // ==========================================
+        // FUNGSI PENGHITUNG PENGUNJUNG
+        // ==========================================
+        async function rekamDanTampilkanPengunjung() {
+            const statRef = doc(db, "statistik", "kunjungan");
+            
+            try {
+                // 1. Cek apakah di browser ini (HP/Laptop ini) sudah pernah dihitung?
+                if (!localStorage.getItem('telah_berkunjung')) {
+                    
+                    // Jika belum pernah, tambahkan angka 1 ke database Firebase
+                    try {
+                        await updateDoc(statRef, { total: increment(1) });
+                        localStorage.setItem('telah_berkunjung', 'benar'); // Beri tanda sudah dihitung
+                    } catch (e) {
+                        // Jika dokumen "kunjungan" belum ada sama sekali di Firebase, buat dokumennya!
+                        await setDoc(statRef, { total: 1 });
+                        localStorage.setItem('telah_berkunjung', 'benar');
+                    }
+                }
+
+                // 2. Tarik angka total terbaru dari Database dan tampilkan di layar
+                const snap = await getDoc(statRef);
+                if (snap.exists()) {
+                    const totalAngka = snap.data().total;
+                    // Format angka jadi ribuan (Contoh: 1.540)
+                    document.getElementById('angka_pengunjung').innerText = totalAngka.toLocaleString('id-ID');
+                } else {
+                    document.getElementById('angka_pengunjung').innerText = "1";
+                }
+            } catch (err) {
+                console.log("Gagal merekam statistik pengunjung:", err);
+                document.getElementById('angka_pengunjung').innerText = "-";
+            }
+        }
+
         async function initHomePage() {
             try {
-                // 1. TARIK DATA NOMOR WA DARI TAB REDAKSI (ADMIN)
+                // JALANKAN FUNGSI PENGUNJUNG
+                rekamDanTampilkanPengunjung();
+
                 const redaksiSnap = await getDoc(doc(db, "profil", "redaksi"));
                 if(redaksiSnap.exists() && redaksiSnap.data().whatsapp) {
                     let waRedaksi = redaksiSnap.data().whatsapp;
-                    // Rapikan jika nomornya dimulai dengan angka 0
                     if(waRedaksi.startsWith('0')) waRedaksi = '62' + waRedaksi.substring(1);
-                    // Tanamkan ke tombol mengambang
                     document.getElementById('floating_wa').href = `https://wa.me/${waRedaksi}?text=Assalamu'alaikum%20Admin%20SDIT%20Qurratu%20A'yun...`;
                 }
 
-                // 2. KODE LAMA UNTUK TICKER BERITA
                 const [beritaSnapTicker, karyaSnapTicker] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
                 const ticker = document.getElementById('tickerContent');
                 let items = [...beritaSnapTicker.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3), ...karyaSnapTicker.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3)];
