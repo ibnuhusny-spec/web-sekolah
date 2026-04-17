@@ -11,7 +11,6 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <style>
-        /* Gaya khusus untuk merapikan kotak editor & mencegah tombol tertutup */
         .ql-toolbar.ql-snow { border-radius: 0.75rem 0.75rem 0 0; background-color: #f8fafc; border-color: #e2e8f0; border-width: 2px; }
         .ql-container.ql-snow { 
             border-radius: 0 0 0.75rem 0.75rem; 
@@ -19,9 +18,11 @@
             border-width: 0 2px 2px 2px; 
             font-family: inherit; 
             font-size: 1rem; 
-            height: 250px; /* TINGGI DIKUNCI AGAR TOMBOL SIMPAN SELALU TERLIHAT */
+            height: 250px; 
             overflow-y: auto;
         }
+        /* Modal Style untuk Detail PPDB */
+        .modal-bg { background-color: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); }
     </style>
 </head>
 <body class="bg-gray-100 flex flex-col md:flex-row min-h-screen font-sans hidden pb-10" id="admin_body">
@@ -46,6 +47,9 @@
             <button onclick="switchTab('berita')" id="nav-berita" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-newspaper"></i>Berita</button>
             <button onclick="switchTab('karya')" id="nav-karya" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-lightbulb"></i>Karya</button>
             <button onclick="switchTab('kelas')" id="nav-kelas" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-school"></i>Kelas</button>
+            
+            <button onclick="switchTab('ppdb')" id="nav-ppdb" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-user-graduate"></i>PPDB</button>
+            
             <button onclick="switchTab('redaksi')" id="nav-redaksi" class="flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2"><i class="fas fa-users-cog"></i>Redaksi</button>
         </nav>
         
@@ -70,14 +74,9 @@
                 <form id="form_pegawai" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="p_id">
                     <input id="p_nama" placeholder="Nama Lengkap" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500" required>
                     <input id="p_nuptk" placeholder="NUPTK (Opsional)" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
-                    
                     <select id="p_kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
-                        <option value="guru_putra">Guru Putra</option>
-                        <option value="guru_putri">Guru Putri</option>
-                        <option value="tendik_putra">Tendik Putra</option>
-                        <option value="tendik_putri">Tendik Putri</option>
+                        <option value="guru_putra">Guru Putra</option><option value="guru_putri">Guru Putri</option><option value="tendik_putra">Tendik Putra</option><option value="tendik_putri">Tendik Putri</option>
                     </select>
-                    
                     <input id="p_jabatan" placeholder="Jabatan" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
                     <input id="p_wa" placeholder="WhatsApp (Contoh: 628...)" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500" required>
                     <input type="email" id="p_email" placeholder="Email Sekolah" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-blue-500">
@@ -98,12 +97,10 @@
                 <input id="b_judul" placeholder="Judul Berita" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500" required>
                 <input id="b_kategori" placeholder="Kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500">
                 <input type="url" id="b_gambar" placeholder="URL Gambar" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-red-500">
-                
                 <div class="md:col-span-2 mt-2 mb-4">
                     <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Isi Berita</label>
                     <div id="editor_berita" class="bg-white"></div>
                 </div>
-
                 <button type="button" onclick="simpan('berita')" id="btn_berita" class="md:col-span-2 bg-red-600 text-white font-bold py-4 rounded-xl mt-2 shadow-md hover:bg-red-700">TERBITKAN BERITA</button>
                 <button type="button" onclick="batalEdit('berita')" id="batal_berita" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
             </form></div>
@@ -114,22 +111,14 @@
             <form id="form_karya" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="k_id"><input type="hidden" id="k_tgl">
                 <input id="k_judul" placeholder="Judul Karya" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500" required>
                 <input id="k_penulis" placeholder="Penulis" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500" required>
-                
                 <select id="k_kategori" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500">
-                    <option value="Artikel">Artikel</option>
-                    <option value="Sastra">Sastra</option>
-                    <option value="Cerita">Cerita</option>
-                    <option value="Desain">Desain</option>
-                    <option value="Aplikasi">Aplikasi</option>
+                    <option value="Artikel">Artikel</option><option value="Sastra">Sastra</option><option value="Cerita">Cerita</option><option value="Desain">Desain</option><option value="Aplikasi">Aplikasi</option>
                 </select>
-                
                 <input type="url" id="k_gambar" placeholder="URL Gambar Header" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-orange-500">
-                
                 <div class="md:col-span-2 mt-2 mb-4">
                     <label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Isi / Deskripsi Karya</label>
                     <div id="editor_karya" class="bg-white"></div>
                 </div>
-
                 <button type="button" onclick="simpan('karya')" id="btn_karya" class="md:col-span-2 bg-orange-500 text-white font-bold py-4 rounded-xl mt-2 shadow-md hover:bg-orange-600">PUBLIKASIKAN KARYA</button>
                 <button type="button" onclick="batalEdit('karya')" id="batal_karya" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
             </form></div>
@@ -139,50 +128,156 @@
         <div id="tab-kelas" class="tab-content hidden"><div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-purple-500"><h2 id="title_kelas" class="text-lg font-black mb-4 text-purple-600 flex items-center gap-2"><i class="fas fa-school"></i> Data Kelas</h2><form id="form_kelas" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="hidden" id="c_id"><input id="c_nama" placeholder="Nama Kelas" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none" required><input type="number" id="c_laki" placeholder="Laki-laki" class="p-3 md:p-4 border-2 rounded-xl outline-none" required><input type="number" id="c_perempuan" placeholder="Perempuan" class="p-3 md:p-4 border-2 rounded-xl outline-none" required><button type="button" onclick="simpan('kelas')" id="btn_kelas" class="md:col-span-2 bg-purple-600 text-white font-bold py-4 rounded-xl mt-2">SIMPAN</button><button type="button" onclick="batalEdit('kelas')" id="batal_kelas" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden">Batal</button></form></div><div class="bg-white p-4 md:p-6 rounded-2xl shadow overflow-x-auto"><table class="w-full text-left min-w-[500px]"><thead><tr class="border-b text-xs text-gray-400"><th>Kelas</th><th class="text-right">Aksi</th></tr></thead><tbody id="list_kelas" class="divide-y"></tbody></table></div></div>
         
         <div id="tab-redaksi" class="tab-content hidden"><div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-indigo-600 max-w-2xl mx-auto mt-4"><h2 class="text-2xl font-black mb-6 text-indigo-600 uppercase italic"><i class="fas fa-users-cog mr-2"></i>Informasi Redaksi</h2><form id="form_redaksi" class="space-y-4"><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Alamat Kantor</label><textarea id="r_alamat" class="w-full p-4 border-2 rounded-xl outline-none h-24"></textarea></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Email Redaksi</label><input type="email" id="r_email" class="w-full p-4 border-2 rounded-xl outline-none"></div><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">WhatsApp Redaksi</label><input type="text" id="r_wa" class="w-full p-4 border-2 rounded-xl outline-none"></div></div><div><label class="block text-xs font-bold text-gray-400 mb-1 uppercase">Susunan Tim (Pisahkan dengan baris baru)</label><textarea id="r_tim" class="w-full p-4 border-2 rounded-xl outline-none h-40"></textarea></div><button type="button" onclick="simpanRedaksi()" id="btnSimpanRedaksi" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl mt-4 shadow-lg hover:bg-indigo-700">PERBARUI DATA REDAKSI</button></form></div></div>
-        
+
+        <div id="tab-ppdb" class="tab-content hidden">
+            
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <h2 class="text-2xl font-black text-blue-800 uppercase italic"><i class="fas fa-user-graduate mr-2 text-blue-500"></i> Data Calon Siswa (PPDB)</h2>
+                
+                <button onclick="bukaModalPengaturanPPDB()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-xl flex items-center gap-2 shadow-md">
+                    <i class="fas fa-cog"></i> Kontak Panitia
+                </button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Total Pendaftar</p>
+                    <p class="text-3xl font-black text-blue-600" id="rekap_total">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Laki-laki</p>
+                    <p class="text-3xl font-black text-blue-600" id="rekap_l">0</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Perempuan</p>
+                    <p class="text-3xl font-black text-pink-500" id="rekap_p">0</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 md:p-6 rounded-3xl shadow-xl overflow-x-auto border-t-8 border-blue-600">
+                <table class="w-full text-left min-w-[800px]">
+                    <thead>
+                        <tr class="border-b-2 border-gray-100 uppercase text-[10px] text-gray-400 tracking-widest">
+                            <th class="pb-4 font-black pl-2">No. Daftar & Nama</th>
+                            <th class="pb-4 font-black">Kontak Ortu</th>
+                            <th class="pb-4 font-black">Status</th>
+                            <th class="pb-4 font-black text-right pr-2">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list_ppdb" class="divide-y divide-gray-50 text-sm">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
     </main>
+
+    <div id="modal_pengaturan_ppdb" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-[9999] p-4">
+        <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8 w-full max-w-lg border-t-8 border-slate-800 animate-fade">
+            <h3 class="text-xl font-black text-slate-800 mb-6 uppercase flex items-center justify-between">
+                <span><i class="fas fa-headset mr-2 text-blue-500"></i> Kontak Panitia PPDB</span>
+                <button onclick="tutupModalPengaturanPPDB()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+            </h3>
+            
+            <form id="form_pengaturan_ppdb" class="space-y-4">
+                <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                    <label class="block text-[10px] font-black text-green-600 mb-1 uppercase tracking-widest">Panitia Putra</label>
+                    <input type="text" id="set_nama_putra" placeholder="Nama Ustadz" class="w-full p-3 rounded-lg border focus:border-green-500 outline-none mb-2" required>
+                    <input type="number" id="set_wa_putra" placeholder="No WA (Cth: 62812...)" class="w-full p-3 rounded-lg border focus:border-green-500 outline-none" required>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                    <label class="block text-[10px] font-black text-green-600 mb-1 uppercase tracking-widest">Panitia Putri</label>
+                    <input type="text" id="set_nama_putri" placeholder="Nama Ustadzah" class="w-full p-3 rounded-lg border focus:border-green-500 outline-none mb-2" required>
+                    <input type="number" id="set_wa_putri" placeholder="No WA (Cth: 62812...)" class="w-full p-3 rounded-lg border focus:border-green-500 outline-none" required>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-gray-500 mb-1 uppercase tracking-widest">Email PPDB Resmi</label>
+                    <input type="email" id="set_email_ppdb" placeholder="ppdb@sdit-qurratuayun.sch.id" class="w-full p-3 rounded-lg border focus:border-blue-500 outline-none" required>
+                </div>
+
+                <div class="pt-4 flex gap-3">
+                    <button type="button" onclick="tutupModalPengaturanPPDB()" class="flex-1 bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200">Batal</button>
+                    <button type="button" onclick="simpanPengaturanPPDB()" id="btnSimpanPengaturanPPDB" class="flex-1 bg-slate-800 text-white font-bold py-3 rounded-xl hover:bg-slate-900 shadow-md">Simpan Pengaturan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal_detail_ppdb" class="fixed inset-0 modal-bg hidden flex items-center justify-center z-[9999] p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border-t-8 border-blue-600 animate-fade relative">
+            
+            <button onclick="tutupModalDetailPPDB()" class="absolute top-6 right-6 text-gray-400 hover:text-red-500 text-2xl"><i class="fas fa-times-circle"></i></button>
+
+            <div class="p-8">
+                <div class="mb-8 border-b pb-4">
+                    <h3 class="text-2xl font-black text-gray-800 uppercase" id="det_nama_anak">MEMUAT...</h3>
+                    <p class="text-blue-600 font-bold" id="det_no_daftar">PPDB-XXXX</p>
+                    <span id="det_status" class="inline-block px-3 py-1 bg-yellow-100 text-yellow-700 text-[10px] font-black rounded-full mt-2 uppercase tracking-widest">Status</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    <div>
+                        <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3 border-b pb-1"><i class="fas fa-child text-blue-400"></i> Biodata Anak</h4>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-gray-500">NIK:</span> <span id="det_nik"></span></p>
+                            <p><span class="font-bold text-gray-500">NISN:</span> <span id="det_nisn"></span></p>
+                            <p><span class="font-bold text-gray-500">TTL:</span> <span id="det_ttl"></span></p>
+                            <p><span class="font-bold text-gray-500">J. Kelamin:</span> <span id="det_jk"></span></p>
+                            <p><span class="font-bold text-gray-500">Asal TK:</span> <span id="det_tk"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3 border-b pb-1"><i class="fas fa-map-marker-alt text-red-400"></i> Alamat</h4>
+                        <div class="space-y-2 text-sm">
+                            <p id="det_alamat" class="leading-relaxed"></p>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3 border-b pb-1"><i class="fas fa-user-friends text-green-400"></i> Data Orang Tua</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <div>
+                                <p class="font-black text-blue-800 mb-1">AYAH</p>
+                                <p><span class="font-bold text-gray-500">Nama:</span> <span id="det_ayah_nama"></span></p>
+                                <p><span class="font-bold text-gray-500">Pekerjaan:</span> <span id="det_ayah_kerja"></span></p>
+                                <p><span class="font-bold text-gray-500">Kontak:</span> <span id="det_ayah_kontak"></span></p>
+                            </div>
+                            <div>
+                                <p class="font-black text-pink-600 mb-1">IBU</p>
+                                <p><span class="font-bold text-gray-500">Nama:</span> <span id="det_ibu_nama"></span></p>
+                                <p><span class="font-bold text-gray-500">Pekerjaan:</span> <span id="det_ibu_kerja"></span></p>
+                                <p><span class="font-bold text-gray-500">Kontak:</span> <span id="det_ibu_kontak"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
-            authDomain: "websekolah-9bcde.firebaseapp.com",
-            projectId: "websekolah-9bcde",
-            storageBucket: "websekolah-9bcde.firebasestorage.app",
-            messagingSenderId: "113406929634",
-            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        window.globalData = { pegawai: [], berita: [], karya: [], kelas: [] };
+        
+        window.globalData = { pegawai: [], berita: [], karya: [], kelas: [], ppdb: [] };
         const EMAIL_SUPER_ADMIN = "ibnuhusny@gmail.com";
 
-        // ========================================================
-        // INISIALISASI MESIN EDITOR (QUILL.JS)
-        // ========================================================
-        const quillOptions = {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    ['bold', 'italic', 'underline', 'strike'], 
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'align': [] }],
-                    ['blockquote'],
-                    ['clean'] // tombol untuk menghapus format
-                ]
-            }
-        };
+        // INISIALISASI MESIN EDITOR
+        const quillOptions = { theme: 'snow', modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }], ['blockquote'], ['clean'] ] } };
         window.quillBerita = new Quill('#editor_berita', { ...quillOptions, placeholder: 'Ketik isi berita di sini...' });
         window.quillKarya = new Quill('#editor_karya', { ...quillOptions, placeholder: 'Ketik deskripsi atau isi karya di sini...' });
 
-        // ========================================================
-        // PENJAGA PINTU UTAMA
-        // ========================================================
+        // PENJAGA PINTU
         onAuthStateChanged(auth, (user) => {
             if (user && user.email === EMAIL_SUPER_ADMIN) {
                 document.getElementById('loading_screen').classList.add('hidden');
@@ -190,39 +285,190 @@
                 document.getElementById('admin_foto').src = user.photoURL || "https://i.ibb.co/Xz9Gf4z/default.png";
                 document.getElementById('admin_nama').innerText = user.displayName || "Admin";
                 fetchProfilData(); 
-            } else {
-                window.location.href = "login.html";
-            }
+            } else { window.location.href = "login.html"; }
         });
 
-        window.logoutAdmin = async function() {
-            if(confirm("Apakah Anda yakin ingin keluar dan mengunci Dashboard?")) {
-                await signOut(auth);
-                window.location.href = "login.html";
-            }
-        }
+        window.logoutAdmin = async function() { if(confirm("Yakin keluar?")) { await signOut(auth); window.location.href = "login.html"; } }
 
-        // Listeners Tabel
+        // MENDENGARKAN PERUBAHAN DATABASE SECARA LIVE
         onSnapshot(collection(db, "pegawai"), (s) => { window.globalData.pegawai = s.docs.map(d => ({ id: d.id, ...d.data() })); renderTable('list_pegawai', window.globalData.pegawai, 'nama', 'pegawai'); });
         onSnapshot(collection(db, "berita"), (s) => { window.globalData.berita = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal)); renderTable('list_berita', window.globalData.berita, 'judul', 'berita'); });
         onSnapshot(collection(db, "karya"), (s) => { window.globalData.karya = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal)); renderTable('list_karya', window.globalData.karya, 'judul', 'karya'); });
         onSnapshot(collection(db, "kelas"), (s) => { window.globalData.kelas = s.docs.map(d => ({ id: d.id, ...d.data() })); renderTable('list_kelas', window.globalData.kelas, 'nama_kelas', 'kelas'); });
+        
+        // PENDENGAR KHUSUS UNTUK DATA PPDB
+        onSnapshot(collection(db, "ppdb"), (s) => { 
+            window.globalData.ppdb = s.docs.map(d => ({ id: d.id, ...d.data() })); 
+            
+            // Mengurutkan dari pendaftar paling baru
+            window.globalData.ppdb.sort((a,b) => new Date(b.tanggal_daftar) - new Date(a.tanggal_daftar));
+            
+            renderTabelPPDB(); 
+        });
 
-        function renderTable(id, dataArr, titleKey, paramType) {
-            const el = document.getElementById(id);
-            if(dataArr.length === 0) { el.innerHTML = `<tr><td class="py-4 text-gray-400 italic">Belum ada data.</td></tr>`; return; }
-            el.innerHTML = dataArr.map(x => `<tr class="border-b hover:bg-gray-50"><td class="py-4 font-bold text-gray-700">${x[titleKey]}</td><td class="py-4 text-right space-x-1 whitespace-nowrap"><button onclick="siapkanEdit('${paramType}', '${x.id}')" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-xs font-bold"><i class="fas fa-edit"></i></button><button onclick="hapusData('${paramType}', '${x.id}')" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-xs font-bold"><i class="fas fa-trash"></i></button></td></tr>`).join('');
-        }
-
+        // TAB SWITCHER
         window.switchTab = function(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
-            const colors = {profil_sekolah:'bg-yellow-500 text-white', pegawai:'bg-blue-600 text-white', berita:'bg-red-600 text-white', karya:'bg-orange-500 text-white', kelas:'bg-purple-600 text-white', redaksi:'bg-indigo-600 text-white'};
-            ['profil_sekolah', 'pegawai', 'berita', 'karya', 'kelas', 'redaksi'].forEach(t => {
+            const colors = {profil_sekolah:'bg-yellow-500 text-white', pegawai:'bg-blue-600 text-white', berita:'bg-red-600 text-white', karya:'bg-orange-500 text-white', kelas:'bg-purple-600 text-white', redaksi:'bg-indigo-600 text-white', ppdb:'bg-slate-800 text-white'};
+            ['profil_sekolah', 'pegawai', 'berita', 'karya', 'kelas', 'redaksi', 'ppdb'].forEach(t => {
                 const btn = document.getElementById(`nav-${t}`);
                 if(t === tab) btn.className = `flex-shrink-0 md:w-full text-left p-3 rounded-xl font-bold flex items-center gap-2 ${colors[t]}`;
                 else btn.className = `flex-shrink-0 md:w-full text-left p-3 text-slate-400 hover:bg-slate-800 rounded-xl font-bold flex items-center gap-2`;
             });
+        }
+
+        // ========================================================
+        // FUNGSI KHUSUS PPDB
+        // ========================================================
+        
+        function renderTabelPPDB() {
+            const el = document.getElementById('list_ppdb');
+            const data = window.globalData.ppdb;
+            
+            // Update Rekap Angka
+            document.getElementById('rekap_total').innerText = data.length;
+            document.getElementById('rekap_l').innerText = data.filter(x => x.jk === 'LAKI-LAKI').length;
+            document.getElementById('rekap_p').innerText = data.filter(x => x.jk === 'PEREMPUAN').length;
+
+            if(data.length === 0) { 
+                el.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-gray-400 italic">Belum ada data pendaftar.</td></tr>`; 
+                return; 
+            }
+
+            el.innerHTML = data.map(x => {
+                const isLulus = x.status === "Lulus / Terverifikasi";
+                const wStatus = isLulus ? "bg-green-100 text-green-700 border-green-200" : "bg-yellow-100 text-yellow-700 border-yellow-200";
+                
+                // Ambil no kontak orang tua (bisa ayah, ibu, atau wali)
+                let kontakUtama = "-";
+                if(x.ayah && x.ayah.kontak) kontakUtama = x.ayah.kontak;
+                else if(x.ibu && x.ibu.kontak) kontakUtama = x.ibu.kontak;
+                else if(x.wali && x.wali.kontak) kontakUtama = x.wali.kontak;
+
+                return `
+                <tr class="border-b border-gray-50 hover:bg-blue-50/50 transition">
+                    <td class="py-4 pl-2">
+                        <p class="text-[10px] font-black text-blue-500">${x.no_pendaftaran}</p>
+                        <p class="font-bold text-gray-800 uppercase mt-0.5">${x.nama_anak}</p>
+                        <p class="text-[10px] text-gray-400 uppercase mt-0.5"><i class="fas fa-school mr-1"></i> ${x.asal_sekolah}</p>
+                    </td>
+                    <td class="py-4">
+                        <a href="https://wa.me/${kontakUtama}" target="_blank" class="text-xs font-bold text-green-600 hover:underline bg-green-50 px-2 py-1 rounded border border-green-100 inline-flex items-center gap-1"><i class="fab fa-whatsapp"></i> WA Ortu</a>
+                    </td>
+                    <td class="py-4">
+                        <span class="px-2 py-1 rounded text-[9px] font-black uppercase tracking-widest border ${wStatus}">${x.status}</span>
+                    </td>
+                    <td class="py-4 text-right pr-2 space-x-1 whitespace-nowrap">
+                        <button onclick="lihatDetailPPDB('${x.id}')" title="Lihat Detail" class="bg-blue-100 text-blue-700 w-8 h-8 rounded-lg text-xs hover:bg-blue-200 transition"><i class="fas fa-eye"></i></button>
+                        <button onclick="verifikasiPPDB('${x.id}', ${isLulus})" title="${isLulus ? 'Batalkan Kelulusan' : 'Tandai Lulus'}" class="${isLulus ? 'bg-gray-100 text-gray-500' : 'bg-green-100 text-green-600'} w-8 h-8 rounded-lg text-xs hover:bg-green-200 transition"><i class="fas fa-check"></i></button>
+                        <button onclick="hapusData('ppdb', '${x.id}')" title="Hapus Permanen" class="bg-red-100 text-red-600 w-8 h-8 rounded-lg text-xs hover:bg-red-200 transition"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        window.verifikasiPPDB = async function(id, isLulusSekarang) {
+            const statusBaru = isLulusSekarang ? "Menunggu Verifikasi" : "Lulus / Terverifikasi";
+            const pesanConfirm = isLulusSekarang ? "Batalkan status lulus anak ini?" : "Tandai anak ini SUDAH LULUS / Terverifikasi?";
+            
+            if(confirm(pesanConfirm)) {
+                try { await updateDoc(doc(db, "ppdb", id), { status: statusBaru }); } 
+                catch(e) { alert("Gagal memproses: " + e.message); }
+            }
+        }
+
+        // Modal Detail PPDB
+        window.lihatDetailPPDB = function(id) {
+            const dt = window.globalData.ppdb.find(x => x.id === id); if(!dt) return;
+            
+            document.getElementById('det_nama_anak').innerText = dt.nama_anak;
+            document.getElementById('det_no_daftar').innerText = dt.no_pendaftaran;
+            document.getElementById('det_status').innerText = dt.status;
+            
+            document.getElementById('det_nik').innerText = dt.nik || "-";
+            document.getElementById('det_nisn').innerText = dt.nisn || "-";
+            document.getElementById('det_ttl').innerText = `${dt.tempat_lahir}, ${dt.tanggal_lahir}`;
+            document.getElementById('det_jk').innerText = dt.jk;
+            document.getElementById('det_tk').innerText = dt.asal_sekolah;
+            
+            const almt = `Dsn/Jln ${dt.dusun}, RT/RW ${dt.rt_rw}, Kel. ${dt.kelurahan}, Kec. ${dt.kecamatan}, Kab. ${dt.kabupaten}`;
+            document.getElementById('det_alamat').innerText = almt.toUpperCase();
+
+            document.getElementById('det_ayah_nama').innerText = (dt.ayah && dt.ayah.nama) ? dt.ayah.nama : "-";
+            document.getElementById('det_ayah_kerja').innerText = (dt.ayah && dt.ayah.pekerjaan) ? dt.ayah.pekerjaan : "-";
+            document.getElementById('det_ayah_kontak').innerText = (dt.ayah && dt.ayah.kontak) ? dt.ayah.kontak : "-";
+
+            document.getElementById('det_ibu_nama').innerText = (dt.ibu && dt.ibu.nama) ? dt.ibu.nama : "-";
+            document.getElementById('det_ibu_kerja').innerText = (dt.ibu && dt.ibu.pekerjaan) ? dt.ibu.pekerjaan : "-";
+            document.getElementById('det_ibu_kontak').innerText = (dt.ibu && dt.ibu.kontak) ? dt.ibu.kontak : "-";
+
+            document.getElementById('modal_detail_ppdb').classList.remove('hidden');
+        }
+        window.tutupModalDetailPPDB = () => document.getElementById('modal_detail_ppdb').classList.add('hidden');
+
+
+        // ========================================================
+        // MODAL PENGATURAN KONTAK PANITIA
+        // ========================================================
+        window.bukaModalPengaturanPPDB = async function() {
+            document.getElementById('modal_pengaturan_ppdb').classList.remove('hidden');
+            document.getElementById('btnSimpanPengaturanPPDB').innerText = "Memuat data...";
+            
+            try {
+                const docRef = await getDoc(doc(db, "pengaturan", "ppdb_kontak"));
+                if (docRef.exists()) {
+                    const dt = docRef.data();
+                    document.getElementById('set_nama_putra').value = dt.nama_putra || "";
+                    document.getElementById('set_wa_putra').value = dt.wa_putra || "";
+                    document.getElementById('set_nama_putri').value = dt.nama_putri || "";
+                    document.getElementById('set_wa_putri').value = dt.wa_putri || "";
+                    document.getElementById('set_email_ppdb').value = dt.email || "";
+                }
+            } catch(e) { console.log(e); }
+            finally { document.getElementById('btnSimpanPengaturanPPDB').innerText = "Simpan Pengaturan"; }
+        }
+
+        window.tutupModalPengaturanPPDB = () => document.getElementById('modal_pengaturan_ppdb').classList.add('hidden');
+
+        window.simpanPengaturanPPDB = async function() {
+            const btn = document.getElementById('btnSimpanPengaturanPPDB');
+            btn.innerHTML = "Menyimpan..."; btn.disabled = true;
+
+            const nPutra = document.getElementById('set_nama_putra').value;
+            let wPutra = document.getElementById('set_wa_putra').value;
+            const nPutri = document.getElementById('set_nama_putri').value;
+            let wPutri = document.getElementById('set_wa_putri').value;
+            const email = document.getElementById('set_email_ppdb').value;
+
+            // Pastikan format WA benar
+            if(wPutra.startsWith('0')) wPutra = '62' + wPutra.substring(1);
+            if(wPutri.startsWith('0')) wPutri = '62' + wPutri.substring(1);
+
+            try {
+                // Simpan ke koleksi 'pengaturan' dokumen 'ppdb_kontak'
+                await setDoc(doc(db, "pengaturan", "ppdb_kontak"), {
+                    nama_putra: nPutra, wa_putra: wPutra,
+                    nama_putri: nPutri, wa_putri: wPutri,
+                    email: email
+                });
+                alert("Pengaturan berhasil disimpan! Halaman Publik PPDB akan otomatis menyesuaikan.");
+                tutupModalPengaturanPPDB();
+            } catch(e) {
+                alert("Gagal menyimpan: " + e.message);
+            } finally {
+                btn.innerHTML = "Simpan Pengaturan"; btn.disabled = false;
+            }
+        }
+
+
+        // ========================================================
+        // FUNGSI UMUM LAINNYA (TETAP SAMA SEPERTI SEBELUMNYA)
+        // ========================================================
+        function renderTable(id, dataArr, titleKey, paramType) {
+            const el = document.getElementById(id);
+            if(dataArr.length === 0) { el.innerHTML = `<tr><td class="py-4 text-gray-400 italic">Belum ada data.</td></tr>`; return; }
+            el.innerHTML = dataArr.map(x => `<tr class="border-b hover:bg-gray-50"><td class="py-4 font-bold text-gray-700">${x[titleKey]}</td><td class="py-4 text-right space-x-1 whitespace-nowrap"><button onclick="siapkanEdit('${paramType}', '${x.id}')" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-xs font-bold"><i class="fas fa-edit"></i></button><button onclick="hapusData('${paramType}', '${x.id}')" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-xs font-bold"><i class="fas fa-trash"></i></button></td></tr>`).join('');
         }
 
         window.siapkanEdit = function(tipe, id) {
