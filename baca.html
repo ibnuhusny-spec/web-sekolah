@@ -4,116 +4,247 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baca Artikel - SDIT Qurratu A'yun</title>
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
     <style>
-        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        /* Memperbaiki jarak paragraf bawaan editor Quill */
-        .prose p { margin-top: 0.75em; margin-bottom: 0.75em; }
+        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        
+        /* Mempercantik area konten artikel */
+        .ql-editor { padding: 0 !important; font-family: inherit !important; font-size: 1rem !important; line-height: 1.8 !important; color: #334155; }
+        .ql-editor h1, .ql-editor h2, .ql-editor h3 { color: #1e293b; font-weight: 900; margin-top: 1.5em; margin-bottom: 0.5em; }
+        .ql-editor img { border-radius: 1rem; margin: 1.5rem 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans min-h-screen pb-20">
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen pb-20">
 
-    <nav class="bg-white shadow-md p-4 sticky top-0 z-50 flex items-center gap-4">
-        <button onclick="kembaliKeAsal()" class="text-blue-800 text-xl px-2">
-            <i class="fas fa-arrow-left"></i>
-        </button>
-        <h1 class="font-black text-blue-800 uppercase tracking-tight truncate" id="nav_title">Memuat...</h1>
+    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
+        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-home text-blue-600 text-lg md:text-xl"></i></a>
+        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
+        <a href="ppdb.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl"></i></a>
+        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
+        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
+        <a href="redaksi.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl"></i></a>
     </nav>
 
-    <main class="max-w-3xl mx-auto p-4 md:p-8" id="content_area">
-        <div id="loading" class="flex flex-col items-center justify-center py-20 text-gray-400">
-            <i class="fas fa-spinner fa-spin text-4xl mb-4"></i>
-            <p class="italic">Sedang mengambil kiriman...</p>
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex items-center justify-between sticky top-0">
+        <button onclick="goBack()" class="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold bg-gray-100 hover:bg-blue-50 px-4 py-2 rounded-full transition shadow-sm text-sm">
+            <i class="fas fa-arrow-left"></i> <span class="hidden sm:inline">Kembali</span>
+        </button>
+        <div class="flex items-center gap-3">
+            <h1 class="text-lg md:text-xl font-black text-blue-800 uppercase tracking-tight hidden sm:block">SDIT Qurratu A'yun</h1>
+            <img src="logo.png" class="h-10 w-auto" onerror="this.style.display='none'">
         </div>
+    </header>
 
-        <article id="article_body" class="hidden animate-fade-in">
-            <div id="meta_info" class="mb-6">
-                <span id="label_kategori" class="px-3 py-1 rounded-full text-[10px] font-black text-white bg-blue-600 uppercase tracking-widest"></span>
-                <h2 id="judul_artikel" class="text-3xl md:text-4xl font-black text-slate-900 mt-4 leading-tight italic uppercase"></h2>
-                <p class="text-gray-500 text-sm mt-3 flex items-center gap-2 italic">
-                    <i class="fas fa-calendar-alt text-blue-500"></i> <span id="tgl_artikel" class="font-bold"></span>
-                    <span id="author_box" class="hidden"> | <i class="fas fa-pen-nib text-orange-500 ml-2"></i> <span id="penulis_artikel" class="font-bold text-orange-600 uppercase"></span></span>
-                </p>
+    <main class="flex-1 p-4 md:p-8 md:ml-16 max-w-4xl mx-auto w-full mt-4">
+        
+        <article id="area_artikel" class="bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100 animate-fade">
+            <div class="p-10 text-center text-gray-400 italic" id="loading_artikel">
+                <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 mb-4"></i>
+                <p>Memuat artikel...</p>
             </div>
-
-            <div id="gambar_container" class="rounded-3xl overflow-hidden shadow-2xl mb-8 bg-gray-200 aspect-video hidden">
-                <img id="gambar_artikel" src="" class="w-full h-full object-cover">
-            </div>
-
-            <div id="isi_artikel" class="prose prose-slate prose-lg max-w-none text-gray-700 leading-relaxed">
+            
+            <div id="konten_artikel" class="hidden">
+                <div id="cover_artikel" class="w-full h-64 md:h-96 relative hidden">
+                    <img id="img_cover" src="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex items-end p-6 md:p-10">
+                        <span id="badge_kategori_img" class="bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-widest mb-2">KATEGORI</span>
+                    </div>
                 </div>
 
-            <div class="mt-12 border-t border-gray-200 pt-8 mb-12">
-                <p class="font-black text-gray-400 uppercase tracking-widest text-xs mb-4 text-center">Bagikan informasi ini</p>
-                <div class="flex justify-center gap-4">
-                    <button onclick="shareWA()" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-black flex items-center gap-2 shadow-lg transition transform hover:-translate-y-1">
-                        <i class="fab fa-whatsapp text-xl"></i> SHARE KE WHATSAPP
+                <div class="p-6 md:p-10">
+                    <span id="badge_kategori_noimg" class="bg-blue-100 text-blue-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-4 hidden w-max">KATEGORI</span>
+                    
+                    <h1 id="judul_artikel" class="text-3xl md:text-5xl font-black text-slate-800 mb-6 leading-tight uppercase italic drop-shadow-sm">Judul Artikel</h1>
+                    
+                    <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-gray-500 uppercase tracking-widest mb-10 pb-6 border-b-2 border-gray-100">
+                        <span id="meta_tanggal"><i class="fas fa-calendar-alt text-blue-400 mr-1"></i> -</span>
+                        <span id="meta_penulis" class="hidden"><i class="fas fa-user-edit text-orange-400 mr-1"></i> -</span>
+                        <span><i class="fas fa-eye text-green-400 mr-1"></i> Dibaca <span id="view_count">1</span> kali</span>
+                    </div>
+
+                    <div class="ql-snow">
+                        <div id="isi_artikel" class="ql-editor text-gray-700"></div>
+                    </div>
+
+                    <div class="mt-12 pt-6 border-t-2 border-dashed border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Bagikan tulisan ini:</p>
+                        <div class="flex gap-2">
+                            <button onclick="shareKe('wa')" class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:-translate-y-1 transition shadow-lg"><i class="fab fa-whatsapp text-lg"></i></button>
+                            <button onclick="shareKe('fb')" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:-translate-y-1 transition shadow-lg"><i class="fab fa-facebook-f text-lg"></i></button>
+                            <button onclick="salinLink()" class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center hover:-translate-y-1 transition shadow-lg"><i class="fas fa-link text-lg"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-xl border border-gray-100 mt-8 mb-10">
+            <h3 class="text-2xl font-black text-gray-800 mb-2 flex items-center gap-2 uppercase italic">
+                <i class="fas fa-comments text-blue-500"></i> Ruang Diskusi
+            </h3>
+            <p class="text-sm text-gray-600 mb-8 border-b border-gray-100 pb-4">Tinggalkan komentar atau apresiasi untuk tulisan ini.</p>
+
+            <div id="area_form_komentar" class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8">
+                <div id="belum_login" class="text-center py-2">
+                    <p class="text-gray-500 mb-4 text-sm font-bold">Silakan masuk menggunakan akun Google untuk ikut berkomentar.</p>
+                    <button onclick="loginGoogle()" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 px-6 py-2 rounded-full font-bold flex items-center justify-center mx-auto gap-3 shadow-sm transition">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5"> Masuk dengan Google
+                    </button>
+                </div>
+
+                <div id="sudah_login" class="hidden">
+                    <div class="flex items-center gap-3 mb-4 border-b border-gray-200 pb-4">
+                        <img id="user_foto" src="" class="w-10 h-10 rounded-full bg-gray-200 object-cover shadow-sm border border-gray-200">
+                        <div class="flex-1">
+                            <p id="user_nama" class="font-bold text-sm text-gray-800 uppercase"></p>
+                            <p id="user_email" class="text-[10px] text-gray-500 bg-gray-200 inline-block px-2 py-0.5 rounded-full mt-1"></p>
+                        </div>
+                        <button onclick="logoutGoogle()" class="text-xs text-red-500 hover:text-red-700 underline font-bold bg-red-50 px-3 py-1 rounded-lg">Keluar</button>
+                    </div>
+                    <textarea id="input_komentar" rows="3" placeholder="Tulis tanggapan Anda yang membangun..." class="w-full bg-white border border-gray-300 rounded-xl p-4 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-none mb-3"></textarea>
+                    <button onclick="kirimKomentar()" id="btn_kirim" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition w-full md:w-auto flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Kirim Komentar
                     </button>
                 </div>
             </div>
 
-            <div class="border-t-4 border-gray-200 pt-8 mt-8">
-                <h3 class="text-2xl font-black text-gray-800 mb-6 flex items-center gap-2 uppercase italic">
-                    <i class="fas fa-comments text-blue-500"></i> Ruang Diskusi
-                </h3>
-
-                <div id="area_form_komentar" class="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 mb-8">
-                    
-                    <div id="belum_login" class="text-center py-4">
-                        <p class="text-gray-500 mb-4 text-sm font-bold">Silakan masuk menggunakan akun Google untuk ikut berdiskusi.</p>
-                        <button onclick="loginGoogle()" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2 rounded-full font-bold flex items-center justify-center mx-auto gap-3 shadow-sm transition">
-                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5"> Masuk dengan Google
-                        </button>
-                    </div>
-
-                    <div id="sudah_login" class="hidden">
-                        <div class="flex items-center gap-3 mb-4 border-b border-gray-100 pb-4">
-                            <img id="user_foto" src="" class="w-10 h-10 rounded-full bg-gray-200 object-cover shadow-sm border border-gray-200">
-                            <div class="flex-1">
-                                <p id="user_nama" class="font-bold text-sm text-gray-800 uppercase"></p>
-                                <p id="user_email" class="text-[10px] text-gray-500 bg-gray-100 inline-block px-2 py-0.5 rounded-full mt-1"></p>
-                            </div>
-                            <button onclick="logoutGoogle()" class="text-xs text-red-500 hover:text-red-700 underline font-bold bg-red-50 px-3 py-1 rounded-lg">Keluar</button>
-                        </div>
-                        <textarea id="input_komentar" rows="3" placeholder="Tulis komentar, masukan, atau apresiasi Anda di sini..." class="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-none mb-3"></textarea>
-                        <button onclick="kirimKomentar()" id="btn_kirim" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition w-full md:w-auto flex items-center justify-center gap-2">
-                            <i class="fas fa-paper-plane"></i> Kirim Komentar
-                        </button>
-                    </div>
-                </div>
-
-                <div id="daftar_komentar" class="space-y-4">
-                    <div class="text-center text-gray-400 italic text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat komentar...</div>
-                </div>
+            <div id="daftar_komentar" class="space-y-4">
+                <div class="text-center text-gray-400 italic text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat diskusi...</div>
             </div>
-        </article>
+        </div>
+
     </main>
+
+    <footer class="bg-gray-950 text-gray-400 pt-10 pb-36 md:py-10 text-center relative z-40 w-full mt-auto">
+        <p class="text-lg font-bold uppercase tracking-widest italic text-white">SDIT Qurratu A'yun Al-Islami</p>
+    </footer>
+
+    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20SDIT%20Qurratu%20A'yun..." target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-[100] group hidden md:flex">
+        <i class="fab fa-whatsapp"></i>
+        <span class="absolute right-16 bg-white text-gray-800 text-xs font-bold px-3 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-green-100">Hubungi Admin</span>
+    </a>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
-            authDomain: "websekolah-9bcde.firebaseapp.com",
-            projectId: "websekolah-9bcde",
-            storageBucket: "websekolah-9bcde.firebasestorage.app",
-            messagingSenderId: "113406929634",
-            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
-        // Setup Autentikasi Google
+
+        // AMBIL PARAMETER URL (Contoh: baca.html?id=123&type=berita)
+        const urlParams = new URLSearchParams(window.location.search);
+        const docId = urlParams.get('id');
+        const docType = urlParams.get('type') || 'berita'; // default berita
+        let articleTitle = "Artikel SDIT Qurratu A'yun";
+
+        // TOMBOL KEMBALI CERDAS
+        window.goBack = function() {
+            if (document.referrer.includes(window.location.hostname)) {
+                window.history.back();
+            } else {
+                window.location.href = docType === 'karya' ? 'karya.html' : 'berita.html';
+            }
+        };
+
+        function formatTanggal(iso) { 
+            try { 
+                const d = new Date(iso); if (isNaN(d.getTime())) return iso;
+                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                return `${d.getDate()} ${bln[d.getMonth()]} ${d.getFullYear()}`;
+            } catch{ return iso; } 
+        }
+
+        async function loadArtikel() {
+            if(!docId) {
+                document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Artikel tidak ditemukan.</p>";
+                return;
+            }
+
+            try {
+                const docRef = doc(db, docType, docId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    articleTitle = data.judul;
+                    document.title = data.judul + " - SDIT Qurratu A'yun";
+
+                    document.getElementById('loading_artikel').classList.add('hidden');
+                    document.getElementById('konten_artikel').classList.remove('hidden');
+
+                    document.getElementById('judul_artikel').innerText = data.judul;
+                    document.getElementById('meta_tanggal').innerHTML = `<i class="fas fa-calendar-alt text-blue-400 mr-1"></i> ${formatTanggal(data.tanggal)}`;
+                    
+                    // Render Isi Konten HTML (Dari Quill Editor)
+                    document.getElementById('isi_artikel').innerHTML = data.isi || data.deskripsi || "Tidak ada konten.";
+
+                    // Atur Kategori & Penulis
+                    const kat = data.kategori || (docType === 'karya' ? 'KARYA GURU' : 'BERITA');
+                    if (docType === 'karya' && data.penulis) {
+                        document.getElementById('meta_penulis').classList.remove('hidden');
+                        document.getElementById('meta_penulis').innerHTML = `<i class="fas fa-user-edit text-orange-400 mr-1"></i> ${data.penulis}`;
+                    }
+
+                    // Tampilkan Gambar Cover (Jika ada)
+                    const isNoImg = !data.gambar || data.gambar === "-" || data.gambar.includes("default.png");
+                    if (!isNoImg) {
+                        document.getElementById('cover_artikel').classList.remove('hidden');
+                        document.getElementById('img_cover').src = data.gambar;
+                        document.getElementById('badge_kategori_img').innerText = kat;
+                        if(docType === 'karya') document.getElementById('badge_kategori_img').classList.replace('bg-blue-600', 'bg-orange-500');
+                    } else {
+                        document.getElementById('badge_kategori_noimg').classList.remove('hidden');
+                        document.getElementById('badge_kategori_noimg').innerText = kat;
+                        if(docType === 'karya') document.getElementById('badge_kategori_noimg').classList.replace('bg-blue-100', 'bg-orange-100');
+                        if(docType === 'karya') document.getElementById('badge_kategori_noimg').classList.replace('text-blue-600', 'text-orange-600');
+                    }
+
+                    // Simulasi View Count (Random untuk estetika web statis)
+                    document.getElementById('view_count').innerText = Math.floor(Math.random() * 50) + 15;
+
+                    loadKomentar(); // Panggil fungsi komentar setelah artikel dimuat
+                } else {
+                    document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Artikel telah dihapus atau tidak tersedia.</p>";
+                }
+            } catch(e) {
+                console.error(e);
+                document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Gagal memuat artikel dari server.</p>";
+            }
+        }
+        loadArtikel();
+
+        // ==========================================
+        // FITUR SHARE (BAGIKAN)
+        // ==========================================
+        window.shareKe = function(platform) {
+            const url = window.location.href;
+            const text = `Bantu sebar kebaikan! Baca artikel menarik ini: "${articleTitle}" di Website Resmi SDIT Qurratu A'yun.\n\n${url}`;
+            if(platform === 'wa') window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            if(platform === 'fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        }
+        window.salinLink = function() {
+            navigator.clipboard.writeText(window.location.href);
+            alert("Tautan artikel berhasil disalin!");
+        }
+
+        // ==========================================
+        // LOGIKA KOMENTAR 
+        // ==========================================
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
         let currentUser = null;
 
-        // Pantau Perubahan Status Login User
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
@@ -129,118 +260,36 @@
             }
         });
 
-        window.loginGoogle = () => signInWithPopup(auth, provider).catch(e => alert('Gagal memuat halaman login: ' + e.message));
+        window.loginGoogle = () => signInWithPopup(auth, provider).catch(e => alert('Gagal login: ' + e.message));
         window.logoutGoogle = () => signOut(auth);
 
-        const params = new URLSearchParams(window.location.search);
-        const docId = params.get('id');
-        const type = params.get('type'); 
-
-        // =========================================================================
-        // FUNGSI TOMBOL PANAH PINTAR
-        // =========================================================================
-        window.kembaliKeAsal = function() {
-            // Mengecek apakah pengunjung datang dari dalam domain website kita sendiri
-            if (document.referrer && document.referrer.includes(window.location.hostname)) {
-                window.history.back(); // Jika ya, mundurkan seperti biasa
-            } else {
-                // Jika dari luar (WA/FB), arahkan ke halaman kategori yang sesuai
-                if (type === 'karya') {
-                    window.location.href = 'karya.html';
-                } else if (type === 'berita') {
-                    window.location.href = 'berita.html';
-                } else {
-                    window.location.href = 'index.html'; // Pilihan terakhir ke Beranda
-                }
-            }
-        };
-        // ========================================================================= 
-
-        // =========================================================================
-        // FUNGSI PENETRALISIR KODE JAHAT (XSS Protection) - HANYA UNTUK KOMENTAR
-        // =========================================================================
         function amankanTeks(str) {
             if (!str) return "";
-            return str.replace(/[&<>'"]/g, tag => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-            }[tag] || tag));
-        }
-        // =========================================================================
-
-        async function loadContent() {
-            if(!docId || !type) return document.getElementById('loading').innerHTML = "Link tidak valid.";
-
-            try {
-                const docRef = doc(db, type, docId);
-                const snap = await getDoc(docRef);
-
-                if (snap.exists()) {
-                    const data = snap.data();
-                    document.title = data.judul + " - SDIT Qurratu A'yun";
-                    document.getElementById('nav_title').innerText = data.judul;
-                    document.getElementById('judul_artikel').innerText = data.judul;
-                    document.getElementById('tgl_artikel').innerText = formatTanggal(data.tanggal);
-                    
-                    // PERUBAHAN UTAMA: innerHTML digunakan agar format tulisan Editor tidak rusak
-                    document.getElementById('isi_artikel').innerHTML = data.isi || data.deskripsi;
-                    
-                    const isNoImg = !data.gambar || data.gambar === "-";
-                    if (!isNoImg) {
-                        document.getElementById('gambar_container').classList.remove('hidden');
-                        document.getElementById('gambar_artikel').src = data.gambar;
-                    }
-
-                    if(type === 'karya') {
-                        document.getElementById('author_box').classList.remove('hidden');
-                        document.getElementById('penulis_artikel').innerText = data.penulis;
-                        const w = {"Artikel":"bg-blue-500","Sastra":"bg-emerald-500","Cerita":"bg-teal-500","Desain":"bg-pink-500","Aplikasi":"bg-purple-500"}[data.kategori] || "bg-gray-500";
-                        document.getElementById('label_kategori').className = `px-3 py-1 rounded-full text-[10px] font-black text-white ${w} uppercase tracking-widest shadow-sm`;
-                        document.getElementById('label_kategori').innerText = data.kategori || "KARYA";
-                    } else {
-                        document.getElementById('label_kategori').className = "px-3 py-1 rounded-full text-[10px] font-black text-white bg-red-600 uppercase tracking-widest shadow-sm";
-                        document.getElementById('label_kategori').innerText = data.kategori || "BERITA";
-                    }
-
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('article_body').classList.remove('hidden');
-
-                    loadKomentar();
-                } else {
-                    document.getElementById('loading').innerHTML = "Maaf, kiriman tidak ditemukan.";
-                }
-            } catch (e) {
-                console.error(e);
-                document.getElementById('loading').innerHTML = "Terjadi kesalahan koneksi.";
-            }
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
         }
 
         window.kirimKomentar = async () => {
+            if(!docId) return;
             const teks = document.getElementById('input_komentar').value.trim();
             if(!teks) return alert("Komentar tidak boleh kosong!");
             if(!currentUser) return alert("Silakan login dengan Google terlebih dahulu!");
 
             const btn = document.getElementById('btn_kirim');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...'; btn.disabled = true;
 
             try {
                 await addDoc(collection(db, "komentar"), {
-                    postId: docId,
+                    postId: docId, 
                     nama: currentUser.displayName,
                     email: currentUser.email,
                     foto: currentUser.photoURL,
                     teks: teks,
                     tanggal: new Date().toISOString()
                 });
-                
                 document.getElementById('input_komentar').value = ""; 
                 loadKomentar(); 
-            } catch(e) {
-                alert("Gagal mengirim komentar: " + e.message);
-            } finally {
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Komentar';
-                btn.disabled = false;
-            }
+            } catch(e) { alert("Gagal mengirim komentar: " + e.message); } 
+            finally { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Komentar'; btn.disabled = false; }
         };
 
         async function loadKomentar() {
@@ -253,54 +302,31 @@
                 
                 const box = document.getElementById('daftar_komentar');
                 if(koms.length === 0) {
-                    box.innerHTML = '<p class="text-center text-gray-400 italic text-sm py-6 bg-gray-50 rounded-2xl border border-gray-100 shadow-inner">Belum ada komentar. Jadilah yang pertama memberikan apresiasi!</p>';
+                    box.innerHTML = '<p class="text-center text-gray-500 italic text-sm py-6 bg-gray-50 rounded-2xl border border-gray-200 shadow-inner">Belum ada komentar. Jadilah yang pertama menanggapi tulisan ini!</p>';
                     return;
                 }
 
-                box.innerHTML = koms.map(k => `
-                    <div class="bg-white border border-gray-100 shadow-sm p-5 rounded-3xl flex gap-4 transition hover:shadow-md">
-                        <img src="${k.foto || 'https://i.ibb.co/Xz9Gf4z/default.png'}" class="w-12 h-12 rounded-full object-cover flex-shrink-0 border-2 border-gray-100">
+                box.innerHTML = koms.map(k => {
+                    const isAdmin = k.email === 'admin@sdit-qurratuayun.sch.id' || k.email.includes('husny'); 
+                    return `
+                    <div class="bg-white border ${isAdmin ? 'border-blue-200 bg-blue-50' : 'border-gray-200'} shadow-sm p-5 rounded-2xl flex gap-4 transition hover:shadow-md">
+                        <img src="${k.foto || 'https://i.ibb.co/Xz9Gf4z/default.png'}" class="w-10 h-10 rounded-full object-cover flex-shrink-0 border border-gray-200">
                         <div class="flex-1">
-                            <div class="flex flex-col md:flex-row justify-between md:items-baseline mb-2 border-b border-gray-50 pb-2">
-                                <h4 class="font-black text-gray-800 text-sm uppercase">${k.nama}</h4>
-                                <span class="text-[10px] text-gray-400 font-bold tracking-wider"><i class="fas fa-clock text-blue-300"></i> ${formatTanggalWaktu(k.tanggal)}</span>
+                            <div class="flex flex-col md:flex-row justify-between md:items-baseline mb-2 border-b border-gray-100 pb-2">
+                                <h4 class="font-black text-gray-800 text-sm uppercase flex items-center gap-2">
+                                    ${k.nama} ${isAdmin ? '<span class="bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded-full"><i class="fas fa-check-circle"></i> ADMIN</span>' : ''}
+                                </h4>
+                                <span class="text-[10px] text-gray-400 font-bold tracking-wider mt-1 md:mt-0">${new Date(k.tanggal).toLocaleDateString('id-ID')}</span>
                             </div>
-                            <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">${amankanTeks(k.teks)}</p>
+                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${amankanTeks(k.teks)}</p>
                         </div>
                     </div>
-                `).join('');
-
+                `}).join('');
             } catch(e) {
                 console.error(e);
-                document.getElementById('daftar_komentar').innerHTML = '<p class="text-red-500 text-center text-sm">Gagal memuat komentar. Periksa koneksi internet.</p>';
+                document.getElementById('daftar_komentar').innerHTML = '<p class="text-red-500 text-center text-sm">Gagal memuat diskusi.</p>';
             }
         }
-
-        function formatTanggal(iso) { 
-            try { 
-                const d = new Date(iso);
-                if (isNaN(d.getTime())) return iso;
-                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-                return `${d.getDate()} ${bln[d.getMonth()]} ${d.getFullYear()}`;
-            } catch{ return iso; } 
-        }
-
-        function formatTanggalWaktu(iso) {
-            try {
-                const d = new Date(iso);
-                if(isNaN(d.getTime())) return iso;
-                return d.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) + ' pukul ' + d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
-            } catch{ return iso; }
-        }
-
-        window.shareWA = function() {
-            const judul = document.getElementById('judul_artikel').innerText;
-            const url = window.location.href;
-            const text = encodeURIComponent(`*${judul}*\n\nBaca selengkapnya di website SDIT Qurratu A'yun Al-Islami:\n${url}`);
-            window.open(`https://wa.me/?text=${text}`, '_blank');
-        }
-
-        loadContent();
     </script>
 </body>
 </html>
