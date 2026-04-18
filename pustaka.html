@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Library - SDIT Qurratu A'yun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        
+        /* Efek Rak Buku */
+        .buku-card { transition: all 0.3s ease; transform-origin: bottom center; }
+        .buku-card:hover { transform: translateY(-10px) rotate(2deg); box-shadow: 15px 15px 30px rgba(0,0,0,0.15); z-index: 10; }
+        .sampul-buku { aspect-ratio: 2 / 3; object-fit: cover; border-radius: 4px 12px 12px 4px; box-shadow: inset 4px 0 10px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
+        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0"><i class="fas fa-home text-blue-600 text-lg md:text-xl"></i></a>
+        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
+        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
+        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
+        <a href="ppdb.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl"></i></a>
+        <a href="pustaka.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-cyan-600 rounded-2xl shadow-lg border border-cyan-500 flex-shrink-0"><i class="fas fa-book-open text-white text-lg md:text-xl"></i></a>
+        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
+        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
+    </nav>
+
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center">
+        <div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div>
+    </header>
+
+    <main class="flex-1 px-4 py-10 pb-28 md:p-10 md:pb-10 md:ml-16 bg-gradient-to-b from-cyan-50 to-blue-50 min-h-screen">
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-black mb-2 text-gray-800 border-l-8 border-cyan-600 pl-4 uppercase italic">E-Library</h2>
+                    <p class="text-gray-500 md:ml-6">Perpustakaan Digital: Baca cerita, modul, dan buku pengetahuan.</p>
+                </div>
+                
+                <div class="relative w-full md:w-auto">
+                    <input type="text" id="kolomCariBuku" placeholder="Cari judul buku..." class="w-full md:w-72 bg-white border border-gray-200 rounded-full px-5 py-3 text-sm focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 transition shadow-sm">
+                    <i class="fas fa-search absolute right-5 top-3.5 text-gray-400"></i>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap justify-center md:justify-start gap-3 mb-10 pb-4 border-b border-cyan-200">
+                <button class="filter-btn px-6 py-2 rounded-full font-bold shadow bg-cyan-600 text-white transition text-xs uppercase tracking-widest" onclick="filterBuku('semua', this)" id="btnSemua">Semua Buku</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-cyan-100 transition text-xs uppercase tracking-widest border border-cyan-100" onclick="filterBuku('Cerita Anak', this)">Cerita Anak</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-cyan-100 transition text-xs uppercase tracking-widest border border-cyan-100" onclick="filterBuku('Modul Belajar', this)">Modul Belajar</button>
+                <button class="filter-btn px-6 py-2 bg-white text-gray-600 rounded-full font-bold shadow hover:bg-cyan-100 transition text-xs uppercase tracking-widest border border-cyan-100" onclick="filterBuku('Pengetahuan', this)">Pengetahuan Umum</button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8" id="rakBuku">
+                <div class="text-gray-500 italic col-span-full text-center py-10"><i class="fas fa-spinner fa-spin mr-2"></i> Menyusun rak buku...</div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white pt-10 pb-36 md:py-10 text-center relative z-40">
+        <p class="text-lg font-bold uppercase tracking-widest italic">SDIT Qurratu A'yun Al-Islami</p>
+        <p class="text-xs text-gray-500 mt-2">Perpustakaan Digital</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.dataBuku = [];
+        window.currentKategori = 'semua';
+
+        async function loadBuku() {
+            try {
+                const snap = await getDocs(collection(db, "pustaka"));
+                window.dataBuku = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+                renderBuku(window.dataBuku);
+            } catch (err) { 
+                console.error(err); 
+                document.getElementById('rakBuku').innerHTML = '<div class="col-span-full text-center text-red-500">Gagal memuat buku.</div>';
+            }
+        }
+
+        window.renderBuku = function(dataArray) {
+            const rak = document.getElementById('rakBuku');
+            const filtered = dataArray.filter(b => window.currentKategori === 'semua' || b.kategori === window.currentKategori);
+            
+            if(filtered.length === 0) { 
+                rak.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500"><i class="fas fa-box-open text-4xl mb-4 text-gray-300 block"></i>Belum ada buku di kategori ini.</div>`; 
+                return; 
+            }
+
+            rak.innerHTML = filtered.map((b, i) => {
+                const imgCover = b.gambar && b.gambar !== "-" ? b.gambar : "https://i.ibb.co/Xz9Gf4z/default.png";
+                
+                return `
+                <div class="relative animate-fade" style="animation-delay: ${i*0.05}s">
+                    <div class="buku-card bg-white rounded-xl shadow-lg border border-gray-200 flex flex-col h-full overflow-hidden group">
+                        <div class="relative w-full pt-2 px-2 bg-gray-100">
+                            <img src="${imgCover}" class="sampul-buku w-full" alt="Cover Buku">
+                            <span class="absolute top-4 left-4 bg-cyan-600 text-white text-[8px] font-black px-2 py-1 rounded shadow-md uppercase tracking-widest">${b.kategori}</span>
+                        </div>
+                        <div class="p-3 flex-1 flex flex-col justify-between">
+                            <h3 class="text-sm font-black text-gray-800 leading-tight mb-2 line-clamp-2" title="${b.judul}">${b.judul}</h3>
+                            <a href="${b.link_pdf}" target="_blank" class="block w-full bg-cyan-50 hover:bg-cyan-600 text-cyan-600 hover:text-white border border-cyan-200 text-center py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition shadow-sm mt-auto">
+                                <i class="fas fa-book-reader mr-1"></i> Baca
+                            </a>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-2 left-2 right-2 h-2 bg-black/10 blur-[2px] rounded-[100%] z-[-1]"></div>
+                </div>`;
+            }).join('');
+        };
+
+        window.filterBuku = function(kat, btn) {
+            window.currentKategori = kat;
+            document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('bg-cyan-600', 'text-white'); b.classList.add('bg-white', 'text-gray-600'); });
+            btn.classList.replace('bg-white', 'bg-cyan-600'); btn.classList.replace('text-gray-600', 'text-white');
+            document.getElementById('kolomCariBuku').value = ""; // Reset pencarian
+            renderBuku(window.dataBuku);
+        };
+
+        // Live Search
+        document.getElementById('kolomCariBuku').addEventListener('input', function(e) {
+            const input = e.target.value.toLowerCase();
+            const hasil = window.dataBuku.filter(b => 
+                (window.currentKategori === 'semua' || b.kategori === window.currentKategori) && 
+                b.judul.toLowerCase().includes(input)
+            );
+            renderBuku(hasil);
+        });
+
+        document.addEventListener('DOMContentLoaded', loadBuku);
+    </script>
+</body>
+</html>
