@@ -309,7 +309,7 @@
         window.globalData = { pegawai: [], berita: [], karya: [], kelas: [], ppdb: [], iklan: [] };
         const EMAIL_SUPER_ADMIN = "ibnuhusny@gmail.com";
 
-        const quillOptions = { theme: 'snow', modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }], ['blockquote'], ['clean'] ] } };
+        const quillOptions = { theme: 'snow', modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }], ['blockquote'], ['link', 'video', 'image'], ['clean'] ] } };
         window.quillBerita = new Quill('#editor_berita', { ...quillOptions, placeholder: 'Ketik isi berita di sini...' });
         window.quillKarya = new Quill('#editor_karya', { ...quillOptions, placeholder: 'Ketik deskripsi atau isi karya di sini...' });
 
