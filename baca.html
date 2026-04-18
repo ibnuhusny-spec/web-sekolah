@@ -22,60 +22,40 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen pb-20">
 
-    <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-[100] flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen md:pointer-events-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         
-        <div class="hidden md:block mt-auto"></div>
+        <div class="hidden md:block mt-24"></div>
 
-        <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
-        <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
-        <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
-        <a href="kelas.html" data-page="kelas" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl transition-colors"></i></a>
-        <a href="ppdb.html" data-page="ppdb" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl transition-colors"></i></a>
-        <a href="pustaka.html" data-page="pustaka" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-book-open text-cyan-600 text-lg md:text-xl transition-colors"></i></a>
-        <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
-        <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
-        <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="kelas.html" data-page="kelas" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="ppdb.html" data-page="ppdb" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pustaka.html" data-page="pustaka" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-book-open text-cyan-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
 
-        <div class="hidden md:block mb-auto"></div>
-
+        <div class="hidden md:block mb-24"></div>
     </nav>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Deteksi sedang di halaman mana
             let path = window.location.pathname;
             let page = path.split("/").pop().replace(".html", "");
-            
-            // Aturan khusus untuk beranda dan halaman baca
             if(page === "" || page === "index") page = "index";
             if(page === "baca") {
                 const urlParams = new URLSearchParams(window.location.search);
-                page = urlParams.get('type') || 'berita'; // Akan nyala di Berita atau Karya
+                page = urlParams.get('type') || 'berita';
             }
-
-            // Kamus warna nyala untuk masing-masing tombol
-            const activeColors = {
-                "index": "bg-blue-600 border-blue-500",
-                "profil": "bg-yellow-500 border-yellow-400",
-                "pegawai": "bg-green-500 border-green-400",
-                "kelas": "bg-purple-500 border-purple-400",
-                "ppdb": "bg-emerald-500 border-emerald-400",
-                "pustaka": "bg-cyan-600 border-cyan-500",
-                "karya": "bg-orange-500 border-orange-400",
-                "berita": "bg-red-600 border-red-500",
-                "redaksi": "bg-indigo-600 border-indigo-500"
-            };
-
-            // Eksekusi perubahan warna
+            const activeColors = { "index": "bg-blue-600 border-blue-500", "profil": "bg-yellow-500 border-yellow-400", "pegawai": "bg-green-500 border-green-400", "kelas": "bg-purple-500 border-purple-400", "ppdb": "bg-emerald-500 border-emerald-400", "pustaka": "bg-cyan-600 border-cyan-500", "karya": "bg-orange-500 border-orange-400", "berita": "bg-red-600 border-red-500", "redaksi": "bg-indigo-600 border-indigo-500" };
             let targetBtn = document.querySelector(`.nav-btn[data-page="${page}"]`);
             if(targetBtn && activeColors[page]) {
-                targetBtn.classList.remove("bg-white/90"); // Buang warna putih
-                
+                targetBtn.classList.remove("bg-white/90");
                 let colorClasses = activeColors[page].split(" ");
-                targetBtn.classList.add(...colorClasses); // Suntikkan warna khusus
-                
+                targetBtn.classList.add(...colorClasses);
                 let icon = targetBtn.querySelector("i");
-                icon.className = icon.className.replace(/text-\w+-\d+/g, "text-white"); // Jadikan ikon putih
+                icon.className = icon.className.replace(/text-\w+-\d+/g, "text-white");
             }
         });
     </script>
