@@ -22,7 +22,10 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen pb-20">
 
-    <nav id="navigasi_utama" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
+    <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        
+        <div class="hidden md:block mt-auto"></div>
+
         <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
         <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
@@ -32,6 +35,9 @@
         <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
+
+        <div class="hidden md:block mb-auto"></div>
+
     </nav>
 
     <script>
@@ -74,8 +80,6 @@
         });
     </script>
     ```
-
-Bapak cukup melakukan satu kali kerja: tempelkan kode di atas ke semua *file* HTML publik yang Bapak miliki, dan lupakan urusan mengedit navigasi selamanya! 🚀
 
     <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex items-center justify-between sticky top-0 z-[60]">
         <button onclick="goBack()" class="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold bg-gray-100 hover:bg-blue-50 px-4 py-2 rounded-full transition shadow-sm text-sm">
