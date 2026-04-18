@@ -21,17 +21,60 @@
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen pb-20">
 
-    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
-        <a href="index.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-home text-blue-600 text-lg md:text-xl"></i></a>
-        <a href="profil.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl"></i></a>
-        <a href="pegawai.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-users text-green-500 text-lg md:text-xl"></i></a>
-        <a href="kelas.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl"></i></a>
-        <a href="ppdb.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-emerald-500 rounded-2xl shadow-lg border border-emerald-400"><i class="fas fa-user-graduate text-white text-lg md:text-xl"></i></a>
-        <a href="pustaka.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-cyan-600 rounded-2xl shadow-lg border border-cyan-500 flex-shrink-0"><i class="fas fa-book-open text-white text-lg md:text-xl"></i></a>
-        <a href="karya.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl"></i></a>
-        <a href="berita.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl"></i></a>
-        <a href="redaksi.html" class="menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl"></i></a>
+    <nav id="navigasi_utama" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl px-4 py-3 md:p-0 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-visible">
+        <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="kelas.html" data-page="kelas" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="ppdb.html" data-page="ppdb" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pustaka.html" data-page="pustaka" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-book-open text-cyan-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
     </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Deteksi sedang di halaman mana
+            let path = window.location.pathname;
+            let page = path.split("/").pop().replace(".html", "");
+            
+            // Aturan khusus untuk beranda dan halaman baca
+            if(page === "" || page === "index") page = "index";
+            if(page === "baca") {
+                const urlParams = new URLSearchParams(window.location.search);
+                page = urlParams.get('type') || 'berita'; // Akan nyala di Berita atau Karya
+            }
+
+            // Kamus warna nyala untuk masing-masing tombol
+            const activeColors = {
+                "index": "bg-blue-600 border-blue-500",
+                "profil": "bg-yellow-500 border-yellow-400",
+                "pegawai": "bg-green-500 border-green-400",
+                "kelas": "bg-purple-500 border-purple-400",
+                "ppdb": "bg-emerald-500 border-emerald-400",
+                "pustaka": "bg-cyan-600 border-cyan-500",
+                "karya": "bg-orange-500 border-orange-400",
+                "berita": "bg-red-600 border-red-500",
+                "redaksi": "bg-indigo-600 border-indigo-500"
+            };
+
+            // Eksekusi perubahan warna
+            let targetBtn = document.querySelector(`.nav-btn[data-page="${page}"]`);
+            if(targetBtn && activeColors[page]) {
+                targetBtn.classList.remove("bg-white/90"); // Buang warna putih
+                
+                let colorClasses = activeColors[page].split(" ");
+                targetBtn.classList.add(...colorClasses); // Suntikkan warna khusus
+                
+                let icon = targetBtn.querySelector("i");
+                icon.className = icon.className.replace(/text-\w+-\d+/g, "text-white"); // Jadikan ikon putih
+            }
+        });
+    </script>
+    ```
+
+Bapak cukup melakukan satu kali kerja: tempelkan kode di atas ke semua *file* HTML publik yang Bapak miliki, dan lupakan urusan mengedit navigasi selamanya! 🚀
 
     <header class="bg-blue-700 text-white shadow-md p-6 md:pl-24 relative z-40">
         <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
