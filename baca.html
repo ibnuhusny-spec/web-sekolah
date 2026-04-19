@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baca Artikel - SDIT Qurratu A'yun</title>
+    
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Portal Informasi SDIT Qurratu A'yun">
+    <meta property="og:description" content="Simak informasi, berita, dan karya terbaru dari SDIT Qurratu A'yun Al-Islami Maros. Mewujudkan generasi cerdas, bertauhid, dan berakhlak mulia.">
+    <meta property="og:image" content="https://i.ibb.co/Xz9Gf4z/default.png"> 
+    <meta property="og:url" content="https://sdit-qurratu-ayun.vercel.app/baca.html">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
@@ -267,15 +273,20 @@
         loadArtikel();
 
         // ==========================================
-        // FITUR SHARE
+        // FITUR SHARE (BAGIKAN) YANG DIPERCANTIK
         // ==========================================
         window.shareKe = function(platform) {
             const url = window.location.href;
-            const text = `Bantu sebar kebaikan! Baca artikel menarik ini: "${articleTitle}" di Website Resmi SDIT Qurratu A'yun.\n\n${url}`;
-            if(platform === 'wa') window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-            if(platform === 'fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+            // Teks dirapikan menggunakan baris baru agar menyerupai broadcast profesional
+            const text = `Assalamu'alaikum.\n\nMari simak informasi terbaru dari SDIT Qurratu A'yun Al-Islami:\n\n*${articleTitle}*\n\nKlik link di bawah ini untuk membaca selengkapnya:\n${url}`;
+            
+            if(platform === 'wa') {
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            }
+            if(platform === 'fb') {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+            }
         }
-        window.salinLink = function() { navigator.clipboard.writeText(window.location.href); alert("Tautan artikel berhasil disalin!"); }
 
         // ==========================================
         // LOGIKA KOMENTAR 
