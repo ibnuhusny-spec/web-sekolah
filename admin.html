@@ -214,10 +214,21 @@
         <div id="tab-iklan" class="tab-content hidden">
             <div class="bg-white p-6 rounded-2xl shadow mb-8 border-t-4 border-yellow-400">
                 <h2 id="title_iklan" class="text-lg font-black mb-4 text-yellow-600 flex items-center gap-2"><i class="fas fa-bullhorn"></i> Kelola Iklan / Info Mitra</h2>
+                
+                <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-6">
+                    <p class="text-sm text-blue-800 font-black mb-2"><i class="fas fa-info-circle"></i> Panduan Upload Iklan (Format Kartu Produk):</p>
+                    <ul class="text-xs text-blue-700 list-disc ml-5 space-y-1">
+                        <li><b>Rekomendasi Ukuran Gambar:</b> 800 x 600 pixel (Rasio 4:3) atau foto bentuk kotak.</li>
+                        <li><b>Teks Promosi:</b> Beri nama usaha dengan jelas.</li>
+                        <li><b>Deskripsi:</b> Jelaskan keunggulan produk (maksimal 3 baris agar rapi).</li>
+                    </ul>
+                </div>
+
                 <form id="form_iklan" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input type="hidden" id="i_id">
-                    <input id="i_nama" placeholder="Teks Promosi (Cth: Katering Ummi - Halal & Lezat)" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-yellow-400" required>
-                    <input type="url" id="i_gambar" placeholder="URL Link Gambar Iklan" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-yellow-400" required>
+                    <input id="i_nama" placeholder="Nama Usaha (Cth: Katering Ummi)" class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-yellow-400" required>
+                    <textarea id="i_deskripsi" placeholder="Tuliskan deskripsi promosi / produk di sini..." class="md:col-span-2 p-3 md:p-4 border-2 rounded-xl outline-none focus:border-yellow-400 h-24" required></textarea>
+                    <input type="url" id="i_gambar" placeholder="URL Link Gambar Iklan (ImgBB)" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-yellow-400" required>
                     <input type="number" id="i_wa" placeholder="No. WA Pengiklan (Cth: 0812...)" class="p-3 md:p-4 border-2 rounded-xl outline-none focus:border-yellow-400" required>
                     <button type="button" onclick="simpan('iklan')" id="btn_iklan" class="md:col-span-2 bg-yellow-500 text-white font-black py-4 rounded-xl mt-2 shadow-lg hover:bg-yellow-600 transition uppercase tracking-widest">Simpan Data Iklan</button>
                     <button type="button" onclick="batalEdit('iklan')" id="batal_iklan" class="md:col-span-2 bg-gray-200 text-gray-600 font-bold py-3 rounded-xl hidden hover:bg-gray-300">Batal Edit</button>
@@ -278,7 +289,6 @@
         </div>
     </div>
 
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -292,9 +302,6 @@
         window.globalData = { pegawai: [], berita: [], karya: [], kelas: [], ppdb: [], iklan: [], pustaka: [] };
         const EMAIL_SUPER_ADMIN = "ibnuhusny@gmail.com";
 
-        // ========================================================
-        // EDITOR QUILL (SUDAH DIAKTIFKAN LINK DAN VIDEO)
-        // ========================================================
         const quillOptions = { theme: 'snow', modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'align': [] }], ['blockquote'], ['link', 'video', 'image'], ['clean'] ] } };
         window.quillBerita = new Quill('#editor_berita', { ...quillOptions, placeholder: 'Ketik isi berita di sini...' });
         window.quillKarya = new Quill('#editor_karya', { ...quillOptions, placeholder: 'Ketik deskripsi atau isi karya di sini...' });
@@ -311,17 +318,19 @@
 
         window.logoutAdmin = async function() { if(confirm("Yakin keluar?")) { await signOut(auth); window.location.href = "login.html"; } }
 
+        // FUNGSI SORT AMAN
+        function sortAman(a, b) {
+            const dateA = a.tanggal || "";
+            const dateB = b.tanggal || "";
+            return dateB.localeCompare(dateA);
+        }
+
         onSnapshot(collection(db, "pegawai"), (s) => { window.globalData.pegawai = s.docs.map(d => ({ id: d.id, ...d.data() })); renderTable('list_pegawai', window.globalData.pegawai, 'nama', 'pegawai'); });
-        onSnapshot(collection(db, "berita"), (s) => { window.globalData.berita = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal)); renderTable('list_berita', window.globalData.berita, 'judul', 'berita'); });
-        onSnapshot(collection(db, "karya"), (s) => { window.globalData.karya = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal)); renderTable('list_karya', window.globalData.karya, 'judul', 'karya'); });
+        onSnapshot(collection(db, "berita"), (s) => { window.globalData.berita = s.docs.map(d => ({ id: d.id, ...d.data() })).sort(sortAman); renderTable('list_berita', window.globalData.berita, 'judul', 'berita'); });
+        onSnapshot(collection(db, "karya"), (s) => { window.globalData.karya = s.docs.map(d => ({ id: d.id, ...d.data() })).sort(sortAman); renderTable('list_karya', window.globalData.karya, 'judul', 'karya'); });
         onSnapshot(collection(db, "kelas"), (s) => { window.globalData.kelas = s.docs.map(d => ({ id: d.id, ...d.data() })); renderTable('list_kelas', window.globalData.kelas, 'nama_kelas', 'kelas'); });
         onSnapshot(collection(db, "iklan"), (s) => { window.globalData.iklan = s.docs.map(d => ({ id: d.id, ...d.data() })); renderTable('list_iklan', window.globalData.iklan, 'nama_usaha', 'iklan'); });
-        
-        // PENDENGAR UNTUK PUSTAKA (BARU)
-        onSnapshot(collection(db, "pustaka"), (s) => { 
-            window.globalData.pustaka = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal)); 
-            renderTable('list_pustaka', window.globalData.pustaka, 'judul', 'pustaka'); 
-        });
+        onSnapshot(collection(db, "pustaka"), (s) => { window.globalData.pustaka = s.docs.map(d => ({ id: d.id, ...d.data() })).sort(sortAman); renderTable('list_pustaka', window.globalData.pustaka, 'judul', 'pustaka'); });
 
         onSnapshot(collection(db, "ppdb"), (s) => { 
             window.globalData.ppdb = s.docs.map(d => ({ id: d.id, ...d.data() })); 
@@ -426,6 +435,16 @@
             }).join('');
         }
 
+        function getIdPrefix(tipe) {
+            if (tipe === 'pegawai') return 'p';
+            if (tipe === 'berita') return 'b';
+            if (tipe === 'karya') return 'k';
+            if (tipe === 'kelas') return 'c';
+            if (tipe === 'iklan') return 'i';
+            if (tipe === 'pustaka') return 'lib';
+            return tipe;
+        }
+
         window.siapkanEdit = function(tipe, id) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             const item = window.globalData[tipe].find(x => x.id === id); if(!item) return;
@@ -435,14 +454,13 @@
             else if(tipe==='berita'){ document.getElementById('b_id').value=id; document.getElementById('b_tgl').value=item.tanggal; document.getElementById('b_judul').value=item.judul; document.getElementById('b_kategori').value=item.kategori; document.getElementById('b_gambar').value=item.gambar; window.quillBerita.root.innerHTML = item.isi; }
             else if(tipe==='karya'){ document.getElementById('k_id').value=id; document.getElementById('k_tgl').value=item.tanggal; document.getElementById('k_judul').value=item.judul; document.getElementById('k_penulis').value=item.penulis; document.getElementById('k_kategori').value=item.kategori; document.getElementById('k_gambar').value=item.gambar; window.quillKarya.root.innerHTML = item.deskripsi; }
             else if(tipe==='kelas'){ document.getElementById('c_id').value=id; document.getElementById('c_nama').value=item.nama_kelas; document.getElementById('c_laki').value=item.laki; document.getElementById('c_perempuan').value=item.perempuan; }
-            else if(tipe==='iklan'){ document.getElementById('i_id').value=id; document.getElementById('i_nama').value=item.nama_usaha; document.getElementById('i_gambar').value=item.gambar; document.getElementById('i_wa').value=item.wa; }
             else if(tipe==='pustaka'){ document.getElementById('lib_id').value=id; document.getElementById('lib_tgl').value=item.tanggal; document.getElementById('lib_judul').value=item.judul; document.getElementById('lib_kategori').value=item.kategori; document.getElementById('lib_gambar').value=item.gambar; document.getElementById('lib_link_pdf').value=item.link_pdf; }
+            else if(tipe==='iklan'){ document.getElementById('i_id').value=id; document.getElementById('i_nama').value=item.nama_usaha; document.getElementById('i_deskripsi').value=item.deskripsi || ""; document.getElementById('i_gambar').value=item.gambar; document.getElementById('i_wa').value=item.wa; }
         }
 
         window.batalEdit = function(tipe) {
             document.getElementById('form_' + tipe).reset();
-            let idField = document.getElementById(tipe.charAt(0) + '_id');
-            if(!idField && tipe === 'pustaka') idField = document.getElementById('lib_id');
+            let idField = document.getElementById(getIdPrefix(tipe) + '_id');
             if(idField) idField.value = "";
             document.getElementById('batal_' + tipe).classList.add('hidden');
             if(tipe === 'berita') window.quillBerita.setContents([]);
@@ -450,8 +468,7 @@
         }
 
         window.simpan = async function(tipe) {
-            let idField = document.getElementById(tipe.charAt(0) + '_id');
-            if(!idField && tipe === 'pustaka') idField = document.getElementById('lib_id');
+            let idField = document.getElementById(getIdPrefix(tipe) + '_id');
             const id = idField ? idField.value : "";
             let data = {};
             
@@ -459,8 +476,12 @@
             else if(tipe==='berita') { const isiHTML = window.quillBerita.root.innerHTML; if(isiHTML === '<p><br></p>') return alert("Isi berita tidak boleh kosong!"); data = { tanggal:id?document.getElementById('b_tgl').value:new Date().toISOString().split('T')[0], judul:document.getElementById('b_judul').value, kategori:document.getElementById('b_kategori').value, gambar:document.getElementById('b_gambar').value, isi: isiHTML }; }
             else if(tipe==='karya') { const deskripsiHTML = window.quillKarya.root.innerHTML; if(deskripsiHTML === '<p><br></p>') return alert("Deskripsi karya tidak boleh kosong!"); data = { tanggal:id?document.getElementById('k_tgl').value:new Date().toISOString().split('T')[0], penulis:document.getElementById('k_penulis').value, kategori:document.getElementById('k_kategori').value, judul:document.getElementById('k_judul').value, gambar:document.getElementById('k_gambar').value, deskripsi: deskripsiHTML }; }
             else if(tipe==='kelas') data = { nama_kelas:document.getElementById('c_nama').value, laki:parseInt(document.getElementById('c_laki').value), perempuan:parseInt(document.getElementById('c_perempuan').value) };
-            else if(tipe==='iklan') { let nomorWA = document.getElementById('i_wa').value; if(nomorWA.startsWith('0')) nomorWA = '62' + nomorWA.substring(1); data = { nama_usaha: document.getElementById('i_nama').value, gambar: document.getElementById('i_gambar').value, wa: nomorWA }; }
             else if(tipe==='pustaka') { data = { tanggal:id?document.getElementById('lib_tgl').value:new Date().toISOString().split('T')[0], judul: document.getElementById('lib_judul').value, kategori: document.getElementById('lib_kategori').value, gambar: document.getElementById('lib_gambar').value, link_pdf: document.getElementById('lib_link_pdf').value }; }
+            else if(tipe==='iklan') { 
+                let nomorWA = document.getElementById('i_wa').value; 
+                if(nomorWA.startsWith('0')) nomorWA = '62' + nomorWA.substring(1); 
+                data = { nama_usaha: document.getElementById('i_nama').value, deskripsi: document.getElementById('i_deskripsi').value, gambar: document.getElementById('i_gambar').value, wa: nomorWA }; 
+            }
 
             try { if(id) await updateDoc(doc(db, tipe, id), data); else await addDoc(collection(db, tipe), data); window.batalEdit(tipe); alert("Data Berhasil Disimpan!"); } 
             catch(e) { alert("Gagal menyimpan: " + e.message); }
