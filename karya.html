@@ -19,9 +19,7 @@
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
 
     <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-[100] flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen md:pointer-events-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        
         <div class="hidden md:block mt-24"></div>
-
         <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
         <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
@@ -31,7 +29,6 @@
         <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
-
         <div class="hidden md:block mb-24"></div>
     </nav>
 
@@ -170,7 +167,6 @@
         window.dataKarya = [];
         window.currentKategori = 'semua';
         
-        // VARIABEL UNTUK SLIDER IKLAN
         let dataIklanGlobal = [];
         let iklanIndex = 0;
 
@@ -186,7 +182,6 @@
 
         async function loadData() {
             try {
-                // AMBIL DATA KARYA, BERITA, & IKLAN SEKALIGUS
                 const [karyaSnap, beritaSnap, iklanSnap] = await Promise.all([ 
                     getDocs(collection(db, "karya")), 
                     getDocs(collection(db, "berita")),
@@ -196,7 +191,6 @@
                 let karya = karyaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
                 let berita = beritaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
                 
-                // SETUP TICKER
                 const ticker = document.getElementById('tickerContent');
                 let items = [...berita.slice(0,3), ...karya.slice(0,3)];
                 if(items.length > 0) {
@@ -204,16 +198,13 @@
                     ticker.innerHTML = content + content;
                 }
 
-                // SETUP KARYA UTAMA
                 window.dataKarya = karya;
                 renderKarya(window.dataKarya);
                 bangunArsipKarya();
                 bangunKaryaPilihan();
                 
-                // SETUP BERITA DI SIDEBAR (CROSS-LINKING)
                 bangunBeritaPilihanSidebar(berita);
 
-                // SETUP SLIDER IKLAN
                 dataIklanGlobal = iklanSnap.docs.map(d => d.data());
                 tampilkanIklan();
                 if (dataIklanGlobal.length > 2) { setInterval(() => { iklanIndex++; tampilkanIklan(); }, 5000); }
@@ -221,27 +212,38 @@
             } catch (err) { console.error(err); }
         }
 
-        // FUNGSI MENGGAMBAR IKLAN (DENGAN EFEK ROTASI)
+        // ===============================================
+        // FUNGSI MENGGAMBAR IKLAN (DENGAN KARTU PRODUK)
+        // ===============================================
         function tampilkanIklan() {
             const boxIklan = document.getElementById('tempat_iklan');
             if (dataIklanGlobal.length === 0) { boxIklan.innerHTML = `<p class="text-xs text-gray-400 text-center py-4 italic border-2 border-dashed border-gray-200 rounded-xl bg-gray-50">Ruang sponsor tersedia.</p>`; return; }
+            
             let iklanTampil = [];
             if (dataIklanGlobal.length <= 2) { iklanTampil = dataIklanGlobal; } 
             else { iklanTampil.push(dataIklanGlobal[iklanIndex % dataIklanGlobal.length]); iklanTampil.push(dataIklanGlobal[(iklanIndex + 1) % dataIklanGlobal.length]); }
 
             boxIklan.innerHTML = iklanTampil.map(ikl => `
-                <a href="https://wa.me/${ikl.wa}?text=Halo,%20saya%20melihat%20iklan%20di%20Website%20SDIT%20Qurratu%20A'yun..." target="_blank" class="block group rounded-2xl overflow-hidden shadow-sm border border-gray-100 relative animate-fade">
-                    <img src="${ikl.gambar}" alt="Sponsor" class="w-full h-28 md:h-32 object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-3 pt-10"><p class="text-white font-bold text-xs uppercase tracking-tight line-clamp-1 shadow-sm">${ikl.nama_usaha}</p></div>
-                </a>
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col animate-fade group">
+                    <div class="overflow-hidden aspect-[4/3] w-full">
+                        <img src="${ikl.gambar}" alt="Sponsor" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-4 flex flex-col flex-1 bg-gray-50">
+                        <h4 class="font-black text-blue-900 text-sm uppercase mb-1 line-clamp-1">${ikl.nama_usaha}</h4>
+                        <p class="text-[11px] text-gray-600 mb-4 line-clamp-3 leading-relaxed">${ikl.deskripsi || ''}</p>
+                        
+                        <a href="https://wa.me/${ikl.wa}?text=Halo,%20saya%20melihat%20iklan%20di%20Website%20SDIT%20Qurratu%20A'yun..." target="_blank" class="mt-auto bg-green-500 hover:bg-green-600 text-white text-[10px] font-black uppercase tracking-widest py-2.5 rounded-xl text-center transition flex items-center justify-center gap-2 shadow-md">
+                            <i class="fab fa-whatsapp text-sm"></i> Hubungi Penjual
+                        </a>
+                    </div>
+                </div>
             `).join('');
         }
 
-        // FUNGSI MENGGAMBAR BERITA DI SIDEBAR KARYA
         function bangunBeritaPilihanSidebar(beritaArr) {
             const container = document.getElementById('beritaPilihanListKarya');
             if(beritaArr.length === 0) { container.innerHTML = '<p class="text-xs italic text-gray-400">Belum ada berita.</p>'; return; }
-            const pilihan = beritaArr.slice(0, 3); // Ambil 3 berita terbaru
+            const pilihan = beritaArr.slice(0, 3); 
             
             container.innerHTML = pilihan.map(b => {
                 const isNoImg = !b.gambar || b.gambar === "-" || b.gambar.includes("default.png");
