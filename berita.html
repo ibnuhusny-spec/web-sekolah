@@ -19,9 +19,7 @@
 <body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
 
     <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-[100] flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen md:pointer-events-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        
         <div class="hidden md:block mt-24"></div>
-
         <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
         <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
@@ -31,7 +29,6 @@
         <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
         <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
-
         <div class="hidden md:block mb-24"></div>
     </nav>
 
@@ -155,7 +152,6 @@
 
         window.dataBerita = []; 
         
-        // VARIABEL UNTUK SLIDER IKLAN
         let dataIklanGlobal = [];
         let iklanIndex = 0;
 
@@ -171,14 +167,12 @@
 
         async function loadData() {
             try {
-                // 1. AMBIL DATA BERITA & KARYA UNTUK TICKER
                 const [beritaSnap, karyaSnap, iklanSnap] = await Promise.all([ 
                     getDocs(collection(db, "berita")), 
                     getDocs(collection(db, "karya")),
                     getDocs(collection(db, "iklan")) 
                 ]);
 
-                // SETUP TICKER
                 const ticker = document.getElementById('tickerContent');
                 let berita = beritaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
                 let karya = karyaSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.tanggal.localeCompare(a.tanggal));
@@ -189,28 +183,27 @@
                     ticker.innerHTML = content + content;
                 } else { ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic uppercase">Belum ada pembaruan...</span>'; }
 
-                // 2. SETUP DATA BERITA
                 window.dataBerita = berita;
                 renderBerita(window.dataBerita);
                 bangunArsipUI();
                 bangunBeritaPilihan();
 
-                // 3. SETUP SLIDER IKLAN
                 dataIklanGlobal = iklanSnap.docs.map(d => d.data());
                 tampilkanIklan();
 
-                // Jika Iklan lebih dari 2, jalankan putaran otomatis (slider) setiap 5 detik
                 if (dataIklanGlobal.length > 2) {
                     setInterval(() => {
                         iklanIndex++;
                         tampilkanIklan();
-                    }, 5000); // 5000 ms = 5 Detik
+                    }, 5000); 
                 }
 
             } catch (err) { console.error(err); }
         }
 
-        // FUNGSI MENGGAMBAR IKLAN (DENGAN EFEK ROTASI)
+        // ===============================================
+        // FUNGSI MENGGAMBAR IKLAN (DENGAN KARTU PRODUK)
+        // ===============================================
         function tampilkanIklan() {
             const boxIklan = document.getElementById('tempat_iklan');
             
@@ -220,23 +213,27 @@
             }
 
             let iklanTampil = [];
-            // Jika jumlah iklan <= 2, tampilkan semua tanpa perlu memutar
             if (dataIklanGlobal.length <= 2) {
                 iklanTampil = dataIklanGlobal;
             } else {
-                // Jika banyak, ambil 2 saja secara berurutan sesuai index
                 iklanTampil.push(dataIklanGlobal[iklanIndex % dataIklanGlobal.length]);
                 iklanTampil.push(dataIklanGlobal[(iklanIndex + 1) % dataIklanGlobal.length]);
             }
 
-            // Render 2 iklan tersebut dengan class 'animate-fade' agar transisinya halus
             boxIklan.innerHTML = iklanTampil.map(ikl => `
-                <a href="https://wa.me/${ikl.wa}?text=Halo,%20saya%20melihat%20iklan%20di%20Website%20SDIT%20Qurratu%20A'yun..." target="_blank" class="block group rounded-2xl overflow-hidden shadow-sm border border-gray-100 relative animate-fade">
-                    <img src="${ikl.gambar}" alt="Sponsor" class="w-full h-28 md:h-32 object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-3 pt-10">
-                        <p class="text-white font-bold text-xs uppercase tracking-tight line-clamp-1 shadow-sm">${ikl.nama_usaha}</p>
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col animate-fade group">
+                    <div class="overflow-hidden aspect-[4/3] w-full">
+                        <img src="${ikl.gambar}" alt="Sponsor" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
-                </a>
+                    <div class="p-4 flex flex-col flex-1 bg-gray-50">
+                        <h4 class="font-black text-blue-900 text-sm uppercase mb-1 line-clamp-1">${ikl.nama_usaha}</h4>
+                        <p class="text-[11px] text-gray-600 mb-4 line-clamp-3 leading-relaxed">${ikl.deskripsi || ''}</p>
+                        
+                        <a href="https://wa.me/${ikl.wa}?text=Halo,%20saya%20melihat%20iklan%20di%20Website%20SDIT%20Qurratu%20A'yun..." target="_blank" class="mt-auto bg-green-500 hover:bg-green-600 text-white text-[10px] font-black uppercase tracking-widest py-2.5 rounded-xl text-center transition flex items-center justify-center gap-2 shadow-md">
+                            <i class="fab fa-whatsapp text-sm"></i> Hubungi Penjual
+                        </a>
+                    </div>
+                </div>
             `).join('');
         }
 
