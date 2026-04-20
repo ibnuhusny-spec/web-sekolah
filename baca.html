@@ -276,20 +276,29 @@
         // FITUR SHARE (BAGIKAN) YANG DIPERCANTIK
         // ==========================================
         window.shareKe = function(platform) {
-            // Ambil URL lengkap saat ini
-            const url = window.location.href; 
-            
-            // Ambil judul artikel dari halaman dengan lebih aman
+            let url = window.location.href; 
             let judul = document.title; 
             
-            // ATURAN EMAS WA: URL harus di baris paling akhir, bersih tanpa embel-embel teks panjang
-            const text = `Assalamu'alaikum.\n\nMari simak informasi terbaru dari SDIT Qurratu A'yun Al-Islami:\n\n*${judul}*\n\nKlik link di bawah ini:\n${url}`;
+            // JURUS BUNGLON: Tambahkan angka acak (waktu saat ini) di akhir link
+            // Ini akan menipu WhatsApp agar selalu mengira ini adalah link yang 100% baru!
+            const waktuAcak = new Date().getTime();
+            const pemisah = url.includes('?') ? '&' : '?';
+            const urlBunglon = url + pemisah + 'refresh=' + waktuAcak;
             
             if(platform === 'wa') {
-                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                if (navigator.share) {
+                    navigator.share({
+                        title: judul,
+                        text: `Assalamu'alaikum.\n\nMari simak informasi terbaru dari SDIT Qurratu A'yun Al-Islami:\n\n*${judul}*`,
+                        url: urlBunglon
+                    }).catch((error) => console.log('Gagal membagikan', error));
+                } else {
+                    const text = `Assalamu'alaikum.\n\nMari simak informasi terbaru dari SDIT Qurratu A'yun Al-Islami:\n\n*${judul}*\n\nKlik link di bawah ini:\n${urlBunglon}`;
+                    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                }
             }
             if(platform === 'fb') {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlBunglon)}`, '_blank');
             }
         }
 
