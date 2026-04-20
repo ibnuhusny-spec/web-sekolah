@@ -276,9 +276,14 @@
         // FITUR SHARE (BAGIKAN) YANG DIPERCANTIK
         // ==========================================
         window.shareKe = function(platform) {
-            const url = window.location.href;
-            // Teks dirapikan menggunakan baris baru agar menyerupai broadcast profesional
-            const text = `Assalamu'alaikum.\n\nMari simak informasi terbaru dari SDIT Qurratu A'yun Al-Islami:\n\n*${articleTitle}*\n\nKlik link di bawah ini untuk membaca selengkapnya:\n${url}`;
+            // Ambil URL lengkap saat ini
+            const url = window.location.href; 
+            
+            // Ambil judul artikel dari halaman dengan lebih aman
+            let judul = document.title; 
+            
+            // ATURAN EMAS WA: URL harus di baris paling akhir, bersih tanpa embel-embel teks panjang
+            const text = `Assalamu'alaikum.\n\nMari simak informasi terbaru dari SDIT Qurratu A'yun Al-Islami:\n\n*${judul}*\n\nKlik link di bawah ini:\n${url}`;
             
             if(platform === 'wa') {
                 window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
