@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPDB Online Terpadu - SDIT Qurratu A'yun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        .animate-fade { animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .input-gaya { width: 100%; padding: 0.6rem 1rem; border-radius: 0.5rem; border: 1px solid #cbd5e1; background-color: #f8fafc; font-size: 0.875rem; transition: all 0.3s; }
+        .input-gaya:focus { border-color: #3b82f6; outline: none; background-color: #ffffff; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .label-gaya { display: block; font-size: 0.7rem; font-weight: 800; color: #475569; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .grup-form { background: white; padding: 1.5rem; border-radius: 1rem; border: 1px solid #e2e8f0; margin-bottom: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .judul-grup { font-size: 1.1rem; font-weight: 900; color: #1e40af; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem; text-transform: uppercase; font-style: italic; display: flex; align-items: center; gap: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col min-h-screen pb-20">
+
+    <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-[100] flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen md:pointer-events-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        
+        <div class="hidden md:block mt-24"></div>
+
+        <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="kelas.html" data-page="kelas" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="ppdb.html" data-page="ppdb" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pustaka.html" data-page="pustaka" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-book-open text-cyan-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
+
+        <div class="hidden md:block mb-24"></div>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let path = window.location.pathname;
+            let page = path.split("/").pop().replace(".html", "");
+            if(page === "" || page === "index") page = "index";
+            if(page === "baca") {
+                const urlParams = new URLSearchParams(window.location.search);
+                page = urlParams.get('type') || 'berita';
+            }
+            const activeColors = { "index": "bg-blue-600 border-blue-500", "profil": "bg-yellow-500 border-yellow-400", "pegawai": "bg-green-500 border-green-400", "kelas": "bg-purple-500 border-purple-400", "ppdb": "bg-emerald-500 border-emerald-400", "pustaka": "bg-cyan-600 border-cyan-500", "karya": "bg-orange-500 border-orange-400", "berita": "bg-red-600 border-red-500", "redaksi": "bg-indigo-600 border-indigo-500" };
+            let targetBtn = document.querySelector(`.nav-btn[data-page="${page}"]`);
+            if(targetBtn && activeColors[page]) {
+                targetBtn.classList.remove("bg-white/90");
+                let colorClasses = activeColors[page].split(" ");
+                targetBtn.classList.add(...colorClasses);
+                let icon = targetBtn.querySelector("i");
+                icon.className = icon.className.replace(/text-\w+-\d+/g, "text-white");
+            }
+        });
+    </script>
+    
+    <header class="bg-blue-700 text-white shadow-md p-6 md:pl-24 relative z-40">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+            <img src="logo.png" class="h-16 w-auto bg-white p-1 rounded-xl shadow-sm" onerror="this.style.display='none'">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-black uppercase tracking-tight italic drop-shadow-md">Formulir PPDB Online</h1>
+                <p class="text-blue-100 text-sm font-medium">Sesuai Standar Data Pokok Pendidikan (Dapodik)</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 md:p-8 md:ml-16 max-w-4xl mx-auto w-full relative z-50">
+        
+        <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-xl border border-blue-100 mb-8 flex flex-col md:flex-row gap-6 items-center md:items-start animate-fade">
+            <div class="w-20 h-20 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-4xl shrink-0 border-4 border-white shadow-md">
+                <i class="fas fa-headset"></i>
+            </div>
+            <div class="flex-1 text-center md:text-left">
+                <h3 class="text-2xl font-black text-blue-800 uppercase italic mb-2">Pusat Bantuan PPDB</h3>
+                <p class="text-sm text-gray-600 mb-6 leading-relaxed">Jika Ayah/Bunda mengalami kesulitan dalam mengisi formulir, silakan hubungi panitia melalui kontak di bawah ini, atau tinggalkan pertanyaan di ruang komentar.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <a href="#" id="link_wa_putra" target="_blank" class="flex items-center gap-4 bg-green-50 p-4 rounded-2xl border border-green-100 hover:bg-green-100 hover:shadow-md transition group">
+                        <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-xl group-hover:scale-110 transition shadow-sm"><i class="fab fa-whatsapp"></i></div>
+                        <div class="text-left">
+                            <p class="text-[10px] font-black text-green-600 uppercase tracking-widest">Panitia (Putra)</p>
+                            <p class="text-sm font-bold text-gray-800" id="nama_panitia_putra"><i class="fas fa-spinner fa-spin"></i> Memuat...</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#" id="link_wa_putri" target="_blank" class="flex items-center gap-4 bg-green-50 p-4 rounded-2xl border border-green-100 hover:bg-green-100 hover:shadow-md transition group">
+                        <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-xl group-hover:scale-110 transition shadow-sm"><i class="fab fa-whatsapp"></i></div>
+                        <div class="text-left">
+                            <p class="text-[10px] font-black text-green-600 uppercase tracking-widest">Panitia (Putri)</p>
+                            <p class="text-sm font-bold text-gray-800" id="nama_panitia_putri"><i class="fas fa-spinner fa-spin"></i> Memuat...</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="flex items-center justify-center md:justify-start gap-3 text-sm font-bold text-gray-600 bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                    <div class="w-8 h-8 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center"><i class="fas fa-envelope"></i></div>
+                    Surel: <a href="#" id="link_email" class="text-blue-600 hover:underline">Memuat...</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="layar_pesan" class="hidden bg-white rounded-3xl shadow-xl flex flex-col items-center justify-center p-12 text-center min-h-[400px]">
+            <div id="animasi_loading" class="hidden">
+                <i class="fas fa-circle-notch fa-spin text-6xl text-blue-500 mb-6"></i>
+                <h3 class="text-2xl font-black text-gray-800 mb-2">Sinkronisasi Data...</h3>
+                <p class="text-gray-500">Mengamankan data ananda ke server PPDB.</p>
+            </div>
+            <div id="animasi_sukses" class="hidden animate-fade">
+                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-check text-5xl text-green-500"></i></div>
+                <h3 class="text-3xl font-black text-gray-800 mb-2">Pendaftaran Berhasil!</h3>
+                <p class="text-gray-600 font-bold mb-2">No. Pendaftaran: <span id="cetak_no_daftar" class="text-blue-600 text-xl font-black"></span></p>
+                <p class="text-gray-500 mb-8 max-w-md mx-auto text-sm leading-relaxed">Harap simpan Nomor Pendaftaran tersebut. Panitia akan segera menghubungi nomor kontak yang didaftarkan.</p>
+                <button onclick="window.location.href='index.html'" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition">Selesai</button>
+            </div>
+        </div>
+
+        <form id="form_ppdb" class="animate-fade">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-xl mb-6 shadow-sm">
+                <p class="text-yellow-800 text-xs font-bold leading-relaxed"><i class="fas fa-exclamation-triangle mr-1"></i> Mohon isi data dengan huruf kapital (huruf besar) dan pastikan sesuai dengan dokumen resmi (KK & Akta Kelahiran).</p>
+            </div>
+
+            <div class="grup-form">
+                <h3 class="judul-grup"><i class="fas fa-id-card text-blue-500"></i> Data Pendaftaran</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="label-gaya">NIK Anak (16 Digit)</label><input type="number" id="f_nik" class="input-gaya" required></div>
+                    <div><label class="label-gaya">NISN (Jika Ada)</label><input type="number" id="f_nisn" class="input-gaya"></div>
+                    <div class="md:col-span-2 text-xs text-gray-400 italic">*Nomor Pendaftaran akan digenerate otomatis oleh sistem setelah formulir dikirim.</div>
+                </div>
+            </div>
+
+            <div class="grup-form">
+                <h3 class="judul-grup"><i class="fas fa-user-graduate text-blue-500"></i> Data Peserta Didik</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2"><label class="label-gaya">Nama Lengkap</label><input type="text" id="f_nama" class="input-gaya uppercase" required></div>
+                    <div><label class="label-gaya">Tempat Lahir</label><input type="text" id="f_tempat_lahir" class="input-gaya uppercase" required></div>
+                    <div><label class="label-gaya">Tanggal Lahir</label><input type="date" id="f_tgl_lahir" class="input-gaya text-gray-600" required></div>
+                    <div><label class="label-gaya">Jenis Kelamin</label>
+                        <select id="f_jk" class="input-gaya" required>
+                            <option value="">PILIH</option><option value="LAKI-LAKI">LAKI-LAKI</option><option value="PEREMPUAN">PEREMPUAN</option>
+                        </select>
+                    </div>
+                    <div><label class="label-gaya">Agama</label>
+                        <select id="f_agama" class="input-gaya" required><option value="ISLAM">ISLAM</option></select>
+                    </div>
+                    <div><label class="label-gaya">Kewarganegaraan</label>
+                        <select id="f_kewarganegaraan" class="input-gaya" required><option value="WNI">WNI (Warga Negara Indonesia)</option><option value="WNA">WNA</option></select>
+                    </div>
+                    <div><label class="label-gaya">Asal Sekolah (TK/RA/PAUD)</label><input type="text" id="f_asal_sekolah" class="input-gaya uppercase" required></div>
+                    
+                    <div class="md:col-span-2 mt-2 border-t pt-2"><p class="text-xs font-black text-gray-500 uppercase mb-2">Detail Alamat Tempat Tinggal</p></div>
+                    <div><label class="label-gaya">Jalan / Dusun</label><input type="text" id="f_dusun" class="input-gaya uppercase" required></div>
+                    <div><label class="label-gaya">RT / RW</label><input type="text" id="f_rt_rw" class="input-gaya" placeholder="Contoh: 001 / 002" required></div>
+                    <div><label class="label-gaya">Kelurahan / Desa</label><input type="text" id="f_kelurahan" class="input-gaya uppercase" required></div>
+                    <div><label class="label-gaya">Kecamatan</label><input type="text" id="f_kecamatan" class="input-gaya uppercase" required></div>
+                    <div><label class="label-gaya">Kabupaten / Kota</label><input type="text" id="f_kabupaten" class="input-gaya uppercase" value="MAROS" required></div>
+                    <div><label class="label-gaya">Kode Pos</label><input type="number" id="f_kodepos" class="input-gaya"></div>
+
+                    <div class="md:col-span-2 mt-2 border-t pt-2"><p class="text-xs font-black text-gray-500 uppercase mb-2">Legalitas & Dukungan</p></div>
+                    <div><label class="label-gaya">Moda Transportasi ke Sekolah</label>
+                        <select id="f_transportasi" class="input-gaya">
+                            <option value="JALAN KAKI">JALAN KAKI</option><option value="KENDARAAN PRIBADI">KENDARAAN PRIBADI</option><option value="ANGKUTAN UMUM/ANTAR JEMPUT">ANGKUTAN UMUM/ANTAR JEMPUT</option>
+                        </select>
+                    </div>
+                    <div><label class="label-gaya">No. Reg. Akta Kelahiran</label><input type="text" id="f_no_akta" class="input-gaya"></div>
+                    <div><label class="label-gaya">No. ASKES / KIS / BPJS</label><input type="text" id="f_no_bpjs" class="input-gaya"></div>
+                    <div><label class="label-gaya">No. KKS/KPS/PKH (Bila Ada)</label><input type="text" id="f_no_kks" class="input-gaya"></div>
+                    <div><label class="label-gaya">No. KITAS (Hanya WNA)</label><input type="text" id="f_no_kitas" class="input-gaya"></div>
+                </div>
+            </div>
+
+            <div class="grup-form">
+                <h3 class="judul-grup"><i class="fas fa-user-friends text-blue-500"></i> Data Orang Tua Kandung</h3>
+                
+                <div class="mb-6"><p class="text-sm font-black text-blue-600 uppercase mb-3 bg-blue-50 p-2 rounded">A. Data Ayah</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2"><label class="label-gaya">Nama Lengkap Ayah</label><input type="text" id="f_ayah_nama" class="input-gaya uppercase" required></div>
+                        <div><label class="label-gaya">Tahun Lahir</label><input type="number" id="f_ayah_tahun" class="input-gaya" placeholder="YYYY" required></div>
+                        <div><label class="label-gaya">Keadaan</label>
+                            <select id="f_ayah_keadaan" class="input-gaya"><option value="HIDUP">HIDUP</option><option value="MENINGGAL">SUDAH MENINGGAL</option></select>
+                        </div>
+                        <div><label class="label-gaya">Pendidikan Terakhir</label><input type="text" id="f_ayah_pendidikan" class="input-gaya uppercase" placeholder="Contoh: S1, SMA" required></div>
+                        <div><label class="label-gaya">Pekerjaan</label><input type="text" id="f_ayah_pekerjaan" class="input-gaya uppercase" required></div>
+                        <div><label class="label-gaya">Penghasilan / Bulan</label>
+                            <select id="f_ayah_penghasilan" class="input-gaya">
+                                <option value="< 1 JUTA">< 1 JUTA</option><option value="1 - 3 JUTA">1 - 3 JUTA</option><option value="3 - 5 JUTA">3 - 5 JUTA</option><option value="> 5 JUTA">> 5 JUTA</option><option value="TIDAK BERPENGHASILAN">TIDAK BERPENGHASILAN</option>
+                            </select>
+                        </div>
+                        <div><label class="label-gaya">No. Kontak / WA</label><input type="number" id="f_ayah_kontak" class="input-gaya" required></div>
+                        <div class="md:col-span-2"><label class="label-gaya">Alamat (Bila beda dengan anak)</label><input type="text" id="f_ayah_alamat" class="input-gaya uppercase"></div>
+                    </div>
+                </div>
+
+                <div><p class="text-sm font-black text-pink-600 uppercase mb-3 bg-pink-50 p-2 rounded">B. Data Ibu</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2"><label class="label-gaya">Nama Lengkap Ibu</label><input type="text" id="f_ibu_nama" class="input-gaya uppercase" required></div>
+                        <div><label class="label-gaya">Tahun Lahir</label><input type="number" id="f_ibu_tahun" class="input-gaya" placeholder="YYYY" required></div>
+                        <div><label class="label-gaya">Keadaan</label>
+                            <select id="f_ibu_keadaan" class="input-gaya"><option value="HIDUP">HIDUP</option><option value="MENINGGAL">SUDAH MENINGGAL</option></select>
+                        </div>
+                        <div><label class="label-gaya">Pendidikan Terakhir</label><input type="text" id="f_ibu_pendidikan" class="input-gaya uppercase" placeholder="Contoh: S1, SMA" required></div>
+                        <div><label class="label-gaya">Pekerjaan</label><input type="text" id="f_ibu_pekerjaan" class="input-gaya uppercase" required></div>
+                        <div><label class="label-gaya">Penghasilan / Bulan</label>
+                            <select id="f_ibu_penghasilan" class="input-gaya">
+                                <option value="< 1 JUTA">< 1 JUTA</option><option value="1 - 3 JUTA">1 - 3 JUTA</option><option value="3 - 5 JUTA">3 - 5 JUTA</option><option value="> 5 JUTA">> 5 JUTA</option><option value="TIDAK BERPENGHASILAN">TIDAK BERPENGHASILAN</option>
+                            </select>
+                        </div>
+                        <div><label class="label-gaya">No. Kontak / WA</label><input type="number" id="f_ibu_kontak" class="input-gaya" required></div>
+                        <div class="md:col-span-2"><label class="label-gaya">Alamat (Bila beda dengan anak)</label><input type="text" id="f_ibu_alamat" class="input-gaya uppercase"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grup-form bg-gray-50 border-dashed">
+                <h3 class="judul-grup text-gray-500"><i class="fas fa-user-shield"></i> Data Wali (Opsional)</h3>
+                <p class="text-xs text-gray-400 mb-4">Hanya diisi jika anak tinggal bersama wali (bukan orang tua kandung).</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2"><label class="label-gaya">Nama Wali (Sesuai KTP)</label><input type="text" id="f_wali_nama" class="input-gaya uppercase"></div>
+                    <div><label class="label-gaya">Tahun Lahir</label><input type="number" id="f_wali_tahun" class="input-gaya"></div>
+                    <div><label class="label-gaya">Pendidikan Terakhir</label><input type="text" id="f_wali_pendidikan" class="input-gaya uppercase"></div>
+                    <div><label class="label-gaya">Pekerjaan</label><input type="text" id="f_wali_pekerjaan" class="input-gaya uppercase"></div>
+                    <div><label class="label-gaya">Penghasilan</label>
+                        <select id="f_wali_penghasilan" class="input-gaya"><option value="">PILIH</option><option value="< 1 JUTA">< 1 JUTA</option><option value="1 - 3 JUTA">1 - 3 JUTA</option><option value="3 - 5 JUTA">3 - 5 JUTA</option><option value="> 5 JUTA">> 5 JUTA</option></select>
+                    </div>
+                    <div><label class="label-gaya">No. Kontak</label><input type="number" id="f_wali_kontak" class="input-gaya"></div>
+                    <div><label class="label-gaya">Kontak Alternatif</label><input type="number" id="f_wali_kontak_alt" class="input-gaya"></div>
+                    <div class="md:col-span-2"><label class="label-gaya">Alamat Wali</label><input type="text" id="f_wali_alamat" class="input-gaya uppercase"></div>
+                </div>
+            </div>
+
+            <div class="grup-form">
+                <h3 class="judul-grup"><i class="fas fa-ruler-combined text-blue-500"></i> Data Periodik Peserta Didik</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label class="label-gaya">Tinggi Badan (cm)</label><input type="number" id="f_per_tb" class="input-gaya" required></div>
+                    <div><label class="label-gaya">Berat Badan (kg)</label><input type="number" id="f_per_bb" class="input-gaya" required></div>
+                    <div><label class="label-gaya">Jarak ke Sekolah (km)</label><input type="number" id="f_per_jarak" class="input-gaya" required></div>
+                    <div><label class="label-gaya">Waktu Tempuh (Menit)</label><input type="number" id="f_per_waktu" class="input-gaya" required></div>
+                    <div><label class="label-gaya">Anak Ke-</label><input type="number" id="f_per_anak_ke" class="input-gaya" required></div>
+                    <div><label class="label-gaya">Jml Saudara Kandung</label><input type="number" id="f_per_saudara" class="input-gaya" required></div>
+                    <div><label class="label-gaya">Jml Anggota di Rumah</label><input type="number" id="f_per_anggota" class="input-gaya" placeholder="Termasuk anak" required></div>
+                </div>
+            </div>
+
+            <div class="grup-form bg-blue-50 border-blue-200">
+                <h3 class="judul-grup text-blue-800 border-blue-200"><i class="fas fa-file-alt"></i> Kelengkapan Persyaratan</h3>
+                <p class="text-xs text-gray-600 mb-4 font-bold">Dengan mencentang kotak di bawah ini, saya bersedia membawa berkas fisik berikut saat verifikasi/daftar ulang ke sekolah:</p>
+                <div class="space-y-3">
+                    <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-blue-100 transition"><input type="checkbox" required class="w-5 h-5 text-blue-600"><span class="text-sm font-bold text-gray-700">Pas foto warna ukuran 3x4 (2 lembar)</span></label>
+                    <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-blue-100 transition"><input type="checkbox" required class="w-5 h-5 text-blue-600"><span class="text-sm font-bold text-gray-700">Fotokopi Akta Kelahiran (1 lembar)</span></label>
+                    <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-blue-100 transition"><input type="checkbox" required class="w-5 h-5 text-blue-600"><span class="text-sm font-bold text-gray-700">Fotokopi Kartu Keluarga (1 lembar)</span></label>
+                    <label class="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-blue-100 transition"><input type="checkbox" class="w-5 h-5 text-blue-600"><span class="text-sm font-bold text-gray-700">Fotokopi KIS/PIP/KPS (1 lembar, <span class="italic text-gray-500">opsional jika ada</span>)</span></label>
+                </div>
+            </div>
+
+            <div class="pt-4 pb-10">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-black uppercase tracking-widest py-4 rounded-xl shadow-lg transform transition hover:-translate-y-1 flex items-center justify-center gap-3">
+                    <i class="fas fa-paper-plane"></i> Kirim Formulir Pendaftaran
+                </button>
+            </div>
+        </form>
+
+        <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-xl border border-gray-100 mt-4 mb-8">
+            <h3 class="text-2xl font-black text-gray-800 mb-2 flex items-center gap-2 uppercase italic">
+                <i class="fas fa-comments text-blue-500"></i> Ruang Tanya Jawab
+            </h3>
+            <p class="text-sm text-gray-600 mb-6">Tinggalkan pertanyaan seputar PPDB di bawah ini. Panitia akan membalas melalui kolom komentar.</p>
+
+            <div id="area_form_komentar" class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8">
+                
+                <div id="belum_login" class="text-center py-2">
+                    <p class="text-gray-500 mb-4 text-sm font-bold">Silakan masuk menggunakan akun Google untuk ikut bertanya.</p>
+                    <button onclick="loginGoogle()" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 px-6 py-2 rounded-full font-bold flex items-center justify-center mx-auto gap-3 shadow-sm transition">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5"> Masuk dengan Google
+                    </button>
+                </div>
+
+                <div id="sudah_login" class="hidden">
+                    <div class="flex items-center gap-3 mb-4 border-b border-gray-200 pb-4">
+                        <img id="user_foto" src="" class="w-10 h-10 rounded-full bg-gray-200 object-cover shadow-sm border border-gray-200">
+                        <div class="flex-1">
+                            <p id="user_nama" class="font-bold text-sm text-gray-800 uppercase"></p>
+                            <p id="user_email" class="text-[10px] text-gray-500 bg-gray-200 inline-block px-2 py-0.5 rounded-full mt-1"></p>
+                        </div>
+                        <button onclick="logoutGoogle()" class="text-xs text-red-500 hover:text-red-700 underline font-bold bg-red-50 px-3 py-1 rounded-lg">Keluar</button>
+                    </div>
+                    <textarea id="input_komentar" rows="3" placeholder="Ketik pertanyaan Anda di sini..." class="w-full bg-white border border-gray-300 rounded-xl p-4 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-none mb-3"></textarea>
+                    <button onclick="kirimKomentar()" id="btn_kirim" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition w-full md:w-auto flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Kirim Pertanyaan
+                    </button>
+                </div>
+            </div>
+
+            <div id="daftar_komentar" class="space-y-4">
+                <div class="text-center text-gray-400 italic text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat diskusi...</div>
+            </div>
+        </div>
+        
+    </main>
+
+    <footer class="bg-gray-950 text-gray-400 pt-10 pb-36 md:py-10 text-center relative z-40 w-full mt-auto">
+        <p class="text-lg font-bold uppercase tracking-widest italic text-white">SDIT Qurratu A'yun Al-Islami</p>
+        <p class="text-xs mt-2">Sistem Pendaftaran Peserta Didik Baru (PPDB) Online</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==========================================
+        // MENGAMBIL KONTAK PANITIA SECARA DINAMIS
+        // ==========================================
+        async function loadKontakPanitia() {
+            try {
+                // Mengambil data dari koleksi 'pengaturan', dokumen 'ppdb_kontak'
+                const docRef = doc(db, "pengaturan", "ppdb_kontak");
+                const snap = await getDoc(docRef);
+
+                if (snap.exists()) {
+                    const data = snap.data();
+                    
+                    // Update Panitia Putra
+                    document.getElementById('nama_panitia_putra').innerText = data.nama_putra;
+                    document.getElementById('link_wa_putra').href = `https://wa.me/${data.wa_putra}?text=Assalamu'alaikum%20panitia%20PPDB%20SDIT%20Qurratu%20A'yun...`;
+                    
+                    // Update Panitia Putri
+                    document.getElementById('nama_panitia_putri').innerText = data.nama_putri;
+                    document.getElementById('link_wa_putri').href = `https://wa.me/${data.wa_putri}?text=Assalamu'alaikum%20panitia%20PPDB%20SDIT%20Qurratu%20A'yun...`;
+                    
+                    // Update Email
+                    const elEmail = document.getElementById('link_email');
+                    elEmail.innerText = data.email;
+                    elEmail.href = `mailto:${data.email}`;
+                } else {
+                    // JIKA DATA DI FIREBASE BELUM DIBUAT OLEH ADMIN, GUNAKAN DATA SEMENTARA INI
+                    document.getElementById('nama_panitia_putra').innerText = "Ust. Radiant Fadli";
+                    document.getElementById('link_wa_putra').href = "https://wa.me/6281234567890";
+                    
+                    document.getElementById('nama_panitia_putri').innerText = "Ustzh. Ummu Qonitah";
+                    document.getElementById('link_wa_putri').href = "https://wa.me/6281234567891";
+                    
+                    document.getElementById('link_email').innerText = "ppdb@sdit-qurratuayun.sch.id";
+                    document.getElementById('link_email').href = "mailto:ppdb@sdit-qurratuayun.sch.id";
+                }
+            } catch(e) {
+                console.error("Gagal memuat kontak panitia", e);
+            }
+        }
+        loadKontakPanitia(); // Jalankan fungsinya
+
+        // ==========================================
+        // LOGIKA KOMENTAR / TANYA JAWAB
+        // ==========================================
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('belum_login').classList.add('hidden');
+                document.getElementById('sudah_login').classList.remove('hidden');
+                document.getElementById('user_nama').innerText = user.displayName;
+                document.getElementById('user_email').innerText = user.email;
+                document.getElementById('user_foto').src = user.photoURL || 'https://i.ibb.co/Xz9Gf4z/default.png';
+            } else {
+                currentUser = null;
+                document.getElementById('belum_login').classList.remove('hidden');
+                document.getElementById('sudah_login').classList.add('hidden');
+            }
+        });
+
+        window.loginGoogle = () => signInWithPopup(auth, provider).catch(e => alert('Gagal login: ' + e.message));
+        window.logoutGoogle = () => signOut(auth);
+
+        function amankanTeks(str) {
+            if (!str) return "";
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        window.kirimKomentar = async () => {
+            const teks = document.getElementById('input_komentar').value.trim();
+            if(!teks) return alert("Pertanyaan tidak boleh kosong!");
+            if(!currentUser) return alert("Silakan login dengan Google terlebih dahulu!");
+
+            const btn = document.getElementById('btn_kirim');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+            btn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "komentar"), {
+                    postId: 'ppdb', 
+                    nama: currentUser.displayName,
+                    email: currentUser.email,
+                    foto: currentUser.photoURL,
+                    teks: teks,
+                    tanggal: new Date().toISOString()
+                });
+                document.getElementById('input_komentar').value = ""; 
+                loadKomentar(); 
+            } catch(e) {
+                alert("Gagal mengirim pertanyaan: " + e.message);
+            } finally {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Pertanyaan';
+                btn.disabled = false;
+            }
+        };
+
+        async function loadKomentar() {
+            const q = query(collection(db, "komentar"), where("postId", "==", "ppdb"));
+            try {
+                const snap = await getDocs(q);
+                let koms = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                koms.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal)); 
+                
+                const box = document.getElementById('daftar_komentar');
+                if(koms.length === 0) {
+                    box.innerHTML = '<p class="text-center text-gray-500 italic text-sm py-6 bg-gray-50 rounded-2xl border border-gray-200 shadow-inner">Belum ada pertanyaan. Jadilah yang pertama bertanya!</p>';
+                    return;
+                }
+
+                box.innerHTML = koms.map(k => {
+                    const isAdmin = k.email === 'admin@sdit-qurratuayun.sch.id' || k.email.includes('husny'); 
+                    
+                    return `
+                    <div class="bg-white border ${isAdmin ? 'border-blue-200 bg-blue-50' : 'border-gray-200'} shadow-sm p-5 rounded-2xl flex gap-4 transition hover:shadow-md">
+                        <img src="${k.foto || 'https://i.ibb.co/Xz9Gf4z/default.png'}" class="w-10 h-10 rounded-full object-cover flex-shrink-0 border border-gray-200">
+                        <div class="flex-1">
+                            <div class="flex flex-col md:flex-row justify-between md:items-baseline mb-2 border-b border-gray-100 pb-2">
+                                <h4 class="font-black text-gray-800 text-sm uppercase flex items-center gap-2">
+                                    ${k.nama} ${isAdmin ? '<span class="bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded-full"><i class="fas fa-check-circle"></i> PANITIA</span>' : ''}
+                                </h4>
+                                <span class="text-[10px] text-gray-400 font-bold tracking-wider mt-1 md:mt-0">${new Date(k.tanggal).toLocaleDateString('id-ID')}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${amankanTeks(k.teks)}</p>
+                        </div>
+                    </div>
+                `}).join('');
+            } catch(e) {
+                console.error(e);
+                document.getElementById('daftar_komentar').innerHTML = '<p class="text-red-500 text-center text-sm">Gagal memuat diskusi.</p>';
+            }
+        }
+        loadKomentar();
+
+        // ==========================================
+        // LOGIKA KIRIM FORMULIR PPDB
+        // ==========================================
+        document.getElementById('form_ppdb').addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            
+            document.getElementById('form_ppdb').classList.add('hidden');
+            document.getElementById('layar_pesan').classList.remove('hidden');
+            document.getElementById('animasi_loading').classList.remove('hidden');
+
+            const tahun = new Date().getFullYear();
+            const acak = Math.random().toString(36).substring(2, 6).toUpperCase();
+            const noDaftar = `PPDB-${tahun}-${acak}`;
+
+            const val = (id) => document.getElementById(id).value.toUpperCase();
+            const valOri = (id) => document.getElementById(id).value; 
+
+            const dataPendaftar = {
+                no_pendaftaran: noDaftar,
+                tanggal_daftar: new Date().toISOString(),
+                status: "Menunggu Verifikasi",
+                
+                nik: valOri('f_nik'), nisn: valOri('f_nisn'),
+                nama_anak: val('f_nama'), tempat_lahir: val('f_tempat_lahir'),
+                tanggal_lahir: valOri('f_tgl_lahir'), jk: valOri('f_jk'), agama: valOri('f_agama'),
+                kewarganegaraan: valOri('f_kewarganegaraan'), asal_sekolah: val('f_asal_sekolah'),
+                
+                dusun: val('f_dusun'), rt_rw: valOri('f_rt_rw'), kelurahan: val('f_kelurahan'),
+                kecamatan: val('f_kecamatan'), kabupaten: val('f_kabupaten'), kodepos: valOri('f_kodepos'),
+                
+                transportasi: valOri('f_transportasi'), no_akta: valOri('f_no_akta'), 
+                no_bpjs: valOri('f_no_bpjs'), no_kks: valOri('f_no_kks'), no_kitas: valOri('f_no_kitas'),
+
+                ayah: { nama: val('f_ayah_nama'), tahun: valOri('f_ayah_tahun'), keadaan: valOri('f_ayah_keadaan'), pendidikan: val('f_ayah_pendidikan'), pekerjaan: val('f_ayah_pekerjaan'), penghasilan: valOri('f_ayah_penghasilan'), kontak: valOri('f_ayah_kontak'), alamat: val('f_ayah_alamat') },
+                ibu: { nama: val('f_ibu_nama'), tahun: valOri('f_ibu_tahun'), keadaan: valOri('f_ibu_keadaan'), pendidikan: val('f_ibu_pendidikan'), pekerjaan: val('f_ibu_pekerjaan'), penghasilan: valOri('f_ibu_penghasilan'), kontak: valOri('f_ibu_kontak'), alamat: val('f_ibu_alamat') },
+                
+                wali: { nama: val('f_wali_nama'), tahun: valOri('f_wali_tahun'), pendidikan: val('f_wali_pendidikan'), pekerjaan: val('f_wali_pekerjaan'), penghasilan: valOri('f_wali_penghasilan'), kontak: valOri('f_wali_kontak'), kontak_alt: valOri('f_wali_kontak_alt'), alamat: val('f_wali_alamat') },
+
+                periodik: { tb: valOri('f_per_tb'), bb: valOri('f_per_bb'), jarak: valOri('f_per_jarak'), waktu: valOri('f_per_waktu'), anak_ke: valOri('f_per_anak_ke'), saudara: valOri('f_per_saudara'), anggota: valOri('f_per_anggota') }
+            };
+
+            try {
+                await addDoc(collection(db, "ppdb"), dataPendaftar);
+                
+                document.getElementById('animasi_loading').classList.add('hidden');
+                document.getElementById('animasi_sukses').classList.remove('hidden');
+                document.getElementById('cetak_no_daftar').innerText = noDaftar; 
+                
+            } catch (error) {
+                console.error("Gagal menyimpan data:", error);
+                alert("Gagal mengirim formulir. Silakan coba lagi.");
+                document.getElementById('layar_pesan').classList.add('hidden');
+                document.getElementById('animasi_loading').classList.add('hidden');
+                document.getElementById('form_ppdb').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

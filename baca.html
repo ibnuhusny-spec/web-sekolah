@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baca Artikel - SDIT Qurratu A'yun</title>
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Portal Informasi SDIT Qurratu A'yun">
+    <meta property="og:description" content="Simak informasi, berita, dan karya terbaru dari SDIT Qurratu A'yun Al-Islami Maros.">
+    <meta property="og:url" content="https://sdit-qurratu-ayun-maros.vercel.app/baca.html">
+    <meta property="og:image" content="https://sdit-qurratu-ayun-maros.vercel.app/logo.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <style>
+        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        
+        .ql-editor { padding: 0 !important; font-family: inherit !important; font-size: 1rem !important; line-height: 1.8 !important; color: #334155; }
+        .ql-editor h1, .ql-editor h2, .ql-editor h3 { color: #1e293b; font-weight: 900; margin-top: 1.5em; margin-bottom: 0.5em; }
+        .ql-editor img { border-radius: 1rem; margin: 1.5rem 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen pb-20">
+
+    <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-[100] flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen md:pointer-events-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        
+        <div class="hidden md:block mt-24"></div>
+
+        <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="kelas.html" data-page="kelas" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="ppdb.html" data-page="ppdb" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pustaka.html" data-page="pustaka" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-book-open text-cyan-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
+
+        <div class="hidden md:block mb-24"></div>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let path = window.location.pathname;
+            let page = path.split("/").pop().replace(".html", "");
+            if(page === "" || page === "index") page = "index";
+            if(page === "baca") {
+                const urlParams = new URLSearchParams(window.location.search);
+                page = urlParams.get('type') || 'berita';
+            }
+            const activeColors = { "index": "bg-blue-600 border-blue-500", "profil": "bg-yellow-500 border-yellow-400", "pegawai": "bg-green-500 border-green-400", "kelas": "bg-purple-500 border-purple-400", "ppdb": "bg-emerald-500 border-emerald-400", "pustaka": "bg-cyan-600 border-cyan-500", "karya": "bg-orange-500 border-orange-400", "berita": "bg-red-600 border-red-500", "redaksi": "bg-indigo-600 border-indigo-500" };
+            let targetBtn = document.querySelector(`.nav-btn[data-page="${page}"]`);
+            if(targetBtn && activeColors[page]) {
+                targetBtn.classList.remove("bg-white/90");
+                let colorClasses = activeColors[page].split(" ");
+                targetBtn.classList.add(...colorClasses);
+                let icon = targetBtn.querySelector("i");
+                icon.className = icon.className.replace(/text-\w+-\d+/g, "text-white");
+            }
+        });
+    </script>
+    
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex items-center justify-between sticky top-0 z-[60]">
+        <button onclick="goBack()" class="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold bg-gray-100 hover:bg-blue-50 px-4 py-2 rounded-full transition shadow-sm text-sm">
+            <i class="fas fa-arrow-left"></i> <span class="hidden sm:inline">Kembali</span>
+        </button>
+        <div class="flex items-center gap-3">
+            <h1 class="text-lg md:text-xl font-black text-blue-800 uppercase tracking-tight hidden sm:block">SDIT Qurratu A'yun</h1>
+            <img src="logo.png" class="h-10 w-auto" onerror="this.style.display='none'">
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 md:p-8 md:ml-16 max-w-4xl mx-auto w-full mt-4">
+        
+        <article id="area_artikel" class="bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100 animate-fade">
+            <div class="p-10 text-center text-gray-400 italic" id="loading_artikel">
+                <i class="fas fa-circle-notch fa-spin text-4xl text-blue-500 mb-4"></i>
+                <p>Memuat artikel...</p>
+            </div>
+            
+            <div id="konten_artikel" class="hidden">
+                <div id="cover_artikel" class="w-full relative hidden mb-8 rounded-[2rem] overflow-hidden shadow-sm border border-gray-100">
+                    <img id="img_cover" src="" class="w-full h-auto object-contain bg-gray-100">
+                    <div class="absolute top-4 left-4">
+                        <span id="badge_kategori_img" class="bg-blue-600 text-white text-[10px] font-black px-4 py-2 rounded-full shadow-lg uppercase tracking-widest">KATEGORI</span>
+                    </div>
+                </div>
+
+                <div class="p-6 md:p-10">
+                    <span id="badge_kategori_noimg" class="bg-blue-100 text-blue-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest mb-4 hidden w-max">KATEGORI</span>
+                    
+                    <h1 id="judul_artikel" class="text-3xl md:text-5xl font-black text-slate-800 mb-6 leading-tight uppercase italic drop-shadow-sm">Judul Artikel</h1>
+                    
+                    <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-gray-500 uppercase tracking-widest mb-10 pb-6 border-b-2 border-gray-100">
+                        <span id="meta_tanggal"><i class="fas fa-calendar-alt text-blue-400 mr-1"></i> -</span>
+                        <span id="meta_penulis" class="hidden"><i class="fas fa-user-edit text-orange-400 mr-1"></i> -</span>
+                        <span><i class="fas fa-eye text-green-400 mr-1"></i> Dibaca <span id="view_count"><i class="fas fa-spinner fa-spin"></i></span> kali</span>
+                    </div>
+
+                    <div class="ql-snow">
+                        <div id="isi_artikel" class="ql-editor text-gray-700"></div>
+                    </div>
+
+                    <div class="mt-12 pt-6 border-t-2 border-dashed border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fas fa-share-alt text-blue-500"></i> Bagikan tulisan ini:
+                        </p>
+                        <div class="flex items-center gap-2">
+                            <button onclick="shareKe('wa')" title="Bagikan ke WhatsApp" class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:-translate-y-1 hover:bg-green-600 transition shadow-lg"><i class="fab fa-whatsapp text-lg"></i></button>
+                            <button onclick="shareKe('fb')" title="Bagikan ke Facebook" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:-translate-y-1 hover:bg-blue-700 transition shadow-lg"><i class="fab fa-facebook-f text-lg"></i></button>
+                            <button onclick="shareKe('tg')" title="Bagikan ke Telegram" class="w-10 h-10 rounded-full bg-sky-500 text-white flex items-center justify-center hover:-translate-y-1 hover:bg-sky-600 transition shadow-lg"><i class="fab fa-telegram-plane text-lg"></i></button>
+                            <button onclick="shareKe('tw')" title="Bagikan ke Twitter / X" class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:-translate-y-1 hover:bg-slate-800 transition shadow-lg"><i class="fab fa-x-twitter text-lg"></i></button>
+                            <button onclick="salinLink()" title="Salin Link Artikel" class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center hover:-translate-y-1 hover:bg-gray-800 transition shadow-lg"><i class="fas fa-link text-lg"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-xl border border-gray-100 mt-8 mb-10">
+            <h3 class="text-2xl font-black text-gray-800 mb-2 flex items-center gap-2 uppercase italic">
+                <i class="fas fa-comments text-blue-500"></i> Ruang Diskusi
+            </h3>
+            <p class="text-sm text-gray-600 mb-8 border-b border-gray-100 pb-4">Tinggalkan komentar atau balasan apresiasi untuk tulisan ini.</p>
+
+            <div id="area_form_komentar" class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8">
+                <div id="belum_login" class="text-center py-2">
+                    <p class="text-gray-500 mb-4 text-sm font-bold">Silakan masuk menggunakan akun Google untuk ikut berkomentar.</p>
+                    <button onclick="loginGoogle()" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 px-6 py-2 rounded-full font-bold flex items-center justify-center mx-auto gap-3 shadow-sm transition">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5"> Masuk dengan Google
+                    </button>
+                </div>
+
+                <div id="sudah_login" class="hidden">
+                    <div class="flex items-center gap-3 mb-4 border-b border-gray-200 pb-4">
+                        <img id="user_foto" src="" class="w-10 h-10 rounded-full bg-gray-200 object-cover shadow-sm border border-gray-200">
+                        <div class="flex-1">
+                            <p id="user_nama" class="font-bold text-sm text-gray-800 uppercase"></p>
+                            <p id="user_email" class="text-[10px] text-gray-500 bg-gray-200 inline-block px-2 py-0.5 rounded-full mt-1"></p>
+                        </div>
+                        <button onclick="logoutGoogle()" class="text-xs text-red-500 hover:text-red-700 underline font-bold bg-red-50 px-3 py-1 rounded-lg">Keluar</button>
+                    </div>
+
+                    <!-- BANNER MEMBALAS PESAN -->
+                    <div id="reply_banner" class="hidden bg-blue-100 border-l-4 border-blue-600 p-3 rounded-r-xl mb-3 flex items-center justify-between animate-fade">
+                        <div class="flex items-center gap-2 text-xs font-bold text-blue-900">
+                            <i class="fas fa-reply text-blue-600"></i>
+                            <span>Membalas pesan <strong id="reply_target_nama">@Nama</strong></span>
+                        </div>
+                        <button onclick="batalBalasKomentar()" class="text-xs text-red-500 hover:text-red-700 font-bold bg-white px-2 py-0.5 rounded shadow-sm">Batal</button>
+                    </div>
+
+                    <textarea id="input_komentar" rows="3" placeholder="Tulis tanggapan Anda yang membangun..." class="w-full bg-white border border-gray-300 rounded-xl p-4 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-none mb-3"></textarea>
+                    <button onclick="kirimKomentar()" id="btn_kirim" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md transition w-full md:w-auto flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Kirim Komentar
+                    </button>
+                </div>
+            </div>
+
+            <div id="daftar_komentar" class="space-y-4">
+                <div class="text-center text-gray-400 italic text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat diskusi...</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- TOAST NOTIFIKASI MELAYANG -->
+    <div id="toast_notif" class="fixed top-6 right-6 z-[999] bg-slate-900 text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-[-100px] opacity-0 pointer-events-none border border-slate-700">
+        <i class="fas fa-check-circle text-green-400 text-xl" id="toast_icon"></i>
+        <span id="toast_msg" class="text-sm font-bold"></span>
+    </div>
+
+    <footer class="bg-gray-950 text-gray-400 pt-10 pb-36 md:py-10 text-center relative z-40 w-full mt-auto">
+        <p class="text-lg font-bold uppercase tracking-widest italic text-white">SDIT Qurratu A'yun Al-Islami</p>
+    </footer>
+
+    <a href="https://wa.me/" id="floating_wa" target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-[100] group hidden md:flex">
+        <i class="fab fa-whatsapp"></i>
+        <span class="absolute right-16 bg-white text-gray-800 text-xs font-bold px-3 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-green-100">Hubungi Admin</span>
+    </a>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const docId = urlParams.get('id');
+        const docType = urlParams.get('type') || 'berita'; 
+        let articleTitle = "Artikel SDIT Qurratu A'yun";
+
+        window.goBack = function() {
+            if (document.referrer.includes(window.location.hostname)) { window.history.back(); } 
+            else { window.location.href = docType === 'karya' ? 'karya.html' : 'berita.html'; }
+        };
+
+        function formatTanggal(iso) { 
+            try { 
+                const d = new Date(iso); if (isNaN(d.getTime())) return iso;
+                const bln = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                return `${d.getDate()} ${bln[d.getMonth()]} ${d.getFullYear()}`;
+            } catch{ return iso; } 
+        }
+
+        async function loadArtikel() {
+            if(!docId) { document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Artikel tidak ditemukan.</p>"; return; }
+
+            try {
+                const docRef = doc(db, docType, docId);
+                const docSnap = await getDoc(docRef);
+
+                const redaksiSnap = await getDoc(doc(db, "profil", "redaksi"));
+                if(redaksiSnap.exists() && redaksiSnap.data().whatsapp) {
+                    let waRedaksi = redaksiSnap.data().whatsapp;
+                    if(waRedaksi.startsWith('0')) waRedaksi = '62' + waRedaksi.substring(1);
+                    document.getElementById('floating_wa').href = `https://wa.me/${waRedaksi}?text=Assalamu'alaikum%20Admin...`;
+                }
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    articleTitle = data.judul;
+                    document.title = data.judul + " - SDIT Qurratu A'yun";
+
+                    document.getElementById('loading_artikel').classList.add('hidden');
+                    document.getElementById('konten_artikel').classList.remove('hidden');
+
+                    document.getElementById('judul_artikel').innerText = data.judul;
+                    document.getElementById('meta_tanggal').innerHTML = `<i class="fas fa-calendar-alt text-blue-400 mr-1"></i> ${formatTanggal(data.tanggal)}`;
+                    document.getElementById('isi_artikel').innerHTML = data.isi || data.deskripsi || "Tidak ada konten.";
+
+                    const kat = data.kategori || (docType === 'karya' ? 'KARYA GURU' : 'BERITA');
+                    if (docType === 'karya' && data.penulis) {
+                        document.getElementById('meta_penulis').classList.remove('hidden');
+                        document.getElementById('meta_penulis').innerHTML = `<i class="fas fa-user-edit text-orange-400 mr-1"></i> ${data.penulis}`;
+                    }
+
+                    const isNoImg = !data.gambar || data.gambar === "-" || data.gambar.includes("default.png");
+                    if (!isNoImg) {
+                        document.getElementById('cover_artikel').classList.remove('hidden');
+                        document.getElementById('img_cover').src = data.gambar;
+                        document.getElementById('badge_kategori_img').innerText = kat;
+                        if(docType === 'karya') document.getElementById('badge_kategori_img').classList.replace('bg-blue-600', 'bg-orange-500');
+                    } else {
+                        document.getElementById('badge_kategori_noimg').classList.remove('hidden');
+                        document.getElementById('badge_kategori_noimg').innerText = kat;
+                        if(docType === 'karya') document.getElementById('badge_kategori_noimg').classList.replace('bg-blue-100', 'bg-orange-100');
+                        if(docType === 'karya') document.getElementById('badge_kategori_noimg').classList.replace('text-blue-600', 'text-orange-600');
+                    }
+
+                    let currentViews = data.views || 0;
+                    const viewKey = `viewed_${docType}_${docId}`;
+                    
+                    if(!localStorage.getItem(viewKey)) {
+                        try {
+                            await updateDoc(docRef, { views: increment(1) });
+                            localStorage.setItem(viewKey, 'true');
+                            currentViews++;
+                        } catch(e) {
+                            console.log("Gagal menambah view", e);
+                        }
+                    }
+                    
+                    document.getElementById('view_count').innerText = currentViews;
+
+                    loadKomentar(); 
+                } else { document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Artikel telah dihapus atau tidak tersedia.</p>"; }
+            } catch(e) {
+                console.error(e);
+                document.getElementById('loading_artikel').innerHTML = "<i class='fas fa-exclamation-triangle text-red-500 text-4xl mb-4'></i><p>Gagal memuat artikel dari server.</p>";
+            }
+        }
+        loadArtikel();
+
+        // ==========================================
+        // NOTIFIKASI TOAST & FITUR MEMBAGIKAN BERITA
+        // ==========================================
+        window.tampilkanToast = function(pesan, tipe = 'sukses') {
+            const toast = document.getElementById('toast_notif');
+            const msg = document.getElementById('toast_msg');
+            const icon = document.getElementById('toast_icon');
+            if(!toast) return;
+            
+            msg.innerText = pesan;
+            if(tipe === 'sukses') {
+                icon.className = 'fas fa-check-circle text-green-400 text-xl';
+            } else {
+                icon.className = 'fas fa-exclamation-circle text-yellow-400 text-xl';
+            }
+            
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        };
+
+        window.salinLink = function() {
+            const url = window.location.href;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    tampilkanToast("Link artikel berhasil disalin ke clipboard!");
+                }).catch(() => {
+                    salinManual(url);
+                });
+            } else {
+                salinManual(url);
+            }
+        };
+
+        function salinManual(text) {
+            const dummy = document.createElement("input");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            tampilkanToast("Link artikel berhasil disalin!");
+        }
+
+        window.shareKe = function(platform) {
+            let url = window.location.href;
+            let judul = articleTitle || document.title;
+            
+            if(platform === 'wa') {
+                if (navigator.share && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    navigator.share({
+                        title: judul,
+                        text: `Assalamu'alaikum.\n\nMari simak informasi terbaru dari SDIT Qurratu A'yun Al-Islami:\n\n*${judul}*`,
+                        url: url
+                    }).catch((err) => console.log(err));
+                } else {
+                    const text = `Assalamu'alaikum.\n\nMari simak informasi terbaru dari SDIT Qurratu A'yun Al-Islami:\n\n*${judul}*\n\nKlik link berikut:\n${url}`;
+                    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                }
+            } else if(platform === 'fb') {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+            } else if(platform === 'tg') {
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(judul)}`, '_blank');
+            } else if(platform === 'tw') {
+                window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(judul)}`, '_blank');
+            }
+        };
+
+        // ==========================================
+        // LOGIKA KOMENTAR BERSARANG (THREADED REPLIES)
+        // ==========================================
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+        let currentUser = null;
+        let activeReplyId = null;
+        let activeReplyNama = "";
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('belum_login').classList.add('hidden');
+                document.getElementById('sudah_login').classList.remove('hidden');
+                document.getElementById('user_nama').innerText = user.displayName;
+                document.getElementById('user_email').innerText = user.email;
+                document.getElementById('user_foto').src = user.photoURL || 'https://i.ibb.co/Xz9Gf4z/default.png';
+            } else {
+                currentUser = null;
+                document.getElementById('belum_login').classList.remove('hidden');
+                document.getElementById('sudah_login').classList.add('hidden');
+            }
+        });
+
+        window.loginGoogle = () => signInWithPopup(auth, provider).catch(e => alert('Gagal login: ' + e.message));
+        window.logoutGoogle = () => signOut(auth);
+
+        function amankanTeks(str) {
+            if (!str) return "";
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        window.setBalasKomentar = function(id, nama) {
+            if(!currentUser) {
+                alert("Silakan login dengan Google terlebih dahulu untuk membalas komentar.");
+                document.getElementById('area_form_komentar').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            activeReplyId = id;
+            activeReplyNama = nama;
+            document.getElementById('reply_target_nama').innerText = "@" + nama;
+            document.getElementById('reply_banner').classList.remove('hidden');
+            document.getElementById('input_komentar').placeholder = `Tulis balasan Anda untuk ${nama}...`;
+            document.getElementById('area_form_komentar').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('input_komentar').focus();
+        };
+
+        window.batalBalasKomentar = function() {
+            activeReplyId = null;
+            activeReplyNama = "";
+            document.getElementById('reply_banner').classList.add('hidden');
+            document.getElementById('input_komentar').placeholder = "Tulis tanggapan Anda yang membangun...";
+        };
+
+        window.kirimKomentar = async () => {
+            if(!docId) return;
+            const teks = document.getElementById('input_komentar').value.trim();
+            if(!teks) return alert("Komentar tidak boleh kosong!");
+            if(!currentUser) return alert("Silakan login dengan Google terlebih dahulu!");
+
+            const btn = document.getElementById('btn_kirim');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...'; btn.disabled = true;
+
+            try {
+                const isUserAdmin = currentUser.email === 'ibnuhusny@gmail.com' || currentUser.email === 'admin@sdit-qurratuayun.sch.id';
+                await addDoc(collection(db, "komentar"), {
+                    postId: docId, 
+                    nama: currentUser.displayName,
+                    email: currentUser.email,
+                    foto: currentUser.photoURL,
+                    teks: teks,
+                    tanggal: new Date().toISOString(),
+                    parentId: activeReplyId || null,
+                    replyToNama: activeReplyNama || null,
+                    isAdmin: isUserAdmin
+                });
+                document.getElementById('input_komentar').value = ""; 
+                batalBalasKomentar();
+                tampilkanToast("Komentar Anda telah berhasil terkirim!");
+                loadKomentar(); 
+            } catch(e) { alert("Gagal mengirim komentar: " + e.message); } 
+            finally { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Komentar'; btn.disabled = false; }
+        };
+
+        async function loadKomentar() {
+            if(!docId) return;
+            const q = query(collection(db, "komentar"), where("postId", "==", docId));
+            try {
+                const snap = await getDocs(q);
+                let koms = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                
+                const box = document.getElementById('daftar_komentar');
+                if(koms.length === 0) {
+                    box.innerHTML = '<p class="text-center text-gray-500 italic text-sm py-6 bg-gray-50 rounded-2xl border border-gray-200 shadow-inner">Belum ada komentar. Jadilah yang pertama menanggapi tulisan ini!</p>';
+                    return;
+                }
+
+                // Pisahkan komentar utama (parent) dan balasan (replies)
+                const mainComments = koms.filter(k => !k.parentId);
+                const replyComments = koms.filter(k => k.parentId);
+
+                mainComments.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+                
+                const repliesMap = {};
+                replyComments.forEach(r => {
+                    if (!repliesMap[r.parentId]) repliesMap[r.parentId] = [];
+                    repliesMap[r.parentId].push(r);
+                });
+
+                Object.keys(repliesMap).forEach(pId => {
+                    repliesMap[pId].sort((a,b) => new Date(a.tanggal) - new Date(b.tanggal));
+                });
+
+                function renderKartuKomentar(k, isBalasan = false) {
+                    const isAdmin = k.isAdmin || k.email === 'admin@sdit-qurratuayun.sch.id' || (k.email && k.email.includes('husny'));
+                    const escNama = amankanTeks(k.nama).replace(/'/g, "\\'");
+                    
+                    return `
+                    <div class="bg-white border ${isAdmin ? 'border-blue-300 bg-blue-50/70' : 'border-gray-200'} shadow-sm p-4 md:p-5 rounded-2xl flex gap-3 md:gap-4 transition hover:shadow-md ${isBalasan ? 'border-l-4 border-l-blue-500' : ''}">
+                        <img src="${k.foto || 'https://i.ibb.co/Xz9Gf4z/default.png'}" class="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover flex-shrink-0 border border-gray-200">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-1.5 border-b border-gray-100 pb-2">
+                                <h4 class="font-black text-gray-800 text-xs md:text-sm uppercase flex items-center gap-1.5 flex-wrap">
+                                    <span>${amankanTeks(k.nama)}</span>
+                                    ${isAdmin ? '<span class="bg-blue-600 text-white text-[9px] px-2 py-0.5 rounded-full font-black"><i class="fas fa-check-circle"></i> ADMIN</span>' : ''}
+                                </h4>
+                                <span class="text-[10px] text-gray-400 font-bold tracking-wider mt-1 sm:mt-0">${new Date(k.tanggal).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})}</span>
+                            </div>
+
+                            ${k.replyToNama ? `<p class="text-[11px] font-bold text-blue-600 mb-1.5 bg-blue-100/70 inline-block px-2.5 py-0.5 rounded-full"><i class="fas fa-reply mr-1"></i> Membalas @${amankanTeks(k.replyToNama)}</p>` : ''}
+
+                            <p class="text-xs md:text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${amankanTeks(k.teks)}</p>
+
+                            <div class="mt-3 flex items-center gap-4 pt-1">
+                                <button onclick="setBalasKomentar('${k.id}', '${escNama}')" class="text-xs text-blue-600 font-bold hover:text-blue-800 transition flex items-center gap-1">
+                                    <i class="fas fa-reply text-xs"></i> Balas
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+
+                box.innerHTML = mainComments.map(m => {
+                    const subReplies = repliesMap[m.id] || [];
+                    const htmlMain = renderKartuKomentar(m, false);
+                    let htmlSub = "";
+                    if (subReplies.length > 0) {
+                        htmlSub = `
+                        <div class="ml-4 md:ml-10 mt-3 space-y-3 pl-2 border-l-2 border-blue-200">
+                            ${subReplies.map(sub => renderKartuKomentar(sub, true)).join('')}
+                        </div>`;
+                    }
+                    return `<div class="mb-4">${htmlMain}${htmlSub}</div>`;
+                }).join('');
+
+            } catch(e) {
+                console.error(e);
+                document.getElementById('daftar_komentar').innerHTML = '<p class="text-red-500 text-center text-sm py-4">Gagal memuat diskusi.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

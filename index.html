@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - SDIT Qurratu A'yun Al-Islami</title>
+
+    <meta name="google-site-verification" content="BtWc-bs3qDZxiVEJQblcn6SKzxzG5NpzmYUBJb_QJ2w" />
+    <meta name="description" content="Website Resmi SDIT Qurratu A'yun Al-Islami Maros. Mewujudkan generasi yang cerdas, bertauhid, dan berakhlak mulia. Informasi pendaftaran, berita sekolah, dan profil guru.">
+    <meta name="keywords" content="SDIT Qurratu A'yun, SDIT Qurratu Ayun Al-Islami, SD Islam Terpadu Maros, Sekolah Dasar Maros, SDIT Maros, Pendidikan Islam Maros">
+    <meta name="author" content="Tim Redaksi SDIT Qurratu A'yun">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="SDIT Qurratu A'yun Al-Islami">
+    <meta property="og:description" content="Portal informasi pendidikan, berita sekolah, dan karya guru SDIT Qurratu A'yun Al-Islami.">
+    <meta property="og:image" content="https://i.ibb.co/Xz9Gf4z/default.png">
+    <meta property="og:url" content="https://sdit-qurratu-ayun.vercel.app">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen overflow-x-hidden">
+
+    <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-[100] flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen md:pointer-events-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        
+        <div class="hidden md:block mt-24"></div>
+
+        <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="kelas.html" data-page="kelas" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="ppdb.html" data-page="ppdb" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pustaka.html" data-page="pustaka" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-book-open text-cyan-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
+
+        <div class="hidden md:block mb-24"></div>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let path = window.location.pathname;
+            let page = path.split("/").pop().replace(".html", "");
+            if(page === "" || page === "index") page = "index";
+            if(page === "baca") {
+                const urlParams = new URLSearchParams(window.location.search);
+                page = urlParams.get('type') || 'berita';
+            }
+            const activeColors = { "index": "bg-blue-600 border-blue-500", "profil": "bg-yellow-500 border-yellow-400", "pegawai": "bg-green-500 border-green-400", "kelas": "bg-purple-500 border-purple-400", "ppdb": "bg-emerald-500 border-emerald-400", "pustaka": "bg-cyan-600 border-cyan-500", "karya": "bg-orange-500 border-orange-400", "berita": "bg-red-600 border-red-500", "redaksi": "bg-indigo-600 border-indigo-500" };
+            let targetBtn = document.querySelector(`.nav-btn[data-page="${page}"]`);
+            if(targetBtn && activeColors[page]) {
+                targetBtn.classList.remove("bg-white/90");
+                let colorClasses = activeColors[page].split(" ");
+                targetBtn.classList.add(...colorClasses);
+                let icon = targetBtn.querySelector("i");
+                icon.className = icon.className.replace(/text-\w+-\d+/g, "text-white");
+            }
+        });
+    </script>
+   
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center text-center">
+        <div class="flex items-center gap-4">
+            <img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'">
+            <h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
+        </div>
+    </header>
+
+    <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent">
+            <span class="mx-4 font-bold text-blue-900 italic">Selamat datang di Portal Informasi SDIT Qurratu A'yun Al-Islami Maros... Memuat kabar terbaru...</span>
+        </div>
+    </div>
+
+    <main class="flex-1 flex flex-col items-center justify-center p-6 md:p-10 md:ml-16 bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white min-h-[80vh] relative overflow-hidden text-center">
+        
+        <div class="absolute inset-0 w-full h-full z-0">
+            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop" 
+                 class="w-full h-full object-cover opacity-15 mix-blend-overlay pointer-events-none">
+        </div>
+
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none z-0">
+            <i class="fas fa-book-open absolute top-10 left-10 text-6xl md:text-9xl text-blue-300 transform -rotate-12 blur-sm"></i>
+            <i class="fas fa-graduation-cap absolute bottom-10 right-10 text-6xl md:text-9xl text-yellow-300 transform rotate-12 blur-sm"></i>
+        </div>
+
+        <div class="relative z-10 max-w-4xl animate-fade">
+            <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 drop-shadow-lg uppercase italic">
+                Cerdas, Bertauhid,<br>dan Berakhlak Mulia
+            </h2>
+            <p class="text-lg md:text-xl text-blue-50 mb-10 leading-relaxed font-medium drop-shadow-md">
+                Selamat datang di portal informasi resmi SDIT Qurratu A'yun Al-Islami. Wadah digital untuk memantau perkembangan sekolah, karya guru, dan informasi pendidikan terpadu.
+            </p>
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center flex-wrap">
+                <a href="ppdb.html" class="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-black py-4 px-8 rounded-full shadow-lg shadow-green-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-green-400 animate-pulse hover:animate-none w-full md:w-auto">
+                    <i class="fas fa-user-graduate text-xl"></i> PENDAFTARAN PPDB
+                </a>
+                <a href="profil.html" class="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-black py-4 px-8 rounded-full shadow-lg shadow-yellow-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 w-full md:w-auto">
+                    <i class="fas fa-flag"></i> PROFIL SEKOLAH
+                </a>
+                <a href="berita.html" id="btnBeritaTerbaru" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-full shadow-lg shadow-blue-600/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-blue-400 w-full md:w-auto">
+                    <i class="fas fa-spinner fa-spin mr-1" id="iconLoadingBerita"></i> KABAR TERBARU
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-950 text-gray-400 pt-12 pb-28 md:pb-12 relative z-40 w-full border-t-[10px] border-slate-900">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10 text-center md:text-left">
+                <div class="md:col-span-1 flex flex-col items-center md:items-start">
+                    <img src="logo.png" class="h-16 w-auto mb-4 bg-white/10 p-2 rounded-xl" onerror="this.style.display='none'">
+                    <p class="text-xl font-black text-white mb-2 uppercase tracking-widest italic">SDIT Qurratu A'yun</p>
+                    <p class="text-sm leading-relaxed">Mendidik generasi Islam yang tangguh, cerdas, dan berakhlak mulia di Kabupaten Maros.</p>
+                </div>
+                <div class="flex flex-col items-center md:items-start">
+                    <h4 class="text-white font-black uppercase tracking-widest mb-4 border-b-2 border-blue-600 pb-2 inline-block">Tautan Cepat</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="ppdb.html" class="hover:text-emerald-400 transition font-bold text-emerald-500"><i class="fas fa-check-circle mr-2"></i> Pendaftaran Siswa Baru</a></li>
+                        <li><a href="profil.html" class="hover:text-blue-400 transition"><i class="fas fa-angle-right mr-2 text-blue-600"></i> Profil Sekolah</a></li>
+                        <li><a href="pegawai.html" class="hover:text-blue-400 transition"><i class="fas fa-angle-right mr-2 text-blue-600"></i> Direktori Guru</a></li>
+                        <li><a href="berita.html" class="hover:text-blue-400 transition"><i class="fas fa-angle-right mr-2 text-blue-600"></i> Kabar & Pengumuman</a></li>
+                    </ul>
+                </div>
+                <div class="flex flex-col items-center md:items-start">
+                    <h4 class="text-white font-black uppercase tracking-widest mb-4 border-b-2 border-yellow-500 pb-2 inline-block">Ikuti Kami</h4>
+                    <p class="text-xs mb-4">Dapatkan informasi terbaru melalui media sosial resmi kami.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-blue-600 hover:-translate-y-1 transition transform shadow-lg" title="Facebook"><i class="fab fa-facebook-f text-lg"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-pink-600 hover:-translate-y-1 transition transform shadow-lg" title="Instagram"><i class="fab fa-instagram text-lg"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-red-600 hover:-translate-y-1 transition transform shadow-lg" title="YouTube"><i class="fab fa-youtube text-lg"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-emerald-500 hover:-translate-y-1 transition transform shadow-lg" title="WhatsApp"><i class="fab fa-whatsapp text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                    <p class="text-xs text-gray-500">&copy; 2026 SDIT Qurratu A'yun Al-Islami.<br class="sm:hidden"> Hak Cipta Dilindungi.</p>
+                    
+                    <div class="bg-gray-900 border border-gray-700 px-4 py-1.5 rounded-full flex items-center gap-2 shadow-inner">
+                        <i class="fas fa-chart-line text-blue-400"></i>
+                        <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Pengunjung:</span>
+                        <span id="angka_pengunjung" class="text-xs font-black text-white"><i class="fas fa-spinner fa-spin"></i></span>
+                    </div>
+                </div>
+
+                <button onclick="window.location.href='login.html'" class="text-gray-500 border border-gray-800 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center gap-2 shadow-sm mb-4 md:mb-0"><i class="fas fa-lock"></i> Panel Admin</button>
+            </div>
+        </div>
+        <div class="h-10 md:hidden w-full bg-transparent pointer-events-none"></div>
+    </footer>
+
+    <a href="https://wa.me/" id="floating_wa" target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-[100] animate-bounce hover:animate-none group">
+        <i class="fab fa-whatsapp"></i>
+        <span class="absolute right-16 bg-white text-gray-800 text-xs font-bold px-3 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-green-100">Hubungi Admin</span>
+    </a>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        // PENTING: Tambahkan setDoc, updateDoc, dan increment
+        import { getFirestore, collection, getDocs, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==========================================
+        // FUNGSI PENGHITUNG PENGUNJUNG
+        // ==========================================
+        async function rekamDanTampilkanPengunjung() {
+            const statRef = doc(db, "statistik", "kunjungan");
+            
+            try {
+                // 1. Cek apakah di browser ini (HP/Laptop ini) sudah pernah dihitung?
+                if (!localStorage.getItem('telah_berkunjung')) {
+                    
+                    // Jika belum pernah, tambahkan angka 1 ke database Firebase
+                    try {
+                        await updateDoc(statRef, { total: increment(1) });
+                        localStorage.setItem('telah_berkunjung', 'benar'); // Beri tanda sudah dihitung
+                    } catch (e) {
+                        // Jika dokumen "kunjungan" belum ada sama sekali di Firebase, buat dokumennya!
+                        await setDoc(statRef, { total: 1 });
+                        localStorage.setItem('telah_berkunjung', 'benar');
+                    }
+                }
+
+                // 2. Tarik angka total terbaru dari Database dan tampilkan di layar
+                const snap = await getDoc(statRef);
+                if (snap.exists()) {
+                    const totalAngka = snap.data().total;
+                    // Format angka jadi ribuan (Contoh: 1.540)
+                    document.getElementById('angka_pengunjung').innerText = totalAngka.toLocaleString('id-ID');
+                } else {
+                    document.getElementById('angka_pengunjung').innerText = "1";
+                }
+            } catch (err) {
+                console.log("Gagal merekam statistik pengunjung:", err);
+                document.getElementById('angka_pengunjung').innerText = "-";
+            }
+        }
+
+        async function initHomePage() {
+            try {
+                // JALANKAN FUNGSI PENGUNJUNG
+                rekamDanTampilkanPengunjung();
+
+                const redaksiSnap = await getDoc(doc(db, "profil", "redaksi"));
+                if(redaksiSnap.exists() && redaksiSnap.data().whatsapp) {
+                    let waRedaksi = redaksiSnap.data().whatsapp;
+                    if(waRedaksi.startsWith('0')) waRedaksi = '62' + waRedaksi.substring(1);
+                    document.getElementById('floating_wa').href = `https://wa.me/${waRedaksi}?text=Assalamu'alaikum%20Admin%20SDIT%20Qurratu%20A'yun...`;
+                }
+
+                const [beritaSnapTicker, karyaSnapTicker] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
+                const ticker = document.getElementById('tickerContent');
+                let items = [...beritaSnapTicker.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3), ...karyaSnapTicker.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3)];
+                
+                if(items.length > 0) {
+                    let content = items.map(item => `<a href="baca.html?id=${item.id}&type=${item.penulis ? 'karya' : 'berita'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition uppercase italic text-xs tracking-tight"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
+                    ticker.innerHTML = content + content;
+                }
+
+                const btnBerita = document.getElementById('btnBeritaTerbaru');
+                const iconLoading = document.getElementById('iconLoadingBerita');
+                let beritaList = beritaSnapTicker.docs.map(d => ({ id: d.id, ...d.data() }));
+                
+                if (beritaList.length > 0) {
+                    beritaList.sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+                    const beritaTerbaruId = beritaList[0].id;
+                    btnBerita.href = `baca.html?id=${beritaTerbaruId}&type=berita`;
+                }
+                
+                iconLoading.classList.remove('fa-spinner', 'fa-spin');
+                iconLoading.classList.add('fa-newspaper');
+
+            } catch (err) { 
+                console.error(err); 
+                const iconLoading = document.getElementById('iconLoadingBerita');
+                iconLoading.classList.remove('fa-spinner', 'fa-spin');
+                iconLoading.classList.add('fa-newspaper');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initHomePage);
+    </script>
+</body>
+</html>

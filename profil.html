@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - SDIT Qurratu A'yun Al-Islami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s, box-shadow 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); box-shadow: -10px 15px 25px rgba(0,0,0,0.2); }
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #eab308; border-radius: 10px; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-[100] flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen md:pointer-events-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        
+        <div class="hidden md:block mt-24"></div>
+
+        <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="kelas.html" data-page="kelas" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="ppdb.html" data-page="ppdb" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pustaka.html" data-page="pustaka" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-book-open text-cyan-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
+
+        <div class="hidden md:block mb-24"></div>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let path = window.location.pathname;
+            let page = path.split("/").pop().replace(".html", "");
+            if(page === "" || page === "index") page = "index";
+            if(page === "baca") {
+                const urlParams = new URLSearchParams(window.location.search);
+                page = urlParams.get('type') || 'berita';
+            }
+            const activeColors = { "index": "bg-blue-600 border-blue-500", "profil": "bg-yellow-500 border-yellow-400", "pegawai": "bg-green-500 border-green-400", "kelas": "bg-purple-500 border-purple-400", "ppdb": "bg-emerald-500 border-emerald-400", "pustaka": "bg-cyan-600 border-cyan-500", "karya": "bg-orange-500 border-orange-400", "berita": "bg-red-600 border-red-500", "redaksi": "bg-indigo-600 border-indigo-500" };
+            let targetBtn = document.querySelector(`.nav-btn[data-page="${page}"]`);
+            if(targetBtn && activeColors[page]) {
+                targetBtn.classList.remove("bg-white/90");
+                let colorClasses = activeColors[page].split(" ");
+                targetBtn.classList.add(...colorClasses);
+                let icon = targetBtn.querySelector("i");
+                icon.className = icon.className.replace(/text-\w+-\d+/g, "text-white");
+            }
+        });
+    </script>
+    
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center">
+        <div class="flex items-center gap-4">
+            <img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'">
+            <h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1>
+        </div>
+    </header>
+
+    <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic">Memuat kabar terbaru...</span></div>
+    </div>
+
+    <main class="flex-1 px-4 py-10 md:p-10 md:ml-16 w-full max-w-7xl mx-auto pb-28 md:pb-10">
+        <h2 class="text-3xl md:text-4xl font-black mb-8 text-gray-800 border-l-8 border-yellow-500 pl-4 uppercase italic">Profil Sekolah</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-8 border-blue-600 flex flex-col">
+                <h3 class="text-2xl font-bold mb-4 text-blue-700 uppercase italic"><i class="fas fa-eye mr-2"></i>Visi</h3>
+                <div id="txtVisi" class="text-gray-600 h-48 md:h-64 overflow-y-auto custom-scroll text-justify pr-2 font-medium leading-relaxed">Menarik data visi dari server...</div>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-8 border-yellow-500 flex flex-col">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-600 uppercase italic"><i class="fas fa-bullseye mr-2"></i>Misi</h3>
+                <div id="txtMisi" class="text-gray-600 h-48 md:h-64 overflow-y-auto custom-scroll pr-2 leading-relaxed">Menarik data misi dari server...</div>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-8 border-green-500 flex flex-col">
+                <h3 class="text-2xl font-bold mb-4 text-green-700 uppercase italic"><i class="fas fa-chart-line mr-2"></i>Tujuan</h3>
+                <div id="txtTujuan" class="text-gray-600 h-48 md:h-64 overflow-y-auto custom-scroll pr-2 leading-relaxed">Menarik data tujuan dari server...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white pt-10 pb-36 md:py-10 text-center relative z-40 w-full mt-auto">
+        <p class="text-lg font-bold uppercase tracking-widest italic">SDIT Qurratu A'yun Al-Islami</p>
+        <button onclick="window.location.href='login.html'" class="mt-6 text-gray-400 border border-gray-700 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm mb-4 md:mb-0">
+            <i class="fas fa-cog"></i> Panel Admin
+        </button>
+    </footer>
+    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20SDIT%20Qurratu%20A'yun,%20saya%20ingin%20bertanya..." target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 z-[100] animate-bounce hover:animate-none group">
+        <i class="fab fa-whatsapp"></i>
+        <span class="absolute right-16 bg-white text-gray-800 text-xs font-bold px-3 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-green-100">Hubungi Admin</span>
+    </a>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M",
+            authDomain: "websekolah-9bcde.firebaseapp.com",
+            projectId: "websekolah-9bcde",
+            storageBucket: "websekolah-9bcde.firebasestorage.app",
+            messagingSenderId: "113406929634",
+            appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadData() {
+            try {
+                // Fetch Ticker
+                const [beritaSnap, karyaSnap] = await Promise.all([ getDocs(collection(db, "berita")), getDocs(collection(db, "karya")) ]);
+                const ticker = document.getElementById('tickerContent');
+                let items = [...beritaSnap.docs.map(d => ({...d.data()})).slice(0,3), ...karyaSnap.docs.map(d => ({...d.data()})).slice(0,3)];
+                if(items.length > 0) {
+                    ticker.innerHTML = items.map(item => `<a href="${item.penulis ? 'karya.html' : 'berita.html'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition uppercase italic text-xs tracking-tight"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('') + ticker.innerHTML;
+                } else {
+                    ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic uppercase">Belum ada pembaruan...</span>';
+                }
+
+                // Fetch Visi Misi Tujuan
+                const snap = await getDoc(doc(db, "profil", "sekolah"));
+                if(snap.exists()) {
+                    const d = snap.data();
+                    
+                    document.getElementById('txtVisi').innerText = d.visi || "Data Visi belum diisi.";
+                    
+                    const formatList = (text) => {
+                        if (!text) return "-";
+                        const poin = text.split('\n').filter(t => t.trim() !== '');
+                        return "<ul class='list-decimal pl-5 space-y-3'>" + poin.map(p => `<li>${p}</li>`).join('') + "</ul>";
+                    };
+
+                    document.getElementById('txtMisi').innerHTML = formatList(d.misi);
+                    document.getElementById('txtTujuan').innerHTML = formatList(d.tujuan);
+                } else {
+                    document.getElementById('txtVisi').innerText = "Silakan isi data Visi di Panel Admin.";
+                    document.getElementById('txtMisi').innerText = "Silakan isi data Misi di Panel Admin.";
+                    document.getElementById('txtTujuan').innerText = "Silakan isi data Tujuan di Panel Admin.";
+                }
+
+            } catch (err) { console.error(err); }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

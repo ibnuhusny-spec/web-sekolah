@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guru & Pegawai - SDIT Qurratu A'yun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .menu-3d { transition: transform 0.3s; }
+        .menu-3d:hover { transform: perspective(500px) translateZ(20px) translateY(-5px); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; animation: marquee 25s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+
+    <nav id="navigasi_utama" class="fixed bottom-8 md:bottom-0 md:top-0 left-1/2 md:left-6 transform -translate-x-1/2 md:-translate-x-0 z-[100] flex flex-row md:flex-col gap-2 md:gap-3 bg-slate-900/90 md:bg-transparent backdrop-blur-xl md:backdrop-blur-none px-4 py-3 md:py-8 rounded-full md:rounded-none shadow-2xl md:shadow-none w-[95%] md:w-auto justify-between md:justify-start overflow-x-auto md:overflow-y-auto md:h-screen md:pointer-events-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        
+        <div class="hidden md:block mt-24"></div>
+
+        <a href="index.html" data-page="index" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-home text-blue-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="profil.html" data-page="profil" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-flag text-yellow-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pegawai.html" data-page="pegawai" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-users text-green-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="kelas.html" data-page="kelas" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-chalkboard-teacher text-purple-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="ppdb.html" data-page="ppdb" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-user-graduate text-emerald-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="pustaka.html" data-page="pustaka" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-book-open text-cyan-600 text-lg md:text-xl transition-colors"></i></a>
+        <a href="karya.html" data-page="karya" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-lightbulb text-orange-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="berita.html" data-page="berita" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-newspaper text-red-500 text-lg md:text-xl transition-colors"></i></a>
+        <a href="redaksi.html" data-page="redaksi" class="nav-btn menu-3d flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white/90 rounded-2xl shadow-lg border flex-shrink-0 transition-all md:pointer-events-auto"><i class="fas fa-id-badge text-indigo-600 text-lg md:text-xl transition-colors"></i></a>
+
+        <div class="hidden md:block mb-24"></div>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let path = window.location.pathname;
+            let page = path.split("/").pop().replace(".html", "");
+            if(page === "" || page === "index") page = "index";
+            if(page === "baca") {
+                const urlParams = new URLSearchParams(window.location.search);
+                page = urlParams.get('type') || 'berita';
+            }
+            const activeColors = { "index": "bg-blue-600 border-blue-500", "profil": "bg-yellow-500 border-yellow-400", "pegawai": "bg-green-500 border-green-400", "kelas": "bg-purple-500 border-purple-400", "ppdb": "bg-emerald-500 border-emerald-400", "pustaka": "bg-cyan-600 border-cyan-500", "karya": "bg-orange-500 border-orange-400", "berita": "bg-red-600 border-red-500", "redaksi": "bg-indigo-600 border-indigo-500" };
+            let targetBtn = document.querySelector(`.nav-btn[data-page="${page}"]`);
+            if(targetBtn && activeColors[page]) {
+                targetBtn.classList.remove("bg-white/90");
+                let colorClasses = activeColors[page].split(" ");
+                targetBtn.classList.add(...colorClasses);
+                let icon = targetBtn.querySelector("i");
+                icon.className = icon.className.replace(/text-\w+-\d+/g, "text-white");
+            }
+        });
+    </script>
+    
+    <header class="bg-white shadow-sm p-4 md:pl-24 relative z-40 flex flex-col md:flex-row justify-center md:justify-start items-center text-center"><div class="flex items-center gap-4"><img src="logo.png" class="h-12 w-auto" onerror="this.style.display='none'"><h1 class="text-xl md:text-2xl font-black text-blue-800 uppercase tracking-tight">SDIT Qurratu A'yun Al-Islami</h1></div></header>
+
+    <div class="bg-yellow-400 overflow-hidden py-2 shadow-inner relative z-30">
+        <div class="flex whitespace-nowrap animate-marquee" id="tickerContent"><span class="mx-4 font-bold text-blue-900 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat kabar terbaru...</span></div>
+    </div>
+
+    <main class="flex-1 px-4 py-10 md:p-10 md:ml-16 bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen pb-28 md:pb-10">
+        <h2 class="text-3xl font-black mb-8 text-gray-800 border-l-8 border-green-500 pl-4 uppercase italic">Guru & Pegawai</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-blue-600 p-6 rounded-2xl shadow-lg text-white relative overflow-hidden">
+                <i class="fas fa-male absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
+                <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Guru Putra</p>
+                <h3 class="text-4xl font-black" id="countPutra">0</h3>
+            </div>
+            <div class="bg-pink-500 p-6 rounded-2xl shadow-lg text-white relative overflow-hidden">
+                <i class="fas fa-female absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
+                <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Guru Putri</p>
+                <h3 class="text-4xl font-black" id="countPutri">0</h3>
+            </div>
+            <div class="bg-emerald-600 p-6 rounded-2xl shadow-lg text-white relative overflow-hidden">
+                <i class="fas fa-user-tie absolute -right-4 -bottom-4 text-7xl opacity-20"></i>
+                <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Tendik</p>
+                <h3 class="text-4xl font-black" id="countTendik">0</h3>
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl shadow-lg w-full max-w-lg mb-8"><input type="text" id="searchInput" placeholder="Cari nama pegawai..." onkeyup="renderCards()" class="w-full p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"></div>
+
+        <div class="flex flex-wrap gap-3 mb-10 overflow-x-auto pb-2">
+            <button class="filter-btn flex-shrink-0 px-4 md:px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition text-sm md:text-base" onclick="setKategori('semua', this)" id="btnSemua">Semua</button>
+            <button class="filter-btn flex-shrink-0 px-4 md:px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition text-sm md:text-base" onclick="setKategori('guru_putra', this)">Guru Putra</button>
+            <button class="filter-btn flex-shrink-0 px-4 md:px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition text-sm md:text-base" onclick="setKategori('guru_putri', this)">Guru Putri</button>
+            <button class="filter-btn flex-shrink-0 px-4 md:px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition text-sm md:text-base" onclick="setKategori('tendik_putra', this)">Tendik Putra</button>
+            <button class="filter-btn flex-shrink-0 px-4 md:px-6 py-2 bg-white rounded-full font-bold shadow hover:bg-green-400 hover:text-white transition text-sm md:text-base" onclick="setKategori('tendik_putri', this)">Tendik Putri</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" id="staffGrid">
+            <div class="text-gray-500 italic"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari Firebase...</div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white pt-10 pb-8 relative z-40 w-full mt-auto">
+        <p class="text-lg font-bold text-center uppercase tracking-widest italic">SDIT Qurratu A'yun Al-Islami</p>
+        <button onclick="window.location.href='login.html'" class="mt-6 text-gray-400 border border-gray-700 px-6 py-2 rounded-full text-xs hover:bg-gray-800 hover:text-white transition flex items-center justify-center mx-auto gap-2 shadow-sm">
+            <i class="fas fa-cog"></i> Panel Admin
+        </button>
+        <div class="h-28 md:hidden w-full bg-transparent pointer-events-none"></div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAMTI0R0xGEWFSOAhzDZdJxnuX8hixBP7M", authDomain: "websekolah-9bcde.firebaseapp.com", projectId: "websekolah-9bcde", storageBucket: "websekolah-9bcde.firebasestorage.app", messagingSenderId: "113406929634", appId: "1:113406929634:web:df2b9dc1a45fecf0bc0cbb" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.staffData = [];
+        window.currentKategori = 'semua';
+
+        function formatTanggalIndo(tanggalString) {
+            if (!tanggalString || tanggalString === "-" || tanggalString.trim() === "") return "-";
+            try {
+                const dateObj = new Date(tanggalString);
+                if (isNaN(dateObj.getTime())) return tanggalString; 
+                const bulanIndo = [ "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ];
+                return `${dateObj.getDate()} ${bulanIndo[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+            } catch { return tanggalString; }
+        }
+
+        async function loadData() {
+            try {
+                const [beritaSnap, karyaSnap, pegawaiSnap] = await Promise.all([
+                    getDocs(collection(db, "berita")), getDocs(collection(db, "karya")), getDocs(collection(db, "pegawai"))
+                ]);
+                
+                window.staffData = pegawaiSnap.docs.map(d => d.data());
+
+                const cPutra = window.staffData.filter(s => s.kategori === 'guru_putra').length;
+                const cPutri = window.staffData.filter(s => s.kategori === 'guru_putri').length;
+                const cTendik = window.staffData.filter(s => s.kategori === 'tendik_putra' || s.kategori === 'tendik_putri' || s.kategori === 'tendik').length;
+
+                document.getElementById('countPutra').innerText = cPutra;
+                document.getElementById('countPutri').innerText = cPutri;
+                document.getElementById('countTendik').innerText = cTendik;
+
+                window.renderCards();
+
+                // PERBAIKAN: Teks Berjalan Sekarang Bisa Diklik!
+                const ticker = document.getElementById('tickerContent');
+                let items = [...beritaSnap.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3), ...karyaSnap.docs.map(d => ({id: d.id, ...d.data()})).slice(0,3)];
+                if(items.length > 0) {
+                    let content = items.map(item => `<a href="baca.html?id=${item.id}&type=${item.penulis ? 'karya' : 'berita'}" class="mx-10 text-blue-900 font-bold hover:text-red-600 transition uppercase italic text-xs tracking-tight"><i class="fas ${item.penulis ? 'fa-lightbulb text-orange-600' : 'fa-fire text-red-600'}"></i> ${item.judul} </a>`).join('');
+                    ticker.innerHTML = content + content;
+                } else {
+                    ticker.innerHTML = '<span class="mx-4 font-bold text-blue-900 italic">Belum ada kabar terbaru...</span>';
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        window.renderCards = function() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('staffGrid');
+            
+            let filtered = window.staffData.filter(s => {
+                let kat = s.kategori;
+                if (kat === 'tendik') kat = 'tendik_putra'; 
+                return (window.currentKategori === 'semua' || kat === window.currentKategori) && 
+                       s.nama.toLowerCase().includes(keyword);
+            });
+
+            filtered.sort((a, b) => {
+                const bobot = { 'guru_putra': 1, 'guru_putri': 2, 'tendik_putra': 3, 'tendik_putri': 3, 'tendik': 3 };
+                const bobotA = bobot[a.kategori] || 99;
+                const bobotB = bobot[b.kategori] || 99;
+                if (bobotA !== bobotB) return bobotA - bobotB;
+                else return a.nama.localeCompare(b.nama);
+            });
+
+            if(filtered.length === 0) { grid.innerHTML = `<div class="text-gray-500 italic">Tidak ada data pegawai.</div>`; return; }
+
+            const siluetHijab = "data:image/svg+xml;charset=UTF-8,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' fill='%23f8fafc'/%3E%3Cpath d='M10,100 Q50,60 90,100 Z' fill='%23cbd5e1'/%3E%3Cpath d='M25,45 C25,10 75,10 75,45 C75,80 65,95 50,95 C35,95 25,80 25,45 Z' fill='%2394a3b8'/%3E%3Cellipse cx='50' cy='45' rx='16' ry='22' fill='%23e2e8f0'/%3E%3C/svg%3E";
+            const siluetPria = "data:image/svg+xml;charset=UTF-8,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' fill='%23f8fafc'/%3E%3Cpath d='M20,100 Q50,55 80,100 Z' fill='%23cbd5e1'/%3E%3Ccircle cx='50' cy='40' r='22' fill='%2394a3b8'/%3E%3C/svg%3E";
+
+            grid.innerHTML = filtered.map((s, i) => {
+                let kat = s.kategori;
+                if (kat === 'tendik') kat = 'tendik_putra'; 
+
+                const colors = { guru_putra: 'bg-blue-500', guru_putri: 'bg-pink-500', tendik_putra: 'bg-green-500', tendik_putri: 'bg-teal-500' };
+                const labels = { guru_putra: 'GURU PUTRA', guru_putri: 'GURU PUTRI', tendik_putra: 'TENDIK', tendik_putri: 'TENDIK' };
+                
+                let fotoTampil = s.foto;
+                if (kat === 'guru_putri' || kat === 'tendik_putri') {
+                    fotoTampil = siluetHijab;
+                } else if (!s.foto || s.foto === "-" || s.foto === "" || s.foto.includes("default.png")) {
+                    fotoTampil = siluetPria;
+                }
+                
+                return `
+                <div class="bg-white rounded-3xl overflow-hidden shadow-xl animate-fade flex flex-col border border-gray-100 hover:shadow-2xl transition duration-300" style="animation-delay: ${i*0.05}s">
+                    <div class="relative h-64 md:h-72 shrink-0 bg-gray-100">
+                        <img src="${fotoTampil}" class="w-full h-full object-cover object-center" onerror="this.src='${siluetPria}'">
+                        <span class="absolute top-4 right-4 px-4 py-1 rounded-full text-xs font-black text-white shadow-md uppercase tracking-wider ${colors[kat]}">${labels[kat]}</span>
+                    </div>
+                    <div class="p-6 md:p-8 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-gray-800 leading-tight uppercase">${s.nama}</h3>
+                        <p class="text-green-600 font-bold text-sm mb-4 uppercase tracking-wider">${s.jabatan}</p>
+                        
+                        <div class="grid grid-cols-2 gap-2 mb-6">
+                            <a href="https://wa.me/${s.whatsapp}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white py-2 rounded-xl text-center text-xs font-black shadow-sm transition flex items-center justify-center gap-2">
+                                <i class="fab fa-whatsapp text-lg"></i> WA
+                            </a>
+                            <a href="mailto:${s.email}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl text-center text-xs font-black shadow-sm transition flex items-center justify-center gap-2">
+                                <i class="fas fa-envelope text-lg"></i> EMAIL
+                            </a>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-2xl text-[10px] md:text-xs space-y-2 border border-gray-100 mt-auto">
+                            <div class="flex justify-between border-b pb-1">
+                                <b class="text-gray-500 uppercase">NUPTK</b> 
+                                <span class="font-medium text-right text-gray-800">${s.nuptk || "-"}</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-1">
+                                <b class="text-gray-500 uppercase">TTL</b> 
+                                <span class="font-medium text-right text-gray-800">${s.tempatLahir || "-"}, ${formatTanggalIndo(s.tanggalLahir)}</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-1">
+                                <b class="text-gray-500 uppercase">PENDIDIKAN</b> 
+                                <span class="font-medium text-right text-gray-800">${s.pendidikan || "-"}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <b class="text-gray-500 uppercase">MULAI TUGAS</b> 
+                                <span class="font-medium text-right text-gray-800">${formatTanggalIndo(s.tanggalBergabung)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        };
+
+        window.setKategori = function(kat, btn) {
+            window.currentKategori = kat;
+            document.querySelectorAll('.filter-btn').forEach(b => { 
+                b.classList.remove('bg-green-400', 'text-white'); 
+                b.classList.add('bg-white'); 
+            });
+            btn.classList.remove('bg-white'); 
+            btn.classList.add('bg-green-400', 'text-white');
+            window.renderCards();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btnSemua').classList.add('bg-green-400', 'text-white');
+            loadData();
+        });
+    </script>
+</body>
+</html>
